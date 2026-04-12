@@ -213,8 +213,8 @@ def process_nwpu_crowd(data_root, down_size=2048):
 if __name__ == '__main__':
 
     # UCF_QNRF | JHU_Crowd | NWPU_Crowd
-    dataset = "UCF_QNRF"
-    data_root = "your_data_path"
+    dataset = "NWPU_Crowd"
+    data_root = "/home/user/src_wsl/multi-resolution-crowd-counting/PET-main/datasets/NWPU_crowd"
     
     if dataset == "UCF_QNRF":
         down_size = 1536    # downsample size
@@ -223,5 +223,5 @@ if __name__ == '__main__':
         down_size = 2048    # downsample size
         process_jhu_crowd(data_root, down_size=down_size)
     elif dataset == "NWPU_Crowd":
-        down_size = 2048    # downsample size
+        down_size = 512    # downsample size
         process_nwpu_crowd(data_root, down_size=down_size)

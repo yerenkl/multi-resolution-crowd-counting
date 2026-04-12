@@ -1,20 +1,19 @@
 import argparse
 import datetime
 import json
+import os
 import random
+import shutil
 import time
 from pathlib import Path
-import os
-import shutil
 
 import numpy as np
 import torch
-import torch.nn as nn
 from torch.utils.data import DataLoader, DistributedSampler
 
-import datasets
 import util.misc as utils
 from datasets import build_dataset
+from datasets.NWPU import build_nwpu_datasets
 from engine import evaluate, train_one_epoch
 from models import build_model
 
@@ -25,9 +24,9 @@ def get_args_parser():
     # training Parameters
     parser.add_argument('--lr', default=1e-4, type=float)
     parser.add_argument('--lr_backbone', default=1e-5, type=float)
-    parser.add_argument('--batch_size', default=8, type=int)
+    parser.add_argument('--batch_size', default=1, type=int)
     parser.add_argument('--weight_decay', default=1e-4, type=float)
-    parser.add_argument('--epochs', default=1500, type=int)
+    parser.add_argument('--epochs', default=1, type=int)
     parser.add_argument('--clip_max_norm', default=0.1, type=float,
                         help='gradient clipping max norm')
 
@@ -120,9 +119,8 @@ def main(args):
                                   weight_decay=args.weight_decay)
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, args.epochs)
 
-    # build dataset
-    dataset_train = build_dataset(image_set='train', args=args)
-    dataset_val = build_dataset(image_set='val', args=args)
+
+    dataset_train, dataset_val = build_nwpu_datasets()
 
     if args.distributed:
         sampler_train = DistributedSampler(dataset_train)
@@ -134,8 +132,10 @@ def main(args):
     batch_sampler_train = torch.utils.data.BatchSampler(
         sampler_train, args.batch_size, drop_last=True)
 
+
     data_loader_train = DataLoader(dataset_train, batch_sampler=batch_sampler_train,
                                 collate_fn=utils.collate_fn, num_workers=args.num_workers)
+
     data_loader_val = DataLoader(dataset_val, 1, sampler=sampler_val,
                                 drop_last=False, collate_fn=utils.collate_fn, num_workers=args.num_workers)
 
