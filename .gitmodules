@@ -1,0 +1,3 @@
+[submodule "CLIP-EBC"]
+	path = CLIP-EBC
+	url = https://github.com/Yiming-M/CLIP-EBC
