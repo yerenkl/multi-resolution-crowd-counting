@@ -20,7 +20,7 @@ from pathlib import Path
 
 # ── Paths ─────────────────────────────────────────────────────────────
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-CLIP_EBC_ROOT = PROJECT_ROOT / "CLIP-EBC-main"
+CLIP_EBC_ROOT = Path("/dtu/blackhole/0a/224426/CLIP-EBC-main")
 sys.path.insert(0, str(CLIP_EBC_ROOT))
 sys.path.insert(0, str(PROJECT_ROOT))
 

@@ -1,15 +1,15 @@
 #!/bin/bash
-#BSUB -q gpua40
-#BSUB -W 4:00
-#BSUB -J baseline_eval
-#BSUB -o results/baseline/baseline_eval_%J.out
-#BSUB -e results/baseline/baseline_eval_%J.err
-#BSUB -n 1
-#BSUB -R "rusage[mem=16GB]"
-#BSUB -R "span[hosts=1]"
+#BSUB -q gpua100
+#BSUB -J ebc_eval
+#BSUB -W 24:00
+#BSUB -n 4
+#BSUB -R "rusage[mem=4GB]"
 #BSUB -gpu "num=1:mode=exclusive_process"
-
+#BSUB -o jobs/logs/ebc_eval_%J.out
+#BSUB -e jobs/logs/ebc_eval_%J.err
 set -euo pipefail
+echo "Running CLIP-EBC evaluation..."
+
 
 DEVICE="cuda:0"
 

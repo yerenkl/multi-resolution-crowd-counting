@@ -17,10 +17,11 @@ from torchvision import transforms as T
 from PIL import Image
 from tqdm import tqdm
 from pathlib import Path
+import torch.nn.functional as F
 
 # ── Paths ─────────────────────────────────────────────────────────────
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-CLIP_EBC_ROOT = PROJECT_ROOT / "CLIP-EBC-main"
+CLIP_EBC_ROOT = Path("/dtu/blackhole/0a/224426/CLIP-EBC-main")
 sys.path.insert(0, str(CLIP_EBC_ROOT))
 sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -63,6 +64,15 @@ def load_model(device):
 
 @torch.no_grad()
 def predict_count(model, img_tensor, device):
+    # Ensure minimum size of 224x224 for ViT window
+    _, h, w = img_tensor.shape
+    if h < WINDOW_SIZE or w < WINDOW_SIZE:
+        scale = WINDOW_SIZE / min(h, w)
+        new_h = int(h * scale)
+        new_w = int(w * scale)
+        img_tensor = F.interpolate(
+            img_tensor.unsqueeze(0), size=(new_h, new_w), mode="bilinear", align_corners=False
+        ).squeeze(0)
     img = img_tensor.unsqueeze(0).to(device)
     density = sliding_window_predict(model, img, WINDOW_SIZE, STRIDE)
     return density.sum().item()
