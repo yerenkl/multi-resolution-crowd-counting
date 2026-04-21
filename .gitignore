@@ -10,4 +10,4 @@ wheels/
 .venv
 
 # Environment variables
-.envCLIP-EBC-main/
+.env
