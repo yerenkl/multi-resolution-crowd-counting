@@ -1,0 +1,168 @@
+Running CLIP-EBC evaluation...
+============================================================
+1/3  NWPU val — native resolution
+============================================================
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/best_mae.pth
+
+Evaluating NWPU val — native resolution (500 images)
+
+  Results (native):
+    MAE:  45.11
+    RMSE: 157.46
+Results saved to /zhome/e2/6/224426/project/multi-resolution-crowd-counting/results/baseline/
+
+============================================================
+2/3  NWPU val — 2x and 4x downscale
+============================================================
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/best_mae.pth
+
+Evaluating NWPU val — 2x downscale (500 images)
+
+  Results (2x downscale):
+    MAE:  44.35
+    RMSE: 118.30
+
+Evaluating NWPU val — 4x downscale (500 images)
+
+  Results (4x downscale):
+    MAE:  96.03
+    RMSE: 377.30
+
+========================================
+  NWPU Val Downscaled Summary
+========================================
+  Scale             MAE     RMSE
+  ----------------------------
+  2x_down         44.35   118.30
+  4x_down         96.03   377.30
+
+Results saved to /zhome/e2/6/224426/project/multi-resolution-crowd-counting/results/baseline/
+
+============================================================
+3/3  Zoom Pairs — HR vs LR consistency
+============================================================
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/best_mae.pth
+
+Evaluating Zoom Pairs — HR vs LR consistency (61 pairs)
+
+==================================================
+  Zoom Pairs Results
+==================================================
+  Mean HR count:        492.7
+  Mean LR count:        345.8
+  Mean |HR - LR|:       166.0
+  Median |HR - LR|:     30.5
+  Mean HR/LR ratio:     1.598
+  Median HR/LR ratio:   1.095
+
+  Worst 5 pairs by |HR - LR|:
+    Pair  60: HR=8470, LR=4014, diff=4456, ratio=2.11
+    Pair  53: HR=1929, LR=189, diff=1740, ratio=10.21
+    Pair  51: HR=830, LR=81, diff=749, ratio=10.30
+    Pair  18: HR=869, LR=631, diff=238, ratio=1.38
+    Pair  26: HR=372, LR=151, diff=221, ratio=2.47
+
+  Best 5 pairs by |HR - LR|:
+    Pair  15: HR=24, LR=23, diff=0, ratio=1.01
+    Pair  40: HR=39, LR=41, diff=2, ratio=0.96
+    Pair   2: HR=128, LR=130, diff=2, ratio=0.99
+    Pair  36: HR=12, LR=10, diff=2, ratio=1.19
+    Pair  57: HR=93, LR=95, diff=2, ratio=0.98
+
+Results saved to /zhome/e2/6/224426/project/multi-resolution-crowd-counting/results/baseline/
+
+All baseline evaluations completed successfully.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28241841: <ebc_eval> in cluster <dcc> Done
+
+Job <ebc_eval> was submitted from host <hpclogin1> by user <s254124> in cluster <dcc> at Mon Apr 20 14:16:31 2026
+Job was executed on host(s) <4*n-62-12-23>, in queue <gpua100>, as user <s254124> in cluster <dcc> at Mon Apr 20 14:18:45 2026
+</zhome/e2/6/224426> was used as the home directory.
+</zhome/e2/6/224426/project/multi-resolution-crowd-counting> was used as the working directory.
+Started at Mon Apr 20 14:18:45 2026
+Terminated at Mon Apr 20 14:30:20 2026
+Results reported at Mon Apr 20 14:30:20 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpua100
+#BSUB -J ebc_eval
+#BSUB -W 24:00
+#BSUB -n 4
+#BSUB -R "rusage[mem=4GB]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -o jobs/logs/ebc_eval_%J.out
+#BSUB -e jobs/logs/ebc_eval_%J.err
+set -euo pipefail
+echo "Running CLIP-EBC evaluation..."
+
+
+DEVICE="cuda:0"
+
+uv sync
+
+echo "============================================================"
+echo "1/3  NWPU val — native resolution"
+echo "============================================================"
+uv run python evaluation/eval_nwpu_native.py --device "${DEVICE}"
+
+echo ""
+echo "============================================================"
+echo "2/3  NWPU val — 2x and 4x downscale"
+echo "============================================================"
+uv run python evaluation/eval_nwpu_downscaled.py --device "${DEVICE}"
+
+echo ""
+echo "============================================================"
+echo "3/3  Zoom Pairs — HR vs LR consistency"
+echo "============================================================"
+uv run python evaluation/eval_zoom_pairs.py --device "${DEVICE}"
+
+echo ""
+echo "All baseline evaluations completed successfully."
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   667.00 sec.
+    Max Memory :                                 2163 MB
+    Average Memory :                             1515.83 MB
+    Total Requested Memory :                     16384.00 MB
+    Delta Memory :                               14221.00 MB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                13
+    Run time :                                   695 sec.
+    Turnaround time :                            829 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <jobs/logs/ebc_eval_28241841.err> for stderr output of this job.
+
