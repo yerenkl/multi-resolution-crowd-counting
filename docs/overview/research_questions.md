@@ -16,4 +16,4 @@ Does forcing the encoder to be blind to input resolution (via gradient reversal)
 
 ---
 
-The real optical zoom pairs (61 unlabeled HR/LR pairs from the supervisor) run through all four experiments as the real-world validity check — a model that only does well on synthetically downscaled NWPU but fails here has learned the resize kernel, not the crowd.
+The real optical zoom pairs (61 unlabeled HR/LR pairs from the supervisor) run as a consistent evaluation thread through all four experiments, not just as a final result. At each stage, zoom pair consistency (do HR and LR predictions agree for the same scene?) is reported alongside NWPU accuracy. A model that does well on synthetically downscaled NWPU but fails here has learned the resize kernel, not the crowd — making the zoom pairs the real-world validity check that ties the whole paper together.
