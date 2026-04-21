@@ -18,19 +18,19 @@ uv sync
 echo "============================================================"
 echo "1/3  NWPU val — native resolution"
 echo "============================================================"
-uv run python evaluation/eval_nwpu_native.py --device "${DEVICE}"
+uv run python entrypoints/eval_nwpu_native.py --device "${DEVICE}"
 
 echo ""
 echo "============================================================"
 echo "2/3  NWPU val — 2x and 4x downscale"
 echo "============================================================"
-uv run python evaluation/eval_nwpu_downscaled.py --device "${DEVICE}"
+uv run python entrypoints/eval_nwpu_downscaled.py --device "${DEVICE}"
 
 echo ""
 echo "============================================================"
 echo "3/3  Zoom Pairs — HR vs LR consistency"
 echo "============================================================"
-uv run python evaluation/eval_zoom_pairs.py --device "${DEVICE}"
+uv run python entrypoints/eval_zoom_pairs.py --device "${DEVICE}"
 
 echo ""
 echo "All baseline evaluations completed successfully."

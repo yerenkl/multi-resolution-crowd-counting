@@ -22,7 +22,7 @@ echo "============================================================"
 echo "Resolution-augmented fine-tuning of CLIP-EBC (ViT-B/16)"
 echo "============================================================"
 
-uv run python training/finetune_resolution_aug.py \
+uv run python entrypoints/train_finetune_res_aug.py \
     --device "${DEVICE}" \
     --epochs 50 \
     --batch_size 8 \
