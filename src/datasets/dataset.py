@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 import torch
 from PIL import Image
@@ -33,27 +34,44 @@ class NWPU(torch.utils.data.Dataset):
     test:        returns (img_tensor, None) — labels are withheld (leaderboard only).
     """
 
-    def __init__(self, split: str = "train", transform=None):
+    def __init__(self, split: str = "train", transform=None, image_path = None, jsons_path = None, txt_path = None):
         assert split in ("train", "val", "test"), f"Unknown split: {split!r}"
-        self.root = settings.nwpu_dir
+
+        base = Path(settings.nwpu_dir)
+
+        self.image_dir = Path(image_path) if image_path is not None else base / "images"
+        self.json_dir = Path(jsons_path) if jsons_path is not None else base / "jsons"
+        self.txt_dir = Path(txt_path) if txt_path is not None else base
+
         self.transform = transform
         self.labeled = split != "test"
-        with open(self.root / f"{split}.txt") as f:
-            self.image_ids = [line.strip().split()[0] for line in f if line.strip()]
+
+        split_file = self.txt_dir / f"{split}.txt"
+        with open(split_file, "r") as f:
+            self.image_ids = [
+                line.strip().split()[0]
+                for line in f
+                if line.strip()
+            ]
 
     def __len__(self):
         return len(self.image_ids)
 
     def __getitem__(self, idx):
         image_id = self.image_ids[idx]
-        img = Image.open(self.root / "images" / f"{image_id}.jpg").convert("RGB")
+
+        img = Image.open(self.image_dir / f"{image_id}.jpg").convert("RGB")
 
         if self.labeled:
-            with open(self.root / "jsons" / f"{image_id}.json") as f:
+            with open(self.json_dir / f"{image_id}.json", "r") as f:
                 annotation = json.load(f)
-            pts = annotation["points"]
-            points = (torch.tensor(pts, dtype=torch.float32) if pts
-                      else torch.zeros((0, 2), dtype=torch.float32))
+
+            pts = annotation.get("points", [])
+            points = (
+                torch.tensor(pts, dtype=torch.float32)
+                if len(pts) > 0
+                else torch.zeros((0, 2), dtype=torch.float32)
+            )
         else:
             points = None
 

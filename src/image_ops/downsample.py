@@ -70,7 +70,7 @@ def transform(img, pre_downsampling_blur: bool = True, downsample_factor: int = 
         noise = np.random.normal(0, 1.5, arr.shape)
         img = np.clip(arr + noise, 0, 255).astype(np.uint8)
 
-    img = tf.ToTensor()(img)
+    # img = tf.ToTensor()(img)
 
     return img
 

@@ -64,13 +64,17 @@ def main():
     scaler = GradScaler()
 
     transform = Compose([
-        RandomCrop(size=224, scale=(1.0, 2.0)),
-        ResolutionAugment(min_scale=args.min_scale, max_scale=args.max_scale),
-        RandomHorizontalFlip(),
+        RandomCrop(size=224, scale=(1.0, 1.0)),
+        # ResolutionAugment(min_scale=args.min_scale, max_scale=args.max_scale),
+        # RandomHorizontalFlip(),
         ToTensor(),
         Normalize(),
     ])
-    dataset = NWPU(split="train", transform=transform)
+    dataset = NWPU(split="train", transform=transform,
+                   image_path="/dtu/blackhole/0a/224426/NWPU_downscaled/4x/images",
+                   jsons_path="/dtu/blackhole/0a/224426/NWPU_downscaled/jsons/4x",
+                   txt_path="/dtu/blackhole/02/137570/MultiRes/NWPU_crowd"
+                   )
     loader = DataLoader(
         dataset,
         batch_size=args.batch_size,
