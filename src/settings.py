@@ -4,7 +4,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file_encoding="utf-8", case_sensitive=True)
+    model_config = SettingsConfigDict(env_file_encoding="utf-8", case_sensitive=True)¨
+
+    RANDOM_SEED: int = 42
 
     DATA_DIR: Path = Path("/dtu/blackhole/02/137570/MultiRes")
     RESULTS_DIR: Path = Path("results")
