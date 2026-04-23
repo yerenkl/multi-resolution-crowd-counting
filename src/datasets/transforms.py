@@ -3,7 +3,7 @@ import random
 import torch
 import torchvision.transforms as T
 import torchvision.transforms.functional as TF
-from PIL import Image
+from PIL import Image, ImageFilter
 
 
 class Compose:
@@ -46,21 +46,52 @@ class RandomCrop:
 
 
 class ResolutionAugment:
-    """Downscale then upscale to output_size, simulating a lower-resolution capture."""
+    """Downscale then upscale to output_size, simulating a lower-resolution capture.
 
-    def __init__(self, min_scale: float = 1.0, max_scale: float = 4.0, output_size: int = 224):
-        self.min_scale = min_scale
-        self.max_scale = max_scale
+    down_scales: discrete downscale factors to sample from (1 = native, no degradation)
+    pre_blur: Gaussian blur before downscaling to simulate optical blur and avoid aliasing
+    add_noise: mild Gaussian noise to simulate sensor noise at low resolutions
+    """
+
+    _DOWNSAMPLE_METHODS = [
+        Image.Resampling.BILINEAR,
+        Image.Resampling.BICUBIC,
+        Image.Resampling.NEAREST,
+        Image.Resampling.LANCZOS,
+    ]
+
+    def __init__(
+        self,
+        down_scales: tuple = (1, 2, 4, 8),
+        output_size: int = 224,
+        method_weights: tuple = (0.25, 0.25, 0.25, 0.25),
+        pre_blur: bool = True,
+        add_noise: bool = False,
+    ):
+        self.down_scales = down_scales
         self.output_size = output_size
+        self.method_weights = list(method_weights)
+        self.pre_blur = pre_blur
+        self.add_noise = add_noise
 
     def __call__(self, img, points):
         orig_w, orig_h = img.size
-        down_factor = random.uniform(self.min_scale, self.max_scale)
+        down_factor = random.choice(self.down_scales)
 
-        lr_w = max(self.output_size, int(orig_w / down_factor))
-        lr_h = max(self.output_size, int(orig_h / down_factor))
-        img = img.resize((lr_w, lr_h), Image.BILINEAR)
-        img = img.resize((self.output_size, self.output_size), Image.BILINEAR)
+        if down_factor > 1:
+            if self.pre_blur:
+                img = img.filter(ImageFilter.GaussianBlur(radius=random.uniform(0.3, 1.3)))
+            method = random.choices(self._DOWNSAMPLE_METHODS, weights=self.method_weights, k=1)[0]
+            lr_size = max(1, int(self.output_size / down_factor))
+            img = img.resize((lr_size, lr_size), method)
+            img = img.resize((self.output_size, self.output_size), Image.Resampling.BILINEAR)
+        else:
+            img = img.resize((self.output_size, self.output_size), Image.Resampling.BILINEAR)
+
+        if self.add_noise:
+            t = TF.to_tensor(img)
+            t = (t + torch.randn_like(t) * (1.5 / 255)).clamp(0, 1)
+            img = TF.to_pil_image(t)
 
         if points is not None and points.numel() > 0:
             points = points.clone()
