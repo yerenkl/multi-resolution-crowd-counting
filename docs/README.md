@@ -23,14 +23,14 @@ This folder is organized as a small wiki of the most important project context.
   - multi_scale_feature_fusion.md
   - self_supervised_pretraining.md
 - methods/
-  - finetune_resolution_aug.md: Current training method summary
+  - finetune_paired_hr_lr.md: Current paired HR/LR fine-tuning method summary
 
 ## Suggested reading order
 1. overview/problem.md
 2. overview/research_questions.md
 3. overview/datasets.md
 4. data/data.md
-5. methods/finetune_resolution_aug.md
+5. methods/finetune_paired_hr_lr.md
 6. ideas/hr_lr_consistency_loss.md
 
 ## Notes

@@ -95,7 +95,7 @@ def main():
         if mae < best_mae:
             best_mae = mae
             torch.save(model.state_dict(), out_dir / "best_mae.pth")
-            print(f"  → Saved best model (MAE={mae:.2f})")
+            print(f"  -> Saved best model (MAE={mae:.2f})")
 
         torch.save({
             "epoch": epoch,
