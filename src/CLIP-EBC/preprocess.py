@@ -1,4 +1,5 @@
 import os
+import random
 from glob import glob
 from scipy.io import loadmat
 import cv2
@@ -9,6 +10,57 @@ from typing import Tuple, Union, Optional
 from warnings import warn
 
 from datasets import standardize_dataset_name
+
+
+class ResolutionAugment:
+    """Downscale then upscale to current size, simulating a lower-resolution capture.
+    down_scales: discrete downscale factors to sample from (1 = native, no degradation)
+    pre_blur: Gaussian blur before downscaling to simulate optical blur and avoid aliasing
+    add_noise: mild Gaussian noise to simulate sensor noise at low resolutions
+    """
+    def __init__(
+        self,
+        down_scales: tuple = (1, 2, 4, 8),
+        method_weights: tuple = (0.25, 0.25, 0.25, 0.25),
+        pre_blur: bool = True,
+        add_noise: bool = False,
+    ):
+        self.down_scales = down_scales
+        self.method_weights = list(method_weights)
+        self.pre_blur = pre_blur
+        self.add_noise = add_noise
+        
+        self._DOWNSAMPLE_METHODS = [
+            cv2.INTER_LINEAR,
+            cv2.INTER_CUBIC,
+            cv2.INTER_NEAREST,
+            cv2.INTER_LANCZOS4,
+        ]
+
+    def __call__(self, img: np.ndarray) -> np.ndarray:
+        h, w = img.shape[:2]
+        down_factor = random.choice(self.down_scales)
+
+        if down_factor > 1:
+            if self.pre_blur:
+                # PIL GaussianBlur radius correlates roughly to sigma in OpenCV
+                sigma = random.uniform(0.3, 1.3)
+                img = cv2.GaussianBlur(img, (0, 0), sigmaX=sigma, sigmaY=sigma)
+
+            method = random.choices(self._DOWNSAMPLE_METHODS, weights=self.method_weights, k=1)[0]
+            lr_w = max(1, int(w / down_factor))
+            lr_h = max(1, int(h / down_factor))
+            
+            # Downscale then upscale back to the current shape
+            img = cv2.resize(img, (lr_w, lr_h), interpolation=method)
+            img = cv2.resize(img, (w, h), interpolation=cv2.INTER_LINEAR)
+
+        if self.add_noise:
+            # 1.5 / 255 scaled to 0-255 pixel space is ~1.5
+            noise = np.random.randn(*img.shape) * 1.5
+            img = np.clip(img.astype(np.float32) + noise, 0, 255).astype(np.uint8)
+
+        return img
 
 
 def _calc_size(
@@ -89,56 +141,30 @@ def _preprocess(
     data_dst_dir: str,
     min_size: int,
     max_size: int,
-    generate_npy: bool = False
+    generate_npy: bool = False,
+    apply_res_augment: bool = False
 ) -> None:
     """
-    This function organizes the data into the following structure:
-    data_dst_dir
-    ├── train
-    │   ├── images
-    │   │   ├── 0001.jpg
-    │   │   ├── 0002.jpg
-    │   │   ├── ...
-    │   │   images_npy
-    │   │   ├── 0001.npy
-    │   │   ├── 0002.npy
-    │   │   ├── ...
-    │   ├── labels
-    │   │   ├── 0001.npy
-    │   │   ├── 0002.npy
-    │   │   ├── ...
-    │   ├── 0.01%.txt
-    │   ├── 0.05%.txt
-    │   ├── ...
-    ├── val
-    │   ├── images
-    │   │   ├── 0001.jpg
-    │   │   ├── 0002.jpg
-    │   │   ├── ...
-    │   │   images_npy
-    │   │   ├── 0001.npy
-    │   │   ├── 0002.npy
-    │   │   ├── ...
-    │   ├── labels
-    │   │   ├── 0001.npy
-    │   │   ├── 0002.npy
-    │   │   ├── ...
+    This function organizes the data into the dataset structure.
     """
     dataset = standardize_dataset_name(dataset)
     assert os.path.isdir(data_src_dir), f"{data_src_dir} does not exist"
     os.makedirs(data_dst_dir, exist_ok=True)
     print(f"Pre-processing {dataset} dataset...")
+    
+    res_aug = ResolutionAugment() if apply_res_augment else None
+
     if dataset in ["sha", "shb"]:
-        _shanghaitech(data_src_dir, data_dst_dir, min_size, max_size, generate_npy)
+        _shanghaitech(data_src_dir, data_dst_dir, min_size, max_size, generate_npy, res_aug)
 
     elif dataset == "nwpu":
-        _nwpu(data_src_dir, data_dst_dir, min_size, max_size, generate_npy)
+        _nwpu(data_src_dir, data_dst_dir, min_size, max_size, generate_npy, res_aug)
 
     elif dataset == "qnrf":
-        _qnrf(data_src_dir, data_dst_dir, min_size, max_size, generate_npy)
+        _qnrf(data_src_dir, data_dst_dir, min_size, max_size, generate_npy, res_aug)
     
     else:  # dataset == "jhu"
-        _jhu(data_src_dir, data_dst_dir, min_size, max_size, generate_npy)
+        _jhu(data_src_dir, data_dst_dir, min_size, max_size, generate_npy, res_aug)
 
 
 def _resize_and_save(
@@ -150,6 +176,7 @@ def _resize_and_save(
     label_dst_dir: Optional[str] = None,
     min_size: Optional[int] = None,
     max_size: Optional[int] = None,
+    res_augmentor: Optional[ResolutionAugment] = None
 ) -> None:
     os.makedirs(image_dst_dir, exist_ok=True)
 
@@ -171,6 +198,10 @@ def _resize_and_save(
         if not success:
             print(f"image: {image_dst_path} is not resized")
 
+    # Apply Random Resolution Augment to the resized image
+    if res_augmentor is not None:
+        image = res_augmentor(image)
+
     cv2.imwrite(image_dst_path, image)
 
     if label_dst_path is not None:
@@ -181,7 +212,6 @@ def _resize_and_save(
         image_npy = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # convert to RGB
         image_npy = np.transpose(image_npy, (2, 0, 1))  # HWC to CHW
         # Don't normalize the image. Keep it as np.uint8 to save space.
-        # image_npy = image_npy.astype(np.float32) / 255.  # normalize to [0, 1]
         np.save(image_npy_dst_path, image_npy)
 
 
@@ -190,7 +220,8 @@ def _shanghaitech(
     data_dst_dir: str,
     min_size: int,
     max_size: int,
-    generate_npy: bool = False
+    generate_npy: bool = False,
+    res_aug: Optional[ResolutionAugment] = None
 ) -> None:
     for split in ["train", "val"]:
         generate_npy = generate_npy and split == "train"
@@ -233,7 +264,8 @@ def _shanghaitech(
                 label_dst_dir=label_dst_dir,
                 generate_npy=generate_npy,
                 min_size=min_size,
-                max_size=max_size
+                max_size=max_size,
+                res_augmentor=res_aug
             )
 
         if split == "train":
@@ -244,7 +276,8 @@ def _nwpu(
     data_dst_dir: str,
     min_size: int,
     max_size: int,
-    generate_npy: bool = False
+    generate_npy: bool = False,
+    res_aug: Optional[ResolutionAugment] = None
 ) -> None:
     for split in ["train", "val"]:
         generate_npy = generate_npy and split == "train"
@@ -252,7 +285,7 @@ def _nwpu(
         with open(os.path.join(data_src_dir, f"{split}.txt"), "r") as f:
             indices = f.read().splitlines()
         indices = [idx.split(" ")[0] for idx in indices]
-        image_src_paths = [os.path.join(data_src_dir, f"images_part{min(5, (int(idx) - 1) // 1000 + 1)}", f"{idx}.jpg") for idx in indices]
+        image_src_paths = [os.path.join(data_src_dir, f"images", f"{idx}.jpg") for idx in indices]
         label_src_paths = [os.path.join(data_src_dir, "mats", f"{idx}.mat") for idx in indices]
 
         image_dst_dir = os.path.join(data_dst_dir, split, "images")
@@ -276,7 +309,8 @@ def _nwpu(
                 label_dst_dir=label_dst_dir,
                 generate_npy=generate_npy,
                 min_size=min_size,
-                max_size=max_size
+                max_size=max_size,
+                res_augmentor=res_aug
             )
 
         if split == "train":
@@ -288,7 +322,7 @@ def _nwpu(
     with open(os.path.join(data_src_dir, f"{split}.txt"), "r") as f:
         indices = f.read().splitlines()
     indices = [idx.split(" ")[0] for idx in indices]
-    image_src_paths = [os.path.join(data_src_dir, f"images_part{min(5, (int(idx) - 1) // 1000 + 1)}", f"{idx}.jpg") for idx in indices]
+    image_src_paths = [os.path.join(data_src_dir, f"images", f"{idx}.jpg") for idx in indices]
 
     image_dst_dir = os.path.join(data_dst_dir, split, "images")
     os.makedirs(image_dst_dir, exist_ok=True)
@@ -304,7 +338,8 @@ def _nwpu(
             label_dst_dir=None,
             generate_npy=generate_npy,
             min_size=min_size,
-            max_size=max_size
+            max_size=max_size,
+            res_augmentor=res_aug
         )
 
 
@@ -313,7 +348,8 @@ def _qnrf(
     data_dst_dir: str,
     min_size: int,
     max_size: int,
-    generate_npy: bool = False
+    generate_npy: bool = False,
+    res_aug: Optional[ResolutionAugment] = None
 ) -> None:
     for split in ["train", "val"]:
         generate_npy = generate_npy and split == "train"
@@ -356,7 +392,8 @@ def _qnrf(
                 label_dst_dir=label_dst_dir,
                 generate_npy=generate_npy,
                 min_size=min_size,
-                max_size=max_size
+                max_size=max_size,
+                res_augmentor=res_aug
             )
 
         if split == "train":
@@ -367,7 +404,8 @@ def _jhu(
     data_dst_dir: str,
     min_size: int,
     max_size: int,
-    generate_npy: bool = False
+    generate_npy: bool = False,
+    res_aug: Optional[ResolutionAugment] = None
 ) -> None:
     for split in ["train", "val"]:
         generate_npy = generate_npy and split == "train"
@@ -417,7 +455,8 @@ def _jhu(
                 label_dst_dir=label_dst_dir,
                 generate_npy=generate_npy,
                 min_size=min_size,
-                max_size=max_size
+                max_size=max_size,
+                res_augmentor=res_aug
             )
 
         if split == "train":
@@ -438,6 +477,7 @@ def parse_args():
     parser.add_argument("--min_size", type=int, default=256, help="The minimum size of the shorter side of the image.")
     parser.add_argument("--max_size", type=int, default=None, help="The maximum size of the longer side of the image.")
     parser.add_argument("--generate_npy", action="store_true", help="Generate .npy files for images.")
+    parser.add_argument("--apply_res_augment", action="store_true", help="Simulate lower-resolution capture via random downscaling/upscaling.")
 
     args = parser.parse_args()
     args.src_dir = os.path.abspath(args.src_dir)
@@ -454,5 +494,6 @@ if __name__ == "__main__":
         data_dst_dir=args.dst_dir,
         min_size=args.min_size,
         max_size=args.max_size,
-        generate_npy=args.generate_npy
+        generate_npy=args.generate_npy,
+        apply_res_augment=args.apply_res_augment
     )

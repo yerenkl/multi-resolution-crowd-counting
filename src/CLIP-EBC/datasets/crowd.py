@@ -2,14 +2,11 @@ import torch
 from torch import Tensor
 from torch.utils.data import Dataset
 from torchvision.transforms import ToTensor, Normalize
-import torchvision.transforms.functional as TF
-import json
 import os
 from glob import glob
 from PIL import Image
 import numpy as np
 from typing import Optional, Callable, Union, Tuple
-from warnings import warn
 
 from .utils import get_id, generate_density_map
 
@@ -38,50 +35,6 @@ def standardize_dataset_name(dataset: str) -> str:
         return "jhu"
 
 
-def _calc_resize_shape(
-    img_w: int,
-    img_h: int,
-    min_size: int,
-    max_size: int,
-    base: int = 32
-) -> Tuple[int, int]:
-    """
-    This function generates a new size for an image while keeping the aspect ratio. The new size should be within the given range (min_size, max_size).
-
-    Args:
-        img_w (int): The width of the image.
-        img_h (int): The height of the image.
-        min_size (int): The minimum size of the edges of the image.
-        max_size (int): The maximum size of the edges of the image.
-    """
-    assert min_size % base == 0, f"min_size ({min_size}) must be a multiple of {base}"
-    if max_size != float("inf"):
-        assert max_size % base == 0, f"max_size ({max_size}) must be a multiple of {base} if provided"
-
-    assert min_size <= max_size, f"min_size ({min_size}) must be less than or equal to max_size ({max_size})"
-
-    aspect_ratios = (img_w / img_h, img_h / img_w)
-    if min_size / max_size <= min(aspect_ratios) <= max(aspect_ratios) <= max_size / min_size:  # possible to resize and preserve the aspect ratio
-        if min_size <= min(img_w, img_h) <= max(img_w, img_h) <= max_size:  # already within the range, no need to resize
-            ratio = 1.
-        elif min(img_w, img_h) < min_size:  # smaller than the minimum size, resize to the minimum size
-            ratio = min_size / min(img_w, img_h)
-        else:  # larger than the maximum size, resize to the maximum size
-            ratio = max_size / max(img_w, img_h)
-
-        new_w, new_h = int(round(img_w * ratio / base) * base), int(round(img_h * ratio / base) * base)
-        new_w = max(min_size, min(max_size, new_w))
-        new_h = max(min_size, min(max_size, new_h))
-        return new_w, new_h
-
-    # If constraints are impossible while preserving aspect ratio, relax max_size.
-    warn(
-        f"Impossible to resize {img_w}x{img_h} within ({min_size}, {max_size}) while preserving aspect ratio. "
-        "Ignoring max_size for this sample."
-    )
-    return _calc_resize_shape(img_w, img_h, min_size, float("inf"), base)
-
-
 class Crowd(Dataset):
     def __init__(
         self,
@@ -91,9 +44,6 @@ class Crowd(Dataset):
         sigma: Optional[float] = None,
         return_filename: bool = False,
         num_crops: int = 1,
-        resize_min_size: Optional[int] = 448,
-        resize_max_size: Optional[int] = 3072,
-        resize_base: int = 32,
     ) -> None:
         """
         Dataset for crowd counting.
@@ -101,12 +51,6 @@ class Crowd(Dataset):
         assert dataset.lower() in available_datasets, f"Dataset {dataset} is not available."
         assert split in ["train", "val"], f"Split {split} is not available."
         assert num_crops > 0, f"num_crops should be positive, got {num_crops}."
-        assert (resize_min_size is None) == (resize_max_size is None), "resize_min_size and resize_max_size must be both set or both None."
-        if resize_min_size is not None and resize_max_size is not None:
-            assert resize_min_size > 0 and resize_max_size > 0, "resize_min_size and resize_max_size must be positive."
-            assert resize_min_size <= resize_max_size, "resize_min_size must be <= resize_max_size."
-            assert resize_min_size % resize_base == 0, f"resize_min_size ({resize_min_size}) must be a multiple of resize_base ({resize_base})."
-            assert resize_max_size % resize_base == 0, f"resize_max_size ({resize_max_size}) must be a multiple of resize_base ({resize_base})."
 
         self.dataset = standardize_dataset_name(dataset)
         self.split = split
@@ -123,26 +67,36 @@ class Crowd(Dataset):
         self.sigma = sigma
         self.return_filename = return_filename
         self.num_crops = num_crops
-        self.resize_min_size = resize_min_size
-        self.resize_max_size = resize_max_size
-        self.resize_base = resize_base
-
-        
 
     def __find_root__(self) -> None:
-        self.root = "/dtu/blackhole/02/137570/MultiRes/NWPU_crowd"
+        # if self.dataset == "sha":
+        #     self.root = os.path.join(curr_dir, "..", "data", "ShanghaiTech_A")
+        # elif self.dataset == "shb":
+        #     self.root = os.path.join(curr_dir, "..", "data", "ShanghaiTech_B")
+        # elif self.dataset == "qnrf":
+        #     self.root = os.path.join(curr_dir, "..", "data", "QNRF")
+        # elif self.dataset == "nwpu":
+        #     self.root = os.path.join(curr_dir, "..", "data", "NWPU")
+        # else:  # self.dataset == "jhu"
+        #     self.root = os.path.join(curr_dir, "..", "data", "JHU")
+        self.root = "/work3/s252653/multi-resolution-crowd-counting/data/nwpu"
 
     def __make_dataset__(self) -> None:
-        with open(os.path.join(self.root, f"{self.split}.txt"), "r") as f:
-                    self.image_paths = [line.strip().split()[0] for line in f.readlines()]
+        image_npys = glob(os.path.join(self.root, self.split, "images", "*.npy"))
+        if len(image_npys) > 0:
+            self.image_type = "npy"
+            image_names = image_npys
+        else:
+            self.image_type = "jpg"
+            image_names = glob(os.path.join(self.root, self.split, "images", "*.jpg"))
 
-        image_names = [os.path.basename(image_path) for image_path in self.image_paths]
-        label_names = [image_name.replace("images", "jsons").replace(".jpg", ".json") for image_name in image_names]
+        label_names = glob(os.path.join(self.root, self.split, "labels", "*.npy"))
+        image_names = [os.path.basename(image_name) for image_name in image_names]
+        label_names = [os.path.basename(label_name) for label_name in label_names]
         image_names.sort(key=get_id)
         label_names.sort(key=get_id)
         image_ids = tuple([get_id(image_name) for image_name in image_names])
         label_ids = tuple([get_id(label_name) for label_name in label_names])
-
         assert image_ids == label_ids, "image_ids and label_ids do not match."
         self.image_names = tuple(image_names)
         self.label_names = tuple(label_names)
@@ -162,6 +116,7 @@ class Crowd(Dataset):
             if self.split == "train":
                 assert len(self.image_names) == len(self.label_names) == 3109, f"NWPU train split should have 3109 images, but found {len(self.image_names)}."
             else:
+                print(self.root)
                 assert len(self.image_names) == len(self.label_names) == 500, f"NWPU val split should have 500 images, but found {len(self.image_names)}."
         elif self.dataset == "qnrf":
             if self.split == "train":
@@ -181,33 +136,22 @@ class Crowd(Dataset):
         image_name = self.image_names[idx]
         label_name = self.label_names[idx]
 
-        image_path = os.path.join(self.root, "images", image_name+".jpg")
-        label_path = os.path.join(self.root, "jsons", label_name+".json")
+        image_path = os.path.join(self.root, self.split, "images", image_name)
+        label_path = os.path.join(self.root, self.split, "labels", label_name)
 
-        with open(image_path, "rb") as f:
+        if self.image_type == "npy":
+            with open(image_path, "rb") as f:
+                image = np.load(f)
+            image = torch.from_numpy(image).float() / 255.  # normalize to [0, 1]
+        else:
+            with open(image_path, "rb") as f:
                 image = Image.open(f).convert("RGB")
-        image = self.to_tensor(image)
+            image = self.to_tensor(image)
 
-        with open(label_path, "r") as f:
-            annotation = json.load(f)
+        with open(label_path, "rb") as f:
+            label = np.load(f)
 
-        label = torch.tensor(annotation["points"], dtype=torch.float32)
-
-        if self.resize_min_size is not None and self.resize_max_size is not None:
-            old_h, old_w = image.shape[-2], image.shape[-1]
-            new_h, new_w = _calc_resize_shape(old_w, old_h, self.resize_min_size, self.resize_max_size, self.resize_base)
-            if (new_h, new_w) != (old_h, old_w):
-                image = TF.resize(
-                    image,
-                    [new_h, new_w],
-                    interpolation=TF.InterpolationMode.BICUBIC,
-                    antialias=True,
-                )
-                if label.numel() > 0:
-                    label[:, 0] = label[:, 0] * (new_w / old_w)
-                    label[:, 1] = label[:, 1] * (new_h / old_h)
-                    label[:, 0] = label[:, 0].clamp(min=0, max=new_w - 1)
-                    label[:, 1] = label[:, 1].clamp(min=0, max=new_h - 1)
+        label = torch.from_numpy(label).float()
 
         if self.transforms is not None:
             images_labels = [self.transforms(image.clone(), label.clone()) for _ in range(self.num_crops)]
@@ -242,7 +186,7 @@ class NWPUTest(Dataset):
         """
         The test set of NWPU-Crowd dataset. The test set is not labeled, so only images are returned.
         """
-        self.root = "/dtu/blackhole/02/137570/MultiRes/NWPU_crowd"
+        self.root = "/work3/s252653/multi-resolution-crowd-counting/data/nwpu"
 
         image_npys = glob(os.path.join(self.root, "test", "images", "*.npy"))
         if len(image_npys) > 0:
