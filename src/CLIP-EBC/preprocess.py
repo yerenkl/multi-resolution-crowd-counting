@@ -468,7 +468,7 @@ def parse_args():
     parser.add_argument(
         "--dataset",
         type=str,
-        choices=["nwpu", "ucf_qnrf", "jhu", "shanghaitech_a", "shanghaitech_b"],
+        choices=["nwpu", "nwpu_mixed", "ucf_qnrf", "jhu", "shanghaitech_a", "shanghaitech_b"],
         required=True,
         help="The dataset to pre-process."
     )

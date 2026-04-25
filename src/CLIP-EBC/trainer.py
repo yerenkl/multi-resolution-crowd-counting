@@ -74,7 +74,7 @@ parser.add_argument("--T_mult", type=int, default=2, help="A factor increases T_
 parser.add_argument("--eta_min", type=float, default=1e-7, help="Minimum learning rate.")
 
 # Parameters for training
-parser.add_argument("--total_epochs", type=int, default=2600, help="Number of epochs to train.")
+parser.add_argument("--total_epochs", type=int, default=100, help="Number of epochs to train.")
 parser.add_argument("--eval_start", type=int, default=50, help="Start to evaluate after this number of epochs.")
 parser.add_argument("--eval_freq", type=int, default=1, help="Evaluate every this number of epochs.")
 parser.add_argument("--save_freq", type=int, default=5, help="Save checkpoint every this number of epochs. Could help reduce I/O.")
@@ -83,6 +83,7 @@ parser.add_argument("--amp", action="store_true", help="Use automatic mixed prec
 parser.add_argument("--num_workers", type=int, default=4, help="Number of workers for data loading.")
 parser.add_argument("--local_rank", type=int, default=-1, help="Local rank for distributed training.")
 parser.add_argument("--seed", type=int, default=42, help="Random seed.")
+parser.add_argument("--ckpt_dir", type=str, default=None, help="The name of the checkpoint directory. If None, it will be automatically generated based on the configuration.")
 
 
 def run(local_rank: int, nprocs: int, args: ArgumentParser) -> None:
@@ -124,10 +125,13 @@ def run(local_rank: int, nprocs: int, args: ArgumentParser) -> None:
 
     loss_fn = get_loss_fn(args).to(device)
     optimizer, scheduler = get_optimizer(args, model)
-
-    ckpt_dir_name = f"{args.model}_{args.prompt_type}_" if "clip" in args.model else f"{args.model}_"
-    ckpt_dir_name += f"{args.input_size}_{args.reduction}_{args.truncation}_{args.granularity}_"
-    ckpt_dir_name += f"{args.weight_count_loss}_{args.count_loss}"
+    
+    if args.ckpt_dir is None:
+        ckpt_dir_name = f"{args.model}_{args.prompt_type}_" if "clip" in args.model else f"{args.model}_"
+        ckpt_dir_name += f"{args.input_size}_{args.reduction}_{args.truncation}_{args.granularity}_"
+        ckpt_dir_name += f"{args.weight_count_loss}_{args.count_loss}"
+    else:
+        ckpt_dir_name = args.ckpt_dir
 
     args.ckpt_dir = os.path.join(current_dir, "checkpoints", args.dataset, ckpt_dir_name)
     os.makedirs(args.ckpt_dir, exist_ok=True)

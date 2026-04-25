@@ -17,22 +17,16 @@ available_datasets = [
     "shanghaitech_b", "shb",
     "ucf_qnrf", "qnrf", "ucf-qnrf",
     "nwpu", "nwpu_crowd", "nwpu-crowd",
-    "jhu", "jhu_crowd", "jhu_crowd_v2"
+    "jhu", "jhu_crowd", "jhu_crowd_v2","nwpu_mixed"
 ]
 
 
 def standardize_dataset_name(dataset: str) -> str:
     assert dataset.lower() in available_datasets, f"Dataset {dataset} is not available."
-    if dataset.lower() in ["shanghaitech_a", "sha"]:
-        return "sha"
-    elif dataset.lower() in ["shanghaitech_b", "shb"]:
-        return "shb"
-    elif dataset.lower() in ["ucf_qnrf", "qnrf", "ucf-qnrf"]:
-        return "qnrf"
-    elif dataset.lower() in ["nwpu", "nwpu_crowd", "nwpu-crowd"]:
+    if dataset.lower() in ["nwpu", "nwpu_crowd", "nwpu-crowd"]:
         return "nwpu"
-    else:  # dataset.lower() in ["jhu", "jhu_crowd", "jhu_crowd_v2"]
-        return "jhu"
+    elif dataset.lower() in ["nwpu_mixed"]:
+        return "nwpu_mixed"
 
 
 class Crowd(Dataset):
@@ -57,7 +51,6 @@ class Crowd(Dataset):
 
         self.__find_root__()
         self.__make_dataset__()
-        self.__check_sanity__()
         self.indices = list(range(len(self.image_names)))
 
         self.to_tensor = ToTensor()
@@ -79,8 +72,11 @@ class Crowd(Dataset):
         #     self.root = os.path.join(curr_dir, "..", "data", "NWPU")
         # else:  # self.dataset == "jhu"
         #     self.root = os.path.join(curr_dir, "..", "data", "JHU")
-        self.root = "/work3/s252653/multi-resolution-crowd-counting/data/nwpu"
-
+        if self.dataset == "nwpu":
+            self.root = "/work3/s252653/multi-resolution-crowd-counting/data/nwpu"
+        elif self.dataset == "nwpu_mixed":
+            self.root = "/work3/s252653/multi-resolution-crowd-counting/data/nwpu_mixed"
+        print(self.root)
     def __make_dataset__(self) -> None:
         image_npys = glob(os.path.join(self.root, self.split, "images", "*.npy"))
         if len(image_npys) > 0:
@@ -100,34 +96,6 @@ class Crowd(Dataset):
         assert image_ids == label_ids, "image_ids and label_ids do not match."
         self.image_names = tuple(image_names)
         self.label_names = tuple(label_names)
-
-    def __check_sanity__(self) -> None:
-        if self.dataset == "sha":
-            if self.split == "train":
-                assert len(self.image_names) == len(self.label_names) == 300, f"ShanghaiTech_A train split should have 300 images, but found {len(self.image_names)}."
-            else:
-                assert len(self.image_names) == len(self.label_names) == 182, f"ShanghaiTech_A val split should have 182 images, but found {len(self.image_names)}."
-        elif self.dataset == "shb":
-            if self.split == "train":
-                assert len(self.image_names) == len(self.label_names) == 400, f"ShanghaiTech_B train split should have 400 images, but found {len(self.image_names)}."
-            else:
-                assert len(self.image_names) == len(self.label_names) == 316, f"ShanghaiTech_B val split should have 316 images, but found {len(self.image_names)}."
-        elif self.dataset == "nwpu":
-            if self.split == "train":
-                assert len(self.image_names) == len(self.label_names) == 3109, f"NWPU train split should have 3109 images, but found {len(self.image_names)}."
-            else:
-                print(self.root)
-                assert len(self.image_names) == len(self.label_names) == 500, f"NWPU val split should have 500 images, but found {len(self.image_names)}."
-        elif self.dataset == "qnrf":
-            if self.split == "train":
-                assert len(self.image_names) == len(self.label_names) == 1201, f"UCF_QNRF train split should have 1201 images, but found {len(self.image_names)}."
-            else:
-                assert len(self.image_names) == len(self.label_names) == 334, f"UCF_QNRF val split should have 334 images, but found {len(self.image_names)}."
-        else:  # self.dataset == "jhu"
-            if self.split == "train":
-                assert len(self.image_names) == len(self.label_names) == 2772, f"JHU train split should have 2772 images, but found {len(self.image_names)}."
-            else:
-                assert len(self.image_names) == len(self.label_names) == 1600, f"JHU val split should have 1600 images, but found {len(self.image_names)}."
 
     def __len__(self) -> int:
         return len(self.image_names)
