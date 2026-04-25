@@ -1,0 +1,30 @@
+[project]
+name = "multi-resolution-crowd-counting"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "einops==0.7.0",
+    "ftfy==6.1.3",
+    "gdown>=5.2.1",
+    "gudhi>=3.12.0",
+    "hydra-core>=1.3.2",
+    "kagglehub[pandas-datasets]>=1.0.0",
+    "matplotlib>=3.10.8",
+    "numpy==1.26.4",
+    "panel>=1.8.10",
+    "pillow==10.2.0",
+    "pot>=0.9.6.post1",
+    "regex==2023.12.25",
+    "scikit-image>=0.26.0",
+    "scikit-learn>=1.8.0",
+    "scipy==1.12.0",
+    "setuptools==69.1.1",
+    "tensorboardx==2.6.2.2",
+    "timm==0.9.16",
+    "torch==2.2.1",
+    "torchvision==0.17.1",
+    "tqdm==4.66.2",
+    "wandb>=0.25.0",
+]
