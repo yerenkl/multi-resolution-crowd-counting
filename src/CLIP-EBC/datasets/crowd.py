@@ -17,7 +17,7 @@ available_datasets = [
     "shanghaitech_b", "shb",
     "ucf_qnrf", "qnrf", "ucf-qnrf",
     "nwpu", "nwpu_crowd", "nwpu-crowd",
-    "jhu", "jhu_crowd", "jhu_crowd_v2","nwpu_mixed"
+    "jhu", "jhu_crowd", "jhu_crowd_v2","nwpu_mixed", "nwpu_low"
 ]
 
 
@@ -27,6 +27,8 @@ def standardize_dataset_name(dataset: str) -> str:
         return "nwpu"
     elif dataset.lower() in ["nwpu_mixed"]:
         return "nwpu_mixed"
+    elif dataset.lower() in ["nwpu_low"]:
+        return "nwpu_low"
 
 
 class Crowd(Dataset):
@@ -76,6 +78,8 @@ class Crowd(Dataset):
             self.root = "/work3/s252653/multi-resolution-crowd-counting/data/nwpu"
         elif self.dataset == "nwpu_mixed":
             self.root = "/work3/s252653/multi-resolution-crowd-counting/data/nwpu_mixed"
+        elif self.dataset == "nwpu_low":
+            self.root = "/work3/s252653/multi-resolution-crowd-counting/data/nwpu_low"
         print(self.root)
     def __make_dataset__(self) -> None:
         image_npys = glob(os.path.join(self.root, self.split, "images", "*.npy"))

@@ -63,6 +63,16 @@ class ResolutionAugment:
         return img
 
 
+def build_resolution_augment(level: str) -> ResolutionAugment:
+    presets = {
+        "mixed": dict(down_scales=(1, 2, 4, 8)),
+        "high": dict(down_scales=(1, 2)),
+        "mid": dict(down_scales=(2, 4)),
+        "low": dict(down_scales=(4, 8)),
+    }
+    return ResolutionAugment(**presets[level])
+
+
 def _calc_size(
     img_w: int,
     img_h: int,
@@ -142,7 +152,8 @@ def _preprocess(
     min_size: int,
     max_size: int,
     generate_npy: bool = False,
-    apply_res_augment: bool = False
+    apply_res_augment: bool = False,
+    res_augment_level: str = "mixed",
 ) -> None:
     """
     This function organizes the data into the dataset structure.
@@ -152,7 +163,7 @@ def _preprocess(
     os.makedirs(data_dst_dir, exist_ok=True)
     print(f"Pre-processing {dataset} dataset...")
     
-    res_aug = ResolutionAugment() if apply_res_augment else None
+    res_aug = build_resolution_augment(res_augment_level) if apply_res_augment else None
 
     if dataset in ["sha", "shb"]:
         _shanghaitech(data_src_dir, data_dst_dir, min_size, max_size, generate_npy, res_aug)
@@ -478,6 +489,13 @@ def parse_args():
     parser.add_argument("--max_size", type=int, default=None, help="The maximum size of the longer side of the image.")
     parser.add_argument("--generate_npy", action="store_true", help="Generate .npy files for images.")
     parser.add_argument("--apply_res_augment", action="store_true", help="Simulate lower-resolution capture via random downscaling/upscaling.")
+    parser.add_argument(
+        "--res_augment_level",
+        type=str,
+        choices=["mixed", "high", "mid", "low"],
+        default="mixed",
+        help="Preset for resolution augmentation strength.",
+    )
 
     args = parser.parse_args()
     args.src_dir = os.path.abspath(args.src_dir)
@@ -495,5 +513,6 @@ if __name__ == "__main__":
         min_size=args.min_size,
         max_size=args.max_size,
         generate_npy=args.generate_npy,
-        apply_res_augment=args.apply_res_augment
+        apply_res_augment=args.apply_res_augment,
+        res_augment_level=args.res_augment_level,
     )
