@@ -154,11 +154,17 @@ class NWPUTest(Dataset):
         transforms: Optional[Callable] = None,
         sigma: Optional[float] = None,
         return_filename: bool = False,
+        dataset: str = "nwpu",
     ) -> None:
         """
         The test set of NWPU-Crowd dataset. The test set is not labeled, so only images are returned.
         """
-        self.root = "/work3/s252653/multi-resolution-crowd-counting/data/nwpu"
+        if dataset == "nwpu":
+            self.root = "/work3/s252653/multi-resolution-crowd-counting/data/nwpu"
+        elif dataset == "nwpu_mixed":
+            self.root = "/work3/s252653/multi-resolution-crowd-counting/data/nwpu_mixed"
+        elif dataset == "nwpu_low":
+            self.root = "/work3/s252653/multi-resolution-crowd-counting/data/nwpu_low"
 
         image_npys = glob(os.path.join(self.root, "test", "images", "*.npy"))
         if len(image_npys) > 0:

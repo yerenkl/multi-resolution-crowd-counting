@@ -33,7 +33,7 @@ parser.add_argument("--zero_pad_to_multiple", action="store_true", help="Zero pa
 
 parser.add_argument("--device", type=str, default="cuda", help="The device to use for evaluation.")
 parser.add_argument("--num_workers", type=int, default=4, help="The number of workers for the data loader.")
-
+parser.add_argument("--dataset", type=str, default="nwpu", choices=["nwpu", "nwpu_mixed", "nwpu_low"], help="The dataset to evaluate on.")
 
 def main(args: ArgumentParser):
     print("Testing a trained model on the NWPU-Crowd test set.")
@@ -43,7 +43,7 @@ def main(args: ArgumentParser):
         bins, anchor_points = None, None
     else:
         with open(os.path.join(current_dir, "configs", f"reduction_{args.reduction}.json"), "r") as f:
-            config = json.load(f)[str(args.truncation)]["nwpu"]
+            config = json.load(f)[str(args.truncation)][args.dataset]
         bins = config["bins"][args.granularity]
         anchor_points = config["anchor_points"][args.granularity]["average"] if args.anchor_points == "average" else config["anchor_points"][args.granularity]["middle"]
         bins = [(float(b[0]), float(b[1])) for b in bins]
@@ -81,7 +81,7 @@ def main(args: ArgumentParser):
         window_size, stride = None, None
         transforms = None
 
-    dataset = NWPUTest(transforms=transforms, return_filename=True)
+    dataset = NWPUTest(transforms=transforms, return_filename=True, dataset=args.dataset)
 
     image_ids = []
     preds = []
