@@ -27,8 +27,6 @@ uv run python entrypoints/train_finetune_res_aug.py \
     --epochs 50 \
     --batch_size 8 \
     --lr 1e-5 \
-    --min_scale 1.0 \
-    --max_scale 4.0 \
     --num_workers 4
 
 echo "Fine-tuning completed."

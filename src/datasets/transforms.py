@@ -17,7 +17,9 @@ class Compose:
 
 
 class RandomCrop:
-    """Crop a random region of (scale * size) then keep as-is. Points outside are dropped."""
+    """Crop a random region of (scale * size) then keep as-is. Points outside are dropped.
+       If image is smaller than crop size, it is padded with zeros.
+    """
 
     def __init__(self, size: int, scale: tuple = (1.0, 2.0)):
         self.size = size
@@ -26,10 +28,19 @@ class RandomCrop:
     def __call__(self, img, points):
         orig_w, orig_h = img.size
         crop_size = int(self.size * random.uniform(*self.scale))
-        crop_size = min(crop_size, orig_w, orig_h)
 
-        x0 = random.randint(0, max(0, orig_w - crop_size))
-        y0 = random.randint(0, max(0, orig_h - crop_size))
+        # --- NEW: padding case ---
+        if orig_w < crop_size or orig_h < crop_size:
+            padded = Image.new(img.mode, (crop_size, crop_size), 0)
+            padded.paste(img, (0, 0))
+            img = padded
+
+            # no cropping → keep all points unchanged
+            return img, points
+
+        # --- original cropping logic ---
+        x0 = random.randint(0, orig_w - crop_size)
+        y0 = random.randint(0, orig_h - crop_size)
         x1, y1 = x0 + crop_size, y0 + crop_size
 
         img = img.crop((x0, y0, x1, y1))
@@ -43,7 +54,6 @@ class RandomCrop:
                 points[:, 1] -= y0
 
         return img, points
-
 
 class ResolutionAugment:
     """Downscale then upscale to output_size, simulating a lower-resolution capture."""

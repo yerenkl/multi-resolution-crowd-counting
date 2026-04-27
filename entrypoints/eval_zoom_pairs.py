@@ -25,13 +25,16 @@ from src.evaluation.runners import eval_zoom_pairs
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--device", type=str, default="cuda:0")
+    parser.add_argument("--path", type=str, required=True)
     args = parser.parse_args()
+    out_dir = Path(args.path)
+
 
     import torch
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
-    model = load_model(device)
+    model = load_model(device, out_dir / "results/best_mae.pth")
     results = eval_zoom_pairs(model, device)
 
     abs_diffs = [r["abs_diff"] for r in results]
@@ -61,7 +64,7 @@ def main():
         print(f"    Pair {r['pair']:>3s}: HR={r['hr_count']:.0f}, LR={r['lr_count']:.0f}, "
               f"diff={r['abs_diff']:.0f}, ratio={r['ratio']:.2f}")
 
-    results_dir = settings.RESULTS_DIR / "baseline"
+    results_dir = out_dir / "results"
     results_dir.mkdir(parents=True, exist_ok=True)
     with open(results_dir / "zoom_pairs.json", "w") as f:
         json.dump(results, f, indent=2)

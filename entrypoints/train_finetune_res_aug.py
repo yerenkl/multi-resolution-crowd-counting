@@ -48,7 +48,9 @@ def main():
     parser.add_argument("--max_scale", type=float, default=4.0,
                         help="Max downscale factor for resolution augmentation")
     parser.add_argument("--num_workers", type=int, default=4)
+    parser.add_argument("--path", type=str, required=True)
     args = parser.parse_args()
+    out_dir = Path(args.path)
 
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
@@ -71,8 +73,8 @@ def main():
         Normalize(),
     ])
     dataset = NWPU(split="train", transform=transform,
-                   image_path="/dtu/blackhole/0a/224426/NWPU_downscaled/4x/images",
-                   jsons_path="/dtu/blackhole/0a/224426/NWPU_downscaled/jsons/4x",
+                   image_path=f"{out_dir}/images",
+                   jsons_path=f"{out_dir}/jsons",
                    txt_path="/dtu/blackhole/02/137570/MultiRes/NWPU_crowd"
                    )
     loader = DataLoader(
@@ -85,7 +87,7 @@ def main():
     )
     print(f"Training on {len(dataset)} images, {len(loader)} batches/epoch")
 
-    out_dir = settings.RESULTS_DIR / "finetune_resolution_aug"
+    out_dir = Path(f"{out_dir}/results")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     best_mae = float("inf")

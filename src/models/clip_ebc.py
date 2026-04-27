@@ -42,14 +42,14 @@ MODEL_CFG = dict(
 NORMALIZE = T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
 
-def load_model(device):
+def load_model(device, dir = settings.CLIP_EBC_WEIGHTS):
     model = get_model(**MODEL_CFG)
-    ckpt = torch.load(settings.CLIP_EBC_WEIGHTS, map_location="cpu", weights_only=False)
+    ckpt = torch.load(dir, map_location="cpu", weights_only=False)
     state_dict = ckpt.get("model_state_dict", ckpt.get("state_dict", ckpt))
     model.load_state_dict(state_dict, strict=True)
     model.to(device)
     model.eval()
-    print(f"Loaded weights from {settings.CLIP_EBC_WEIGHTS}")
+    print(f"Loaded weights from {dir}")
     return model
 
 
