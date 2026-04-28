@@ -27,7 +27,8 @@ class NWPU(torch.utils.data.Dataset):
     NWPU-Crowd dataset. Supports train, val, and test splits.
 
     transform must accept (img: PIL.Image, points: Tensor | None) and return
-    (img_tensor, points). Use datasets.transforms.Compose to build one.
+    either (img_tensor, points) or a richer sample object for a custom collate_fn.
+    Use datasets.transforms.Compose to build the standard tensor transform path.
 
     train / val: returns (img_tensor, points) where points is (N, 2) float tensor.
     test:        returns (img_tensor, None) — labels are withheld (leaderboard only).
@@ -58,7 +59,11 @@ class NWPU(torch.utils.data.Dataset):
             points = None
 
         if self.transform is not None:
-            img, points = self.transform(img, points)
+            transformed = self.transform(img, points)
+            if isinstance(transformed, tuple) and len(transformed) == 2:
+                img, points = transformed
+                return img, points
+            return transformed
 
         return img, points
 
