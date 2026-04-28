@@ -1,37 +1,43 @@
-# Training from Scratch (Raw CLIP Weights)
+# Model Initialization
 
 ## Decision
 
-All training experiments (RQ1-RQ4) start from **raw OpenAI CLIP pretrained weights**, not the CLIP-EBC authors' pretrained checkpoint. This means the VPT tokens, image decoder, projection layer, and logit scale are randomly initialized at the start of every training run.
+RQ1 starts from **raw OpenAI CLIP pretrained weights** (randomly initialized trainable layers). RQ2-RQ4 start from the **CLIP-EBC authors' pretrained checkpoint** (`best_mae.pth`).
 
 ## Why
 
-The CLIP-EBC authors provide a checkpoint (`best_mae.pth`) that was already trained on NWPU-Crowd. If some experiments started from that checkpoint while others (Yusuf's baselines via `trainer.py`) start from raw CLIP, the comparison would be unfair — improvements might come from better initialization rather than the training strategy.
+**RQ1 trains from scratch** because it asks what effect training data composition has (HR-only / LR-only / mixed). Starting from a blank slate means any difference in MAE/RMSE is attributable to the data alone.
 
-By starting all experiments from the same point, any difference in MAE/RMSE is attributable to the training strategy alone:
+**RQ2-RQ4 start from pretrained** because they ask whether a specific technique can improve an already-good model:
 
-| RQ | Strategy | What differs |
-|----|----------|-------------|
-| 1 | HR-only / LR-only / Mixed | Which data the model sees |
-| 2 | Downscaling algorithm study | How synthetic LR is generated |
-| 3 | Consistency loss | Extra loss term penalizing HR/LR disagreement |
-| 4 | DANN | Adversarial gradient forcing resolution-invariant features |
+| RQ | Strategy | Question |
+|----|----------|----------|
+| 2 | Downscaling algorithm study | Which degradation hurts most? Does the model overfit to a specific resize kernel? |
+| 3 | Consistency loss | Does penalizing HR/LR disagreement improve LR robustness? |
+| 4 | DANN | Does adversarial training force resolution-invariant features? |
+
+The pretrained checkpoint is the practical starting point — it already counts well on HR, and each technique's job is to add LR robustness on top. The baseline comparison for RQ2-RQ4 is the pretrained model's own performance before vs. after fine-tuning.
 
 ## What "from scratch" means in practice
 
 **Frozen** (loaded from OpenAI CLIP, never updated):
-- ViT-B/16 image encoder (~86M params)
-- Text encoder (~37M params)
+- ViT-B/16 image encoder: 151 tensors, 85,799,424 params
+- Text encoder: 149 tensors, 63,428,096 params
+- Total frozen: 149,227,520 params
 
 **Randomly initialized** (trained during our experiments):
-- VPT tokens: 32 learnable vectors x 12 layers (~295K params)
-- Image decoder: ResNet block (~3.5M params)
-- Projection: Conv2d 768->512 (~393K params)
-- Logit scale: 1 scalar param
+- VPT tokens: 32 learnable vectors x 12 layers = 294,912 params
+- Image decoder: two 3x3 conv + batchnorm = 10,620,480 params
+- Projection: Conv2d 768->512 + bias = 393,728 params
+- Logit scale: 1 param
+- Total trainable: 11,308,545 params (21 tensors)
+
+**DANN domain classifier** (added on top for RQ4):
+- GAP + 3-layer MLP: 6 tensors, 262,913 params
 
 ## In code
 
-- `build_model(device)` — constructs CLIP-EBC with raw CLIP weights. Used by all training entrypoints.
-- `load_model(device)` — loads the CLIP-EBC authors' pretrained checkpoint. Used only by evaluation scripts that need the published baseline.
+- `build_model(device)` — constructs CLIP-EBC with raw CLIP weights. Used by RQ1 training.
+- `load_model(device)` — loads the CLIP-EBC authors' pretrained checkpoint. Used by RQ2-RQ4 training and evaluation scripts.
 
 Both live in `src/models/clip_ebc.py`.

@@ -20,7 +20,7 @@ import torch
 from torch.utils.data import DataLoader
 from torch.cuda.amp import GradScaler
 
-from src.models.clip_ebc import build_model
+from src.models.clip_ebc import load_model
 from src.datasets import NWPU
 from src.datasets.transforms import (
     Compose,
@@ -94,7 +94,7 @@ def main():
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
     logger.info(f"Using device: {device}")
 
-    crowd_model = build_model(device)
+    crowd_model = load_model(device)
 
     model = DANNModel(
         crowd_model=crowd_model,
