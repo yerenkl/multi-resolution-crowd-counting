@@ -20,6 +20,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from src.models.clip_ebc import load_model  # also puts CLIP_EBC_DIR in sys.path
 from src.settings import settings
 from src.evaluation.runners import eval_zoom_pairs
+from src.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 def main():
@@ -29,7 +32,7 @@ def main():
 
     import torch
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
-    print(f"Using device: {device}")
+    logger.info(f"Using device: {device}")
 
     model = load_model(device)
     results = eval_zoom_pairs(model, device)
@@ -39,27 +42,29 @@ def main():
     hr_counts = [r["hr_count"] for r in results]
     lr_counts = [r["lr_count"] for r in results]
 
-    print(f"\n{'='*50}")
-    print(f"  Zoom Pairs Results")
-    print(f"{'='*50}")
-    print(f"  Mean HR count:        {np.mean(hr_counts):.1f}")
-    print(f"  Mean LR count:        {np.mean(lr_counts):.1f}")
-    print(f"  Mean |HR - LR|:       {np.mean(abs_diffs):.1f}")
-    print(f"  Median |HR - LR|:     {np.median(abs_diffs):.1f}")
-    print(f"  Mean HR/LR ratio:     {np.mean(ratios):.3f}")
-    print(f"  Median HR/LR ratio:   {np.median(ratios):.3f}")
+    logger.info("Zoom Pairs Results:")
+    logger.info(f"  Mean HR count:      {np.mean(hr_counts):.1f}")
+    logger.info(f"  Mean LR count:      {np.mean(lr_counts):.1f}")
+    logger.info(f"  Mean |HR - LR|:     {np.mean(abs_diffs):.1f}")
+    logger.info(f"  Median |HR - LR|:   {np.median(abs_diffs):.1f}")
+    logger.info(f"  Mean HR/LR ratio:   {np.mean(ratios):.3f}")
+    logger.info(f"  Median HR/LR ratio: {np.median(ratios):.3f}")
 
     worst = sorted(results, key=lambda r: r["abs_diff"], reverse=True)[:5]
-    print(f"\n  Worst 5 pairs by |HR - LR|:")
+    logger.info("Worst 5 pairs by |HR - LR|:")
     for r in worst:
-        print(f"    Pair {r['pair']:>3s}: HR={r['hr_count']:.0f}, LR={r['lr_count']:.0f}, "
-              f"diff={r['abs_diff']:.0f}, ratio={r['ratio']:.2f}")
+        logger.info(
+            f"  Pair {r['pair']:>3s}: HR={r['hr_count']:.0f}, LR={r['lr_count']:.0f}, "
+            f"diff={r['abs_diff']:.0f}, ratio={r['ratio']:.2f}"
+        )
 
     best = sorted(results, key=lambda r: r["abs_diff"])[:5]
-    print(f"\n  Best 5 pairs by |HR - LR|:")
+    logger.info("Best 5 pairs by |HR - LR|:")
     for r in best:
-        print(f"    Pair {r['pair']:>3s}: HR={r['hr_count']:.0f}, LR={r['lr_count']:.0f}, "
-              f"diff={r['abs_diff']:.0f}, ratio={r['ratio']:.2f}")
+        logger.info(
+            f"  Pair {r['pair']:>3s}: HR={r['hr_count']:.0f}, LR={r['lr_count']:.0f}, "
+            f"diff={r['abs_diff']:.0f}, ratio={r['ratio']:.2f}"
+        )
 
     results_dir = settings.RESULTS_DIR / "baseline"
     results_dir.mkdir(parents=True, exist_ok=True)
@@ -76,7 +81,7 @@ def main():
     }
     with open(results_dir / "zoom_pairs_summary.json", "w") as f:
         json.dump(summary, f, indent=2)
-    print(f"\nResults saved to {results_dir}/")
+    logger.info(f"Results saved to {results_dir}/")
 
 
 if __name__ == "__main__":

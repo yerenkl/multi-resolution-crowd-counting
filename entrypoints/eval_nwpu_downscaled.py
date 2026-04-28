@@ -11,7 +11,6 @@ Usage:
 import sys
 import json
 import argparse
-import numpy as np
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -19,6 +18,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from src.models.clip_ebc import load_model  # also puts CLIP_EBC_DIR in sys.path
 from src.settings import settings
 from src.evaluation.runners import eval_nwpu_downscaled
+from src.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 def main():
@@ -28,7 +30,7 @@ def main():
 
     import torch
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
-    print(f"Using device: {device}")
+    logger.info(f"Using device: {device}")
 
     model = load_model(device)
 
@@ -40,21 +42,15 @@ def main():
         errors = eval_nwpu_downscaled(model, device, scale)
         tag = f"{scale}x_down"
         summary[tag] = {"mae": float(errors["mae"]), "rmse": float(errors["rmse"])}
-        print(f"\n  Results ({scale}x downscale):")
-        print(f"    MAE:  {errors['mae']:.2f}")
-        print(f"    RMSE: {errors['rmse']:.2f}")
+        logger.info(f"Results ({scale}x downscale): MAE={errors['mae']:.2f}  RMSE={errors['rmse']:.2f}")
 
-    print(f"\n{'='*40}")
-    print(f"  NWPU Val Downscaled Summary")
-    print(f"{'='*40}")
-    print(f"  {'Scale':<12} {'MAE':>8} {'RMSE':>8}")
-    print(f"  {'-'*28}")
+    logger.info("NWPU Val Downscaled Summary:")
     for tag, err in summary.items():
-        print(f"  {tag:<12} {err['mae']:>8.2f} {err['rmse']:>8.2f}")
+        logger.info(f"  {tag:<12} MAE={err['mae']:>8.2f}  RMSE={err['rmse']:>8.2f}")
 
     with open(results_dir / "nwpu_val_downscaled.json", "w") as f:
         json.dump(summary, f, indent=2)
-    print(f"\nResults saved to {results_dir}/")
+    logger.info(f"Results saved to {results_dir}/")
 
 
 if __name__ == "__main__":

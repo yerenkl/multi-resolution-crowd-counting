@@ -19,14 +19,17 @@ import torch
 from torch.utils.data import DataLoader
 from torch.cuda.amp import GradScaler
 
-from src.models.clip_ebc import load_model  # also puts CLIP_EBC_DIR in sys.path
-from src.settings import settings
+from src.models.clip_ebc import build_model  # also puts CLIP_EBC_DIR in sys.path
 from src.datasets import NWPU
 from src.datasets.transforms import Compose, RandomCrop, ResolutionAugment, RandomHorizontalFlip, ToTensor, Normalize
 from src.training.loops import train_epoch, eval_epoch
 from src.training.collate import nwpu_train_collate_fn
+from src.training.metrics import MetricsLogger
+from src.logger import get_logger
 
 from losses import DACELoss  # CLIP-EBC's losses package (in sys.path after clip_ebc import)
+
+logger = get_logger(__name__)
 
 LOSS_CFG = dict(
     bins=[[0, 0], [1, 1], [2, 2], [3, 3], [4, float("inf")]],
@@ -51,9 +54,9 @@ def main():
     args = parser.parse_args()
 
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
-    print(f"Using device: {device}")
+    logger.info(f"Using device: {device}")
 
-    model = load_model(device)
+    model = build_model(device)
 
     loss_fn = DACELoss(**LOSS_CFG).to(device)
     optimizer = torch.optim.Adam(
@@ -79,10 +82,14 @@ def main():
         pin_memory=True,
         collate_fn=nwpu_train_collate_fn,
     )
-    print(f"Training on {len(dataset)} images, {len(loader)} batches/epoch")
+    logger.info(f"Training on {len(dataset)} images, {len(loader)} batches/epoch")
 
-    out_dir = settings.RESULTS_DIR / "finetune_resolution_aug"
-    out_dir.mkdir(parents=True, exist_ok=True)
+    metrics = MetricsLogger(
+        experiment="finetune_res_aug",
+        args=args,
+        fieldnames=["epoch", "loss", "mae", "rmse"],
+    )
+    logger.info(f"Run directory: {metrics.run_dir}")
 
     best_mae = float("inf")
     for epoch in range(1, args.epochs + 1):
@@ -90,12 +97,16 @@ def main():
         errors = eval_epoch(model, device)
         mae, rmse = errors["mae"], errors["rmse"]
 
-        print(f"Epoch {epoch:3d}/{args.epochs} | loss={train_loss:.4f} | MAE={mae:.2f} | RMSE={rmse:.2f}")
+        metrics.log({"epoch": epoch, "loss": train_loss, "mae": mae, "rmse": rmse})
+
+        logger.info(
+            f"Epoch {epoch:3d}/{args.epochs} | loss={train_loss:.4f} | MAE={mae:.2f} | RMSE={rmse:.2f}"
+        )
 
         if mae < best_mae:
             best_mae = mae
-            torch.save(model.state_dict(), out_dir / "best_mae.pth")
-            print(f"  → Saved best model (MAE={mae:.2f})")
+            torch.save(model.state_dict(), metrics.run_dir / "best_mae.pth")
+            logger.success(f"Saved best model", MAE=f"{mae:.2f}")
 
         torch.save({
             "epoch": epoch,
@@ -103,10 +114,10 @@ def main():
             "optimizer_state_dict": optimizer.state_dict(),
             "mae": mae,
             "rmse": rmse,
-        }, out_dir / "latest.pth")
+        }, metrics.run_dir / "latest.pth")
 
-    print(f"\nTraining done. Best MAE: {best_mae:.2f}")
-    print(f"Weights saved to {out_dir}/")
+    logger.success(f"Training done. Best MAE: {best_mae:.2f}")
+    logger.info(f"Weights saved to {metrics.run_dir}/")
 
 
 if __name__ == "__main__":
