@@ -1,5 +1,7 @@
 # Research Questions
 
+The four experiments tell a single story: first establish that a problem exists, then check whether the easy fix is real or an artifact, then apply increasingly principled solutions. Each step is motivated by the limitations of the one before it.
+
 Four exploratory experiments, in the order they appear in the paper/poster.
 
 ## 1. Baselines: HR-only / LR-only / HR+LR mixed training
