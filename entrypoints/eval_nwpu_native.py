@@ -30,14 +30,14 @@ def main():
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
-    model = load_model(device, out_dir / "best_mae.pth")
+    model = load_model(device, out_dir / "results" / "latest.pth")
     errors = eval_nwpu(model, device)
 
     print(f"\n  Results (native):")
     print(f"    MAE:  {errors['mae']:.2f}")
     print(f"    RMSE: {errors['rmse']:.2f}")
 
-    results_dir = out_dir
+    results_dir = out_dir / "results" / "latest2"
     results_dir.mkdir(parents=True, exist_ok=True)
     with open(results_dir / "nwpu_val_native.json", "w") as f:
         json.dump({"mae": float(errors["mae"]), "rmse": float(errors["rmse"])}, f, indent=2)

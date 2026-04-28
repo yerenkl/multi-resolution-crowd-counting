@@ -16,35 +16,21 @@ uv sync
 
 
 
-METHODS=("mix")
 DEVICE="cuda:0"
 
-NOISE_OPTIONS=("false")
+METHOD_PATHS=(
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/"
+)
 
-for method in "${METHODS[@]}"; do
-    for noise in "${NOISE_OPTIONS[@]}"; do
-
-
-        METHOD_PATH="/dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise"
-
-        uv run python entrypoints/train_finetune_res_aug.py \
-            --device "$DEVICE" \
-            --epochs 50 \
-            --batch_size 8 \
-            --lr 1e-5 \
-            --num_workers 4 \
-            --path "$METHOD_PATH"
-
-        uv run python entrypoints/eval_zoom_pairs.py \
-            --device "$DEVICE" \
-            --path "$METHOD_PATH"
-
-#        uv run python entrypoints/eval_nwpu_native.py \
-#            --device "$DEVICE" \
-#            --path "$METHOD_PATH"
-
-        echo "Finished method: $method | noise: $noise"
-    done
+for METHOD_PATH in "${METHOD_PATHS[@]}"; do
+  echo "Running for $METHOD_PATH"
+  uv run python entrypoints/eval_nwpu_native.py \
+    --device "$DEVICE" \
+    --path "$METHOD_PATH"
 done
 
 echo "All methods completed."
