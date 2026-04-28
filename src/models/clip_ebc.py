@@ -6,6 +6,9 @@ import torch.nn.functional as F
 from torchvision import transforms as T
 
 from src.settings import settings
+from src.logger import get_logger
+
+logger = get_logger(__name__)
 
 # ── CLIP-EBC bootstrap ────────────────────────────────────────────────
 # Append (not insert) CLIP_EBC_DIR so that project-root packages (especially
@@ -42,14 +45,23 @@ MODEL_CFG = dict(
 NORMALIZE = T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
 
+def build_model(device):
+    """Build CLIP-EBC from raw CLIP pretrained weights (no CLIP-EBC checkpoint)."""
+    model = get_model(**MODEL_CFG)
+    model.to(device)
+    logger.info("Built CLIP-EBC from raw CLIP weights (no pretrained checkpoint)")
+    return model
+
+
 def load_model(device):
+    """Build CLIP-EBC and load the authors' pretrained checkpoint."""
     model = get_model(**MODEL_CFG)
     ckpt = torch.load(settings.CLIP_EBC_WEIGHTS, map_location="cpu", weights_only=False)
     state_dict = ckpt.get("model_state_dict", ckpt.get("state_dict", ckpt))
     model.load_state_dict(state_dict, strict=True)
     model.to(device)
     model.eval()
-    print(f"Loaded weights from {settings.CLIP_EBC_WEIGHTS}")
+    logger.info(f"Loaded pretrained weights from {settings.CLIP_EBC_WEIGHTS}")
     return model
 
 
