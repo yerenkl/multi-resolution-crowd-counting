@@ -32,7 +32,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.models.clip_ebc import build_model
+from src.models.clip_ebc import load_model
 from src.dann.model import DANNModel
 from src.logger import get_logger
 
@@ -43,7 +43,7 @@ def main():
     import torch
 
     device = torch.device("cpu")
-    crowd_model = build_model(device)
+    crowd_model = load_model(device)
 
     logger.info("=== CLIP-EBC (crowd_model) ===")
 
