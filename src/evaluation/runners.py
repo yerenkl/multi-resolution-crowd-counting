@@ -60,6 +60,49 @@ def eval_nwpu_downscaled(model, device, scale: int) -> dict:
     return calculate_errors(np.array(pred_counts), np.array(gt_counts))
 
 
+def _density_bucket(gt_count: int) -> str:
+    if gt_count <= 50:
+        return "sparse"
+    if gt_count < 500:
+        return "medium"
+    return "dense"
+
+
+def eval_nwpu_by_density(model, device) -> dict:
+    """Evaluate on full NWPU val at native resolution, split by crowd density.
+
+    Buckets: sparse (0–50), medium (51–499), dense (500+).
+    Returns a dict with keys 'overall', 'sparse', 'medium', 'dense',
+    each containing {'mae', 'rmse', 'n'}.
+    """
+    model.eval()
+    nwpu_root = settings.nwpu_dir
+
+    with open(nwpu_root / "val.txt") as f:
+        rows = [l.strip().split() for l in f if l.strip()]
+
+    buckets = {"sparse": ([], []), "medium": ([], []), "dense": ([], [])}
+    all_preds, all_gts = [], []
+
+    for parts in tqdm(rows, desc="NWPU val (by density)"):
+        img_id = parts[0]
+        img = Image.open(nwpu_root / "images" / f"{img_id}.jpg").convert("RGB")
+        img_tensor = NORMALIZE(T.ToTensor()(img))
+        with open(nwpu_root / "jsons" / f"{img_id}.json") as f:
+            gt = json.load(f)["human_num"]
+        pred = predict_count(model, img_tensor, device)
+        bucket = _density_bucket(gt)
+        buckets[bucket][0].append(pred)
+        buckets[bucket][1].append(gt)
+        all_preds.append(pred)
+        all_gts.append(gt)
+
+    results = {"overall": {**calculate_errors(np.array(all_preds), np.array(all_gts)), "n": len(all_gts)}}
+    for name, (preds, gts) in buckets.items():
+        results[name] = {**calculate_errors(np.array(preds), np.array(gts)), "n": len(gts)}
+    return results
+
+
 def eval_zoom_pairs(model, device) -> list:
     """Evaluate HR vs LR count consistency on Zoom Pairs. Returns list of per-pair dicts."""
     model.eval()
