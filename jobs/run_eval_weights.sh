@@ -20,6 +20,7 @@ echo "============================================================"
 
 uv run python entrypoints/eval_checkpoint.py \
     --device     cuda:0 \
+    --weights    results/finetune_paired_hr_lr/best_mae.pth \
     --output_dir results/baseline
 
 echo "Done."
