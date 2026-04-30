@@ -16,12 +16,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.models.clip_ebc import load_model  # also puts CLIP_EBC_DIR in sys.path
 from src.settings import settings
-from src.evaluation.runners import eval_nwpu
+from src.evaluation.runners import eval_nwpu, eval_nwpu_tta
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--device", type=str, default="cuda:0")
+    parser.add_argument("use_tta", action="store_true", help="Whether to apply test-time augmentation (TTA) via multi-scale prediction and averaging")
     args = parser.parse_args()
 
     import torch
@@ -29,7 +30,10 @@ def main():
     print(f"Using device: {device}")
 
     model = load_model(device)
-    errors = eval_nwpu(model, device)
+    if args.use_tta:
+        errors = eval_nwpu_tta(model, device)
+    else:
+        errors = eval_nwpu(model, device)
 
     print(f"\n  Results (native):")
     print(f"    MAE:  {errors['mae']:.2f}")

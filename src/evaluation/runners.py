@@ -3,6 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
+import torch.nn.functional as F
 from PIL import Image
 from tqdm import tqdm
 from torchvision import transforms as T
@@ -10,7 +11,7 @@ from torchvision import transforms as T
 from src.settings import settings
 from src.models.clip_ebc import NORMALIZE
 from src.evaluation.inference import predict_count
-from utils.eval_utils import calculate_errors  # CLIP-EBC utility
+from utils.eval_utils import calculate_errors, sliding_window_predict  # CLIP-EBC utility
 
 
 def eval_nwpu(model, device, limit: int = None) -> dict:
@@ -35,12 +36,44 @@ def eval_nwpu(model, device, limit: int = None) -> dict:
 
     return calculate_errors(np.array(pred_counts), np.array(gt_counts))
 
+def eval_nwpu_tta(model, device, limit: int = None) -> dict:
+    """Evaluate on NWPU val at native resolution. Returns dict with mae and rmse."""
+    model.eval()
+    nwpu_root = settings.nwpu_dir
+    with open(nwpu_root / "val.txt") as f:
+        image_ids = [line.strip().split()[0] for line in f if line.strip()]
+
+    if limit is not None:
+        image_ids = image_ids[:limit]
+
+    pred_counts, gt_counts = [], []
+    
+    desc = f"NWPU val{f' (first {limit})' if limit else ''}"
+    scales = [1.0, 0.75, 0.5]
+    for image_id in tqdm(image_ids, desc=desc):
+        counts = []
+        img = Image.open(nwpu_root / "images" / f"{image_id}.jpg").convert("RGB")
+        img_tensor = T.ToTensor()(img)  # convert once outside the loop
+
+        for s in scales:
+            resized = F.interpolate(
+                img_tensor.unsqueeze(0),  # needs batch dim
+                scale_factor=s,
+                mode="bilinear",
+                align_corners=False,
+            ).squeeze(0)
+            counts.append(predict_count(model, NORMALIZE(resized), device))
+        pred_counts.append(sum(counts) / len(counts))
+        with open(nwpu_root / "jsons" / f"{image_id}.json") as f:
+            gt_counts.append(json.load(f)["human_num"])
+
+    return calculate_errors(np.array(pred_counts), np.array(gt_counts))
 
 def eval_nwpu_downscaled(model, device, scale: int) -> dict:
     """Evaluate on pre-saved downscaled NWPU val images. Returns dict with mae and rmse."""
     model.eval()
     nwpu_root = settings.nwpu_dir
-    images_dir = settings.NWPU_DOWNSCALED_DIR / f"{scale}x" / "images"
+    images_dir = Path("/dtu/blackhole/0a/224426/NWPU_downscaled/4x/images")
     assert images_dir.exists(), (
         f"Downscaled images not found at {images_dir}. Run entrypoints/downscale_nwpu.py first."
     )
@@ -58,6 +91,27 @@ def eval_nwpu_downscaled(model, device, scale: int) -> dict:
         gt_counts.append(gt_count)
 
     return calculate_errors(np.array(pred_counts), np.array(gt_counts))
+
+
+def eval_nwpu_superres(model, device) -> dict:
+    """Evaluate on pre-saved downscaled NWPU val images. Returns dict with mae and rmse."""
+    model.eval()
+    nwpu_root = settings.nwpu_dir
+    images_dir = Path("/work3/s252653/hr/hr/images")
+    with open(nwpu_root / "val.txt") as f:
+        image_ids = [line.strip().split()[0] for line in f if line.strip()]
+
+    pred_counts, gt_counts = [], []
+    for image_id in tqdm(image_ids, desc=f"NWPU val superres"):
+        img = Image.open(images_dir / f"{image_id}.jpg").convert("RGB")
+        img_tensor = NORMALIZE(T.ToTensor()(img))
+        with open(nwpu_root / "jsons" / f"{image_id}.json") as f:
+            gt_count = json.load(f)["human_num"]
+        pred_counts.append(predict_count(model, img_tensor, device))
+        gt_counts.append(gt_count)
+
+    return calculate_errors(np.array(pred_counts), np.array(gt_counts))
+
 
 
 def eval_zoom_pairs(model, device) -> list:
