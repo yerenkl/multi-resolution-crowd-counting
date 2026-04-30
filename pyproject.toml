@@ -27,4 +27,5 @@ dependencies = [
     "torchvision==0.17.1",
     "tqdm==4.66.2",
     "wandb>=0.25.0",
+    "pydantic-settings>=2.0.0",
 ]

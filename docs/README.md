@@ -10,6 +10,7 @@ This folder is organized as a small wiki of the most important project context.
   - downscaling_and_labels.md: Why synthetic LR labeling is valid
   - augmentation_notes.md: Practical caveats for degradation pipelines
   - research_questions.md: The four research questions and experiment order
+  - training_from_scratch.md: Why all experiments start from raw CLIP weights
 - data/
   - data.md: Detailed dataset reference (paths, formats, counts)
 - ideas/

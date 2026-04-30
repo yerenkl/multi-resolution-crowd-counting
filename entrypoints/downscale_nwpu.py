@@ -22,6 +22,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.settings import settings
 from src.image_ops.downsample import resize
+from src.logger import get_logger
+
+logger = get_logger(__name__)
 
 SCALES = [2, 4]
 SPLITS = ["train", "val"]
@@ -40,10 +43,7 @@ def main():
             with open(nwpu_root / f"{split}.txt") as f:
                 image_ids.extend(line.strip().split()[0] for line in f if line.strip())
 
-        print(f"\n{'='*50}")
-        print(f"  Downscaling {len(image_ids)} images at {scale}x")
-        print(f"  Output: {out_dir}")
-        print(f"{'='*50}")
+        logger.info(f"Downscaling {len(image_ids)} images at {scale}x -> {out_dir}")
 
         for image_id in tqdm(image_ids, desc=f"{scale}x"):
             src_path = nwpu_root / "images" / f"{image_id}.jpg"
@@ -54,7 +54,7 @@ def main():
             img_down = resize(img, scale=1 / scale, method="bilinear")
             img_down.save(dst_path, quality=95)
 
-    print("\nDone.")
+    logger.success("Done.")
 
 
 if __name__ == "__main__":
