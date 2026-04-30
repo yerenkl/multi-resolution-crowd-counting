@@ -35,6 +35,7 @@ from src.training.loops import eval_epoch
 from src.training.metrics import MetricsLogger
 from src.dann import DANNModel, ganin_alpha_schedule, dann_train_epoch
 from src.logger import get_logger
+from src.settings import settings
 
 from losses import DACELoss
 
@@ -145,6 +146,7 @@ def main():
         experiment="dann",
         args=args,
         fieldnames=["epoch", "loss", "task_loss", "domain_loss", "alpha", "mae", "rmse"],
+        base_dir=settings.DANN_CHECKPOINTS_DIR,
     )
     logger.info(f"Run directory: {metrics.run_dir}")
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-#BSUB -q gpua100
+#BSUB -q gpul40s
 #BSUB -W 24:00
 #BSUB -J dann_train
 #BSUB -o jobs/logs/dann_%J.out

@@ -1,0 +1,158 @@
+============================================================
+DANN resolution-adversarial training of CLIP-EBC (ViT-B/16)
+============================================================
+[[97mINFO[0m] [[96m__main__[0m] Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+[[97mINFO[0m] [[96msrc.models.clip_ebc[0m] Loaded pretrained weights from /dtu/blackhole/0a/224426/best_mae.pth
+[[97mINFO[0m] [[96m__main__[0m] Training on 3109 images, 389 batches/epoch
+[[97mINFO[0m] [[96m__main__[0m] DANN config: dann_weight=1.0, down_scales=[2, 4, 8]
+[[97mINFO[0m] [[96m__main__[0m] Discriminator: hidden_dim=256, dropout=0.5, lr=0.0001
+[[97mINFO[0m] [[96m__main__[0m] Run directory: results/dann/2026-04-28_18-39-57
+[[97mINFO[0m] [[96m__main__[0m] Epoch   1/50 | loss=66.1904 task=64.8054 domain=1.3849 alpha=0.100 | MAE=79.16 RMSE=345.91
+[[92mSUCCESS[0m] [[96m__main__[0m] [92m Saved best model [90mMAE=79.16[0m[0m
+[[97mINFO[0m] [[96m__main__[0m] Epoch   2/50 | loss=65.1018 task=63.7280 domain=1.3739 alpha=0.197 | MAE=83.25 RMSE=427.42
+[[97mINFO[0m] [[96m__main__[0m] Epoch   3/50 | loss=64.6345 task=63.3210 domain=1.3135 alpha=0.291 | MAE=80.96 RMSE=392.62
+[[97mINFO[0m] [[96m__main__[0m] Epoch   4/50 | loss=63.8429 task=62.6722 domain=1.1708 alpha=0.380 | MAE=82.39 RMSE=426.63
+[[97mINFO[0m] [[96m__main__[0m] Epoch   5/50 | loss=62.0287 task=61.0234 domain=1.0053 alpha=0.462 | MAE=70.44 RMSE=341.81
+[[92mSUCCESS[0m] [[96m__main__[0m] [92m Saved best model [90mMAE=70.44[0m[0m
+[[97mINFO[0m] [[96m__main__[0m] Epoch   6/50 | loss=66.7115 task=65.8194 domain=0.8921 alpha=0.537 | MAE=82.39 RMSE=400.15
+[[97mINFO[0m] [[96m__main__[0m] Epoch   7/50 | loss=67.0721 task=66.2181 domain=0.8539 alpha=0.604 | MAE=76.60 RMSE=422.57
+[[97mINFO[0m] [[96m__main__[0m] Epoch   8/50 | loss=62.5560 task=61.7567 domain=0.7993 alpha=0.664 | MAE=66.58 RMSE=315.04
+[[92mSUCCESS[0m] [[96m__main__[0m] [92m Saved best model [90mMAE=66.58[0m[0m
+[[97mINFO[0m] [[96m__main__[0m] Epoch   9/50 | loss=60.5418 task=59.7883 domain=0.7535 alpha=0.716 | MAE=66.68 RMSE=331.04
+[[97mINFO[0m] [[96m__main__[0m] Epoch  10/50 | loss=59.9887 task=59.2448 domain=0.7440 alpha=0.762 | MAE=62.16 RMSE=294.93
+[[92mSUCCESS[0m] [[96m__main__[0m] [92m Saved best model [90mMAE=62.16[0m[0m
+[[97mINFO[0m] [[96m__main__[0m] Epoch  11/50 | loss=61.7461 task=60.9625 domain=0.7836 alpha=0.800 | MAE=70.01 RMSE=359.97
+[[97mINFO[0m] [[96m__main__[0m] Epoch  12/50 | loss=61.8262 task=61.0660 domain=0.7603 alpha=0.834 | MAE=68.01 RMSE=366.27
+[[97mINFO[0m] [[96m__main__[0m] Epoch  13/50 | loss=64.6599 task=63.9067 domain=0.7532 alpha=0.862 | MAE=60.12 RMSE=285.77
+[[92mSUCCESS[0m] [[96m__main__[0m] [92m Saved best model [90mMAE=60.12[0m[0m
+[[97mINFO[0m] [[96m__main__[0m] Epoch  14/50 | loss=61.5794 task=60.8639 domain=0.7155 alpha=0.885 | MAE=59.56 RMSE=261.03
+[[92mSUCCESS[0m] [[96m__main__[0m] [92m Saved best model [90mMAE=59.56[0m[0m
+[[97mINFO[0m] [[96m__main__[0m] Epoch  15/50 | loss=60.4902 task=59.7549 domain=0.7352 alpha=0.905 | MAE=67.88 RMSE=378.07
+[[97mINFO[0m] [[96m__main__[0m] Epoch  16/50 | loss=62.1406 task=61.3864 domain=0.7542 alpha=0.922 | MAE=62.64 RMSE=293.56
+[[97mINFO[0m] [[96m__main__[0m] Epoch  17/50 | loss=57.7356 task=57.0081 domain=0.7275 alpha=0.935 | MAE=72.64 RMSE=370.21
+[[97mINFO[0m] [[96m__main__[0m] Epoch  18/50 | loss=58.9424 task=58.2071 domain=0.7353 alpha=0.947 | MAE=60.75 RMSE=300.00
+[[97mINFO[0m] [[96m__main__[0m] Epoch  19/50 | loss=61.4792 task=60.7709 domain=0.7084 alpha=0.956 | MAE=59.77 RMSE=279.28
+[[97mINFO[0m] [[96m__main__[0m] Epoch  20/50 | loss=58.3294 task=57.6251 domain=0.7043 alpha=0.964 | MAE=58.66 RMSE=281.15
+[[92mSUCCESS[0m] [[96m__main__[0m] [92m Saved best model [90mMAE=58.66[0m[0m
+[[97mINFO[0m] [[96m__main__[0m] Epoch  21/50 | loss=59.7537 task=59.0154 domain=0.7383 alpha=0.970 | MAE=64.26 RMSE=270.38
+[[97mINFO[0m] [[96m__main__[0m] Epoch  22/50 | loss=62.1983 task=61.4602 domain=0.7381 alpha=0.976 | MAE=56.23 RMSE=220.45
+[[92mSUCCESS[0m] [[96m__main__[0m] [92m Saved best model [90mMAE=56.23[0m[0m
+[[97mINFO[0m] [[96m__main__[0m] Epoch  23/50 | loss=60.1124 task=59.3731 domain=0.7393 alpha=0.980 | MAE=65.79 RMSE=278.63
+[[97mINFO[0m] [[96m__main__[0m] Epoch  24/50 | loss=59.0093 task=58.2522 domain=0.7571 alpha=0.984 | MAE=59.72 RMSE=281.69
+[[97mINFO[0m] [[96m__main__[0m] Epoch  25/50 | loss=58.4525 task=57.6966 domain=0.7559 alpha=0.987 | MAE=60.43 RMSE=256.69
+[[97mINFO[0m] [[96m__main__[0m] Epoch  26/50 | loss=60.2786 task=59.5302 domain=0.7485 alpha=0.989 | MAE=60.89 RMSE=280.48
+[[97mINFO[0m] [[96m__main__[0m] Epoch  27/50 | loss=59.9222 task=59.1821 domain=0.7401 alpha=0.991 | MAE=64.57 RMSE=334.32
+[[97mINFO[0m] [[96m__main__[0m] Epoch  28/50 | loss=58.7387 task=57.9545 domain=0.7843 alpha=0.993 | MAE=54.24 RMSE=198.04
+[[92mSUCCESS[0m] [[96m__main__[0m] [92m Saved best model [90mMAE=54.24[0m[0m
+[[97mINFO[0m] [[96m__main__[0m] Epoch  29/50 | loss=58.2090 task=57.4545 domain=0.7545 alpha=0.994 | MAE=52.43 RMSE=210.89
+[[92mSUCCESS[0m] [[96m__main__[0m] [92m Saved best model [90mMAE=52.43[0m[0m
+[[97mINFO[0m] [[96m__main__[0m] Epoch  30/50 | loss=59.0790 task=58.3222 domain=0.7567 alpha=0.995 | MAE=60.48 RMSE=249.92
+[[97mINFO[0m] [[96m__main__[0m] Epoch  31/50 | loss=61.1294 task=60.3307 domain=0.7987 alpha=0.996 | MAE=55.93 RMSE=255.30
+[[97mINFO[0m] [[96m__main__[0m] Epoch  32/50 | loss=59.2128 task=58.4165 domain=0.7963 alpha=0.997 | MAE=59.43 RMSE=267.26
+[[97mINFO[0m] [[96m__main__[0m] Epoch  33/50 | loss=62.3047 task=61.5232 domain=0.7815 alpha=0.997 | MAE=60.59 RMSE=298.47
+[[97mINFO[0m] [[96m__main__[0m] Epoch  34/50 | loss=60.2626 task=59.4462 domain=0.8164 alpha=0.998 | MAE=56.76 RMSE=296.56
+[[97mINFO[0m] [[96m__main__[0m] Epoch  35/50 | loss=58.0039 task=57.2197 domain=0.7843 alpha=0.998 | MAE=61.57 RMSE=316.68
+[[97mINFO[0m] [[96m__main__[0m] Epoch  36/50 | loss=62.4832 task=61.6541 domain=0.8291 alpha=0.999 | MAE=55.52 RMSE=245.63
+[[97mINFO[0m] [[96m__main__[0m] Epoch  37/50 | loss=59.3304 task=58.5223 domain=0.8082 alpha=0.999 | MAE=56.78 RMSE=273.08
+[[97mINFO[0m] [[96m__main__[0m] Epoch  38/50 | loss=64.5848 task=63.7691 domain=0.8157 alpha=0.999 | MAE=59.23 RMSE=287.37
+[[97mINFO[0m] [[96m__main__[0m] Epoch  39/50 | loss=58.4091 task=57.5662 domain=0.8429 alpha=0.999 | MAE=51.32 RMSE=188.28
+[[92mSUCCESS[0m] [[96m__main__[0m] [92m Saved best model [90mMAE=51.32[0m[0m
+[[97mINFO[0m] [[96m__main__[0m] Epoch  40/50 | loss=63.3594 task=62.5253 domain=0.8342 alpha=0.999 | MAE=54.65 RMSE=257.09
+[[97mINFO[0m] [[96m__main__[0m] Epoch  41/50 | loss=61.2266 task=60.3707 domain=0.8558 alpha=0.999 | MAE=57.26 RMSE=268.79
+[[97mINFO[0m] [[96m__main__[0m] Epoch  42/50 | loss=58.3129 task=57.4746 domain=0.8383 alpha=1.000 | MAE=57.35 RMSE=249.45
+[[97mINFO[0m] [[96m__main__[0m] Epoch  43/50 | loss=58.8794 task=58.0075 domain=0.8719 alpha=1.000 | MAE=54.62 RMSE=252.62
+[[97mINFO[0m] [[96m__main__[0m] Epoch  44/50 | loss=61.2219 task=60.2999 domain=0.9220 alpha=1.000 | MAE=53.15 RMSE=220.73
+[[97mINFO[0m] [[96m__main__[0m] Epoch  45/50 | loss=57.8255 task=56.9084 domain=0.9171 alpha=1.000 | MAE=52.37 RMSE=198.90
+[[97mINFO[0m] [[96m__main__[0m] Epoch  46/50 | loss=61.8515 task=60.9194 domain=0.9321 alpha=1.000 | MAE=55.72 RMSE=219.08
+[[97mINFO[0m] [[96m__main__[0m] Epoch  47/50 | loss=62.7571 task=61.8334 domain=0.9237 alpha=1.000 | MAE=61.08 RMSE=331.31
+[[97mINFO[0m] [[96m__main__[0m] Epoch  48/50 | loss=56.2135 task=55.2874 domain=0.9261 alpha=1.000 | MAE=52.90 RMSE=219.33
+[[97mINFO[0m] [[96m__main__[0m] Epoch  49/50 | loss=59.0974 task=58.1314 domain=0.9661 alpha=1.000 | MAE=53.39 RMSE=197.96
+[[97mINFO[0m] [[96m__main__[0m] Epoch  50/50 | loss=62.6895 task=61.7183 domain=0.9712 alpha=1.000 | MAE=55.40 RMSE=244.72
+[[92mSUCCESS[0m] [[96m__main__[0m] [92m Training done. Best MAE: 51.32[0m
+[[97mINFO[0m] [[96m__main__[0m] Weights saved to results/dann/2026-04-28_18-39-57/
+DANN training completed.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28314573: <dann_train> in cluster <dcc> Done
+
+Job <dann_train> was submitted from host <hpclogin1> by user <s225224> in cluster <dcc> at Tue Apr 28 14:52:31 2026
+Job was executed on host(s) <4*n-62-12-21>, in queue <gpua100>, as user <s225224> in cluster <dcc> at Tue Apr 28 18:39:11 2026
+</zhome/77/2/187952> was used as the home directory.
+</zhome/77/2/187952/projects/multi-resolution-crowd-counting> was used as the working directory.
+Started at Tue Apr 28 18:39:11 2026
+Terminated at Wed Apr 29 01:53:54 2026
+Results reported at Wed Apr 29 01:53:54 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpua100
+#BSUB -W 24:00
+#BSUB -J dann_train
+#BSUB -o jobs/logs/dann_%J.out
+#BSUB -e jobs/logs/dann_%J.err
+#BSUB -n 4
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+set -euo pipefail
+
+DEVICE="cuda:0"
+
+uv sync
+
+mkdir -p results/dann
+mkdir -p jobs/logs
+
+echo "============================================================"
+echo "DANN resolution-adversarial training of CLIP-EBC (ViT-B/16)"
+echo "============================================================"
+
+uv run python entrypoints/train_dann.py \
+    --device "${DEVICE}" \
+    --epochs 50 \
+    --batch_size 8 \
+    --lr 1e-5 \
+    --lr_disc 1e-4 \
+    --dann_weight 1.0 \
+    --down_scales 2 4 8 \
+    --hidden_dim 256 \
+    --dropout 0.5 \
+    --num_workers 4 \
+    --eval_limit 500
+
+echo "DANN training completed."
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   41128.00 sec.
+    Max Memory :                                 3273 MB
+    Average Memory :                             2163.60 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               127799.00 MB
+    Max Swap :                                   -
+    Max Processes :                              9
+    Max Threads :                                31
+    Run time :                                   26083 sec.
+    Turnaround time :                            39683 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <jobs/logs/dann_28314573.err> for stderr output of this job.
+
