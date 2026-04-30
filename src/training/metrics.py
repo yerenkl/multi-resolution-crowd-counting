@@ -11,9 +11,9 @@ from src.settings import settings
 
 class MetricsLogger:
 
-    def __init__(self, experiment: str, args: Namespace, fieldnames: Sequence[str]):
+    def __init__(self, experiment: str, args: Namespace, fieldnames: Sequence[str], base_dir: Path | None = None):
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        self._run_dir = settings.RESULTS_DIR / experiment / timestamp
+        self._run_dir = (base_dir if base_dir is not None else settings.RESULTS_DIR / experiment) / timestamp
         self._run_dir.mkdir(parents=True, exist_ok=True)
         self._csv_path = self._run_dir / "metrics.csv"
         self._fieldnames = list(fieldnames)
