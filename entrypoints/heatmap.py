@@ -18,6 +18,7 @@ import torch
 import torch.nn.functional as F
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, "/dtu/blackhole/0a/224426/CLIP-EBC-main")
 from utils.eval_utils import sliding_window_predict  # CLIP-EBC utility for super-res inference
 
