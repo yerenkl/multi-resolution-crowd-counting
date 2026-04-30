@@ -11,6 +11,20 @@ def nwpu_train_collate_fn(batch):
     return images, list(points_list), densities
 
 
+def nwpu_paired_hr_lr_collate_fn(batch):
+    hr_images = torch.stack([s["hr_image"] for s in batch])
+    lr_images = torch.stack([s["lr_image"] for s in batch])
+    points_list = [s["points"] for s in batch]
+    _, _, H, W = hr_images.shape
+    densities = torch.stack([make_density_map(p, H, W) for p in points_list])
+    return {
+        "hr_images": hr_images,
+        "lr_images": lr_images,
+        "points": points_list,
+        "densities": densities,
+    }
+
+
 def nwpu_paired_train_collate_fn(batch):
     hr_images = torch.stack([sample["hr_image"] for sample in batch])
     lr_images = torch.stack([sample["lr_image"] for sample in batch])

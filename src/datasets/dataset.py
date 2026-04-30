@@ -1,4 +1,5 @@
 import json
+import random
 
 import torch
 from PIL import Image
@@ -66,6 +67,46 @@ class NWPU(torch.utils.data.Dataset):
             return transformed
 
         return img, points
+
+
+class NWPUPairedHRLR(torch.utils.data.Dataset):
+    """Paired HR/LR NWPU dataset for DANN v2.
+
+    Loads native HR and pre-saved downscaled LR images for the same image ID.
+    Returns both so the training loop can apply matched crops.
+    """
+
+    def __init__(self, split: str = "train", lr_scales: tuple = (2, 4), transform=None):
+        assert split in ("train", "val"), f"Unknown split: {split!r}"
+        self.root = settings.nwpu_dir
+        self.lr_root = settings.NWPU_DOWNSCALED_DIR
+        self.lr_scales = lr_scales
+        self.transform = transform
+        with open(self.root / f"{split}.txt") as f:
+            self.image_ids = [line.strip().split()[0] for line in f if line.strip()]
+
+    def __len__(self):
+        return len(self.image_ids)
+
+    def __getitem__(self, idx):
+        image_id = self.image_ids[idx]
+        hr_img = Image.open(self.root / "images" / f"{image_id}.jpg").convert("RGB")
+
+        scale = random.choice(self.lr_scales)
+        lr_img = Image.open(
+            self.lr_root / f"{scale}x" / "images" / f"{image_id}.jpg"
+        ).convert("RGB")
+
+        with open(self.root / "jsons" / f"{image_id}.json") as f:
+            annotation = json.load(f)
+        pts = annotation["points"]
+        points = (torch.tensor(pts, dtype=torch.float32) if pts
+                  else torch.zeros((0, 2), dtype=torch.float32))
+
+        if self.transform is not None:
+            return self.transform(hr_img, lr_img, points, scale)
+
+        return hr_img, lr_img, points, scale
 
 
 class ZoomPairs(torch.utils.data.Dataset):
