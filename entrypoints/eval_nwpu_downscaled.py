@@ -4,8 +4,11 @@ Evaluate CLIP-EBC (ViT-B/16) on NWPU-Crowd val at 2x and 4x downscale.
 Uses pre-saved downscaled images from settings.NWPU_DOWNSCALED_DIR.
 
 Usage:
-    cd ~/project/multi-resolution-crowd-counting
-    uv run python entrypoints/eval_nwpu_downscaled.py [--device cuda:0]
+    # base pretrained weights
+    uv run python entrypoints/eval_nwpu_downscaled.py
+
+    # finetuned checkpoint
+    uv run python entrypoints/eval_nwpu_downscaled.py --weights path/to/best_mae.pth
 """
 
 import sys
@@ -15,6 +18,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+import torch
 from src.models.clip_ebc import load_model  # also puts CLIP_EBC_DIR in sys.path
 from src.settings import settings
 from src.evaluation.runners import eval_nwpu_downscaled
@@ -26,15 +30,34 @@ logger = get_logger(__name__)
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--device", type=str, default="cuda:0")
+    parser.add_argument("--weights", type=str, default=None,
+                        help="Path to finetuned checkpoint. Omit to evaluate base pretrained weights.")
+    parser.add_argument("--output_dir", type=str, default=None,
+                        help="Directory to write results. Defaults to checkpoint dir or results/baseline.")
     args = parser.parse_args()
 
-    import torch
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
     logger.info(f"Using device: {device}")
 
     model = load_model(device)
 
-    results_dir = settings.RESULTS_DIR / "baseline"
+    if args.weights is not None:
+        weights_path = Path(args.weights)
+        if not weights_path.is_absolute():
+            weights_path = Path(__file__).resolve().parent.parent / weights_path
+        try:
+            ckpt = torch.load(weights_path, map_location="cpu", weights_only=False)
+            state_dict = ckpt.get("model_state_dict", ckpt.get("state_dict", ckpt))
+            model.load_state_dict(state_dict, strict=True)
+        except Exception as e:
+            logger.error(f"Failed to load weights from {weights_path}: {e}")
+            raise
+        logger.info(f"Loaded finetuned weights from {weights_path}")
+        results_dir = Path(args.output_dir) if args.output_dir else weights_path.parent
+    else:
+        logger.info("Evaluating base pretrained weights")
+        results_dir = Path(args.output_dir) if args.output_dir else settings.RESULTS_DIR / "baseline"
+
     results_dir.mkdir(parents=True, exist_ok=True)
 
     summary = {}
