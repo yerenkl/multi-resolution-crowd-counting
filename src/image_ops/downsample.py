@@ -90,7 +90,7 @@ if __name__ == "__main__":
 
     for i, method in enumerate(methods_weights):
         for blur in [True]:
-            for downsample_factor in [4]:
+            for downsample_factor in [6]:
                 for upsample in [False]:
                     for add_noise in [False, True]:
                         out_img = transform(

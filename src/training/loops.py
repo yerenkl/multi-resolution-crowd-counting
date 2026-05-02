@@ -26,6 +26,6 @@ def train_epoch(model, loader, loss_fn, optimizer, scaler, device) -> float:
     return total_loss / len(loader)
 
 
-def eval_epoch(model, device, limit: int = 100) -> dict:
+def eval_epoch(model, device, downscaled_dir, limit: int = 100) -> dict:
     from src.evaluation.runners import eval_nwpu
-    return eval_nwpu(model, device, limit=limit)
+    return eval_nwpu(model, device, downscaled_dir, limit=limit)

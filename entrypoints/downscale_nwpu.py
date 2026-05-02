@@ -1,10 +1,8 @@
 import argparse
-import os
 import random
 
 import numpy as np
-import torchvision.transforms as tf
-from PIL import ImageFilter, Image
+from PIL import ImageFilter
 
 
 class MethodWeights:
@@ -118,10 +116,13 @@ parser.add_argument(
     choices=["bilinear", "bicubic", "nearest", "lanczos", "mix"],
     help="Downscaling method"
 )
+
 parser.add_argument(
     "--noise",
     type=bool,
     default=False,
+    
+
 )
 
 args = parser.parse_args()
@@ -155,7 +156,7 @@ def main():
             "mix"
         )
 
-        out_dir = out_root / f"{method_tag}" / f"{scale}x"/ noise_tag / "images"
+        out_dir = out_root / "random" / "images"
         out_dir.mkdir(parents=True, exist_ok=True)
 
         image_ids = []
@@ -190,10 +191,12 @@ def main():
                 final_scale = min(w / 224, h / 224)
 
             final_scale = max(1, final_scale)
+            final_scale = random.randint(1, int(final_scale))
+
             img_down = transform(
                 img,
                 pre_downsampling_blur=True,
-                downsample_factor=int(final_scale),
+                downsample_factor=final_scale,
                 method_weights=method,
                 add_noise= args.noise,
             )

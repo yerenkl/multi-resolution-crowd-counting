@@ -13,27 +13,52 @@ from src.evaluation.inference import predict_count
 from utils.eval_utils import calculate_errors  # CLIP-EBC utility
 
 
-def eval_nwpu(model, device, limit: int = None) -> dict:
-    """Evaluate on NWPU val at native resolution. Returns dict with mae and rmse."""
+def _eval_single_nwpu_root(model, device, root_dir, image_ids):
+    pred_counts, gt_counts = [], []
+
+    for image_id in tqdm(image_ids, desc=f"Evaluating {root_dir.name}"):
+        img = Image.open(root_dir / "images" / f"{image_id}.jpg").convert("RGB")
+        img_tensor = NORMALIZE(T.ToTensor()(img))
+
+        with open(root_dir / "jsons" / f"{image_id}.json") as f:
+            gt_count = json.load(f)["human_num"]
+
+        pred_counts.append(predict_count(model, img_tensor, device))
+        gt_counts.append(gt_count)
+
+    pred_arr = np.array(pred_counts)
+    gt_arr = np.array(gt_counts)
+
+    errors = calculate_errors(pred_arr, gt_arr)
+    avg_diff = np.mean(pred_arr - gt_arr)
+
+    return {
+        **errors,
+        "avg_diff": avg_diff
+    }
+
+
+def eval_nwpu(model, device, nwpu_downscaled_directory, limit: int = None) -> dict:
+    """Evaluate on NWPU val for both original and downscaled datasets."""
     model.eval()
+
     nwpu_root = settings.nwpu_dir
+
+    # Load shared val.txt
     with open(nwpu_root / "val.txt") as f:
         image_ids = [line.strip().split()[0] for line in f if line.strip()]
 
     if limit is not None:
         image_ids = image_ids[:limit]
 
-    pred_counts, gt_counts = [], []
-    desc = f"NWPU val{f' (first {limit})' if limit else ''}"
-    for image_id in tqdm(image_ids, desc=desc):
-        img = Image.open(nwpu_root / "images" / f"{image_id}.jpg").convert("RGB")
-        img_tensor = NORMALIZE(T.ToTensor()(img))
-        with open(nwpu_root / "jsons" / f"{image_id}.json") as f:
-            gt_count = json.load(f)["human_num"]
-        pred_counts.append(predict_count(model, img_tensor, device))
-        gt_counts.append(gt_count)
+    # Evaluate both datasets
+    results_original = _eval_single_nwpu_root(model, device, nwpu_root, image_ids)
+    results_downscaled = _eval_single_nwpu_root(model, device, nwpu_downscaled_directory, image_ids)
 
-    return calculate_errors(np.array(pred_counts), np.array(gt_counts))
+    return {
+        "original": results_original,
+        "downscaled": results_downscaled
+    }
 
 
 def eval_nwpu_downscaled(model, device, scale: int) -> dict:

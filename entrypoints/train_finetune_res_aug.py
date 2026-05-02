@@ -90,28 +90,52 @@ def main():
     out_dir = Path(f"{out_dir}/results")
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    best_mae = float("inf")
+    best_mae_original = float("inf")
+    best_mae_downscaled = float("inf")
+
     for epoch in range(1, args.epochs + 1):
         train_loss = train_epoch(model, loader, loss_fn, optimizer, scaler, device)
-        errors = eval_epoch(model, device)
-        mae, rmse = errors["mae"], errors["rmse"]
 
-        print(f"Epoch {epoch:3d}/{args.epochs} | loss={train_loss:.4f} | MAE={mae:.2f} | RMSE={rmse:.2f}")
+        errors = eval_epoch(model, device, downscaled_dir=out_dir)
 
-        if mae < best_mae:
-            best_mae = mae
-            torch.save(model.state_dict(), out_dir / "best_mae.pth")
-            print(f"  → Saved best model (MAE={mae:.2f})")
+        orig = errors["original"]
+        down = errors["downscaled"]
 
+        mae_orig, rmse_orig = orig["mae"], orig["rmse"]
+        mae_down, rmse_down = down["mae"], down["rmse"]
+
+        print(
+            f"Epoch {epoch:3d}/{args.epochs} | loss={train_loss:.4f} | "
+            f"Orig MAE={mae_orig:.2f}, RMSE={rmse_orig:.2f} | "
+            f"Down MAE={mae_down:.2f}, RMSE={rmse_down:.2f}"
+        )
+
+        # --- Save best ORIGINAL ---
+        if mae_orig < best_mae_original:
+            best_mae_original = mae_orig
+            torch.save(model.state_dict(), out_dir / "best_mae_original.pth")
+            print(f"  → Saved best ORIGINAL model (MAE={mae_orig:.2f})")
+
+        # --- Save best DOWNSCALED ---
+        if mae_down < best_mae_downscaled:
+            best_mae_downscaled = mae_down
+            torch.save(model.state_dict(), out_dir / "best_mae_downscaled.pth")
+            print(f"  → Saved best DOWNSCALED model (MAE={mae_down:.2f})")
+
+        # --- Always save latest ---
         torch.save({
             "epoch": epoch,
             "model_state_dict": model.state_dict(),
             "optimizer_state_dict": optimizer.state_dict(),
-            "mae": mae,
-            "rmse": rmse,
+
+            "original": orig,
+            "downscaled": down,
+
         }, out_dir / "latest.pth")
 
-    print(f"\nTraining done. Best MAE: {best_mae:.2f}")
+    print(f"\nTraining done.")
+    print(f"Best ORIGINAL MAE: {best_mae_original:.2f}")
+    print(f"Best DOWNSCALED MAE: {best_mae_downscaled:.2f}")
     print(f"Weights saved to {out_dir}/")
 
 
