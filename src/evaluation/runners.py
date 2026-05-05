@@ -73,7 +73,7 @@ def eval_nwpu_downscaled(model, device, scale: int) -> dict:
     """Evaluate on pre-saved downscaled NWPU val images. Returns dict with mae and rmse."""
     model.eval()
     nwpu_root = settings.nwpu_dir
-    images_dir = Path("/dtu/blackhole/0a/224426/NWPU_downscaled/4x/images")
+    images_dir = settings.NWPU_DOWNSCALED_DIR / f"{scale}x" / "images"
     assert images_dir.exists(), (
         f"Downscaled images not found at {images_dir}. Run entrypoints/downscale_nwpu.py first."
     )

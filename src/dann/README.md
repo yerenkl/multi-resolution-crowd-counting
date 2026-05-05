@@ -24,7 +24,7 @@ Normally, gradients tell a network "change this way to reduce the loss." The GRL
 
 One small layer, inserted between the feature extractor and the detective. That's the whole trick.
 
-## Architecture diagram
+## Architecture — forward pass
 
 ```mermaid
 graph LR
@@ -56,12 +56,12 @@ graph LR
     DEC -->|"(B, 768, 28, 28)"| PROJ
     PROJ -->|"(B, 512, 28, 28)"| SIM
     SIM --> DENSITY
-    DENSITY -->|"DACELoss"| TASK_LOSS["Task loss"]
+    DENSITY -->|"DACELoss"| TASK_LOSS["L_task"]
 
     DEC -->|"features hooked here"| GRL
     GRL --> DC
     DC --> DOMAIN
-    DOMAIN -->|"BCELoss"| DOMAIN_LOSS["Domain loss"]
+    DOMAIN -->|"BCELoss"| DOMAIN_LOSS["L_domain"]
 
     style GRL fill:#ff6b6b,color:#fff
     style DC fill:#ff6b6b,color:#fff
@@ -74,6 +74,35 @@ graph LR
     style DENSITY fill:#74c0fc,color:#000
     style TASK_LOSS fill:#74c0fc,color:#000
 ```
+
+## Gradient flow — backward pass
+
+```mermaid
+graph RL
+    LTASK["L_task"] -.->|"∂L_task / ∂θ_y"| HEAD["Counting Head θ_y"]
+    LTASK -.->|"∂L_task / ∂θ_f"| FE["Feature Extractor θ_f"]
+
+    LDOM["L_domain"] -.->|"∂L_domain / ∂θ_d"| DC["Domain Classifier θ_d"]
+    LDOM -.->|"∂L_domain / ∂θ_f"| GRL["GRL ×(-α)"]
+    GRL -.->|"−α · ∂L_domain / ∂θ_f"| FE
+
+    style GRL fill:#ff6b6b,color:#fff
+    style LDOM fill:#ff6b6b,color:#fff
+    style DC fill:#ff6b6b,color:#fff
+    style LTASK fill:#74c0fc,color:#000
+    style HEAD fill:#74c0fc,color:#000
+    style FE fill:#69db7c,color:#000
+```
+
+**Update rules:**
+
+| Component | Parameters | Gradient | Effect |
+|---|---|---|---|
+| Counting head | θ_y | ∂L_task / ∂θ_y | Learns to count accurately |
+| Domain classifier | θ_d | ∂L_domain / ∂θ_d | Learns to distinguish HR from LR |
+| Feature extractor | θ_f | ∂L_task / ∂θ_f **− α** · ∂L_domain / ∂θ_f | Learns to count **and** to fool the classifier |
+
+The feature extractor minimizes task loss while *maximizing* domain confusion — features become useful for counting but blind to resolution.
 
 ## Alpha scheduling
 
