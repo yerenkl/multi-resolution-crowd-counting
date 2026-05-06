@@ -53,15 +53,17 @@ def build_model(device):
     return model
 
 
-def load_model(device):
-    """Build CLIP-EBC and load the authors' pretrained checkpoint."""
+def load_model(device, ckpt_path=None):
+    """Build CLIP-EBC and load a checkpoint. Defaults to the authors' pretrained weights."""
+    if ckpt_path is None:
+        ckpt_path = settings.CLIP_EBC_WEIGHTS
     model = get_model(**MODEL_CFG)
-    ckpt = torch.load(settings.CLIP_EBC_WEIGHTS, map_location="cpu", weights_only=False)
+    ckpt = torch.load(ckpt_path, map_location="cpu", weights_only=False)
     state_dict = ckpt.get("model_state_dict", ckpt.get("state_dict", ckpt))
     model.load_state_dict(state_dict, strict=True)
     model.to(device)
     model.eval()
-    logger.info(f"Loaded pretrained weights from {settings.CLIP_EBC_WEIGHTS}")
+    logger.info(f"Loaded weights from {ckpt_path}")
     return model
 
 
