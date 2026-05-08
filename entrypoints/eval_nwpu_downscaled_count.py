@@ -16,7 +16,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.models.clip_ebc import load_model  # also puts CLIP_EBC_DIR in sys.path
+from src.models_local.clip_ebc import load_model  # also puts CLIP_EBC_DIR in sys.path
 from src.settings import settings
 from src.evaluation.runners import eval_nwpu_downscaled
 

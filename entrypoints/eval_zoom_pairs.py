@@ -17,7 +17,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.models.clip_ebc import load_model  # also puts CLIP_EBC_DIR in sys.path
+from src.models_local.clip_ebc import load_model  # also puts CLIP_EBC_DIR in sys.path
 from src.settings import settings
 from src.evaluation.runners import eval_zoom_pairs
 
@@ -34,7 +34,7 @@ def main():
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
-    model = load_model(device, out_dir / "results/best_mae.pth")
+    model = load_model(device, out_dir / "results_new_pipeline/best_mae.pth")
     results = eval_zoom_pairs(model, device)
 
     abs_diffs = [r["abs_diff"] for r in results]
@@ -64,7 +64,7 @@ def main():
         print(f"    Pair {r['pair']:>3s}: HR={r['hr_count']:.0f}, LR={r['lr_count']:.0f}, "
               f"diff={r['abs_diff']:.0f}, ratio={r['ratio']:.2f}")
 
-    results_dir = out_dir / "results" / "best_mae"
+    results_dir = out_dir / "results_new_pipeline"
     results_dir.mkdir(parents=True, exist_ok=True)
     with open(results_dir / "zoom_pairs.json", "w") as f:
         json.dump(results, f, indent=2)

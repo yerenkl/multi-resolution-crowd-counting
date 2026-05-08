@@ -1,6 +1,6 @@
 #!/bin/bash
-#BSUB -q gpul40s
-#BSUB -W 4:00
+#BSUB -q gpua100
+#BSUB -W 12:00
 #BSUB -J random
 #BSUB -o jobs/logs/random_%J.out
 #BSUB -e jobs/logs/random_%J.err
@@ -19,14 +19,14 @@
 
 set -euo pipefail
 
-LOG_DIR="logs"
-mkdir -p "$LOG_DIR"
-
-OUT_LOG="$LOG_DIR/output.log"
-ERR_LOG="$LOG_DIR/error.log"
-
-exec > >(tee -a "$OUT_LOG") \
-     2> >(tee -a "$ERR_LOG" >&2)
+#LOG_DIR="logs"
+#mkdir -p "$LOG_DIR"
+#
+#OUT_LOG="$LOG_DIR/output.log"
+#ERR_LOG="$LOG_DIR/error.log"
+#
+#exec > >(tee -a "$OUT_LOG") \
+#     2> >(tee -a "$ERR_LOG" >&2)
 
 uv sync
 
@@ -34,26 +34,27 @@ uv sync
 
 DEVICE="cuda:0"
 
-METHOD="/dtu/blackhole/0a/224426/NWPU_downscaled/random/"
+METHODS=(
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/random/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/base/"
+)
 
-uv run python entrypoints/downscale_nwpu.py \
-    --method "mix"
+for METHOD in "${METHODS[@]}"; do
+  echo "Running method: $METHOD"
 
-uv run python entrypoints/train_finetune_res_aug.py \
-    --device "$DEVICE" \
-    --epochs 50 \
-    --batch_size 8 \
-    --lr 1e-5 \
-    --num_workers 4 \
-    --path "$METHOD"
+  uv run python entrypoints/train_finetune_res_aug.py \
+      --device "$DEVICE" \
+      --epochs 30 \
+      --batch_size 8 \
+      --lr 1e-6 \
+      --num_workers 4 \
+      --path "$METHOD"
 
-uv run python entrypoints/eval_zoom_pairs.py \
-    --device "$DEVICE" \
-    --path "$METHOD"
-
-uv run python entrypoints/eval_nwpu_native.py \
-    --device "$DEVICE" \
-    --path "$METHOD"
-
+done
 
 echo "All methods completed."

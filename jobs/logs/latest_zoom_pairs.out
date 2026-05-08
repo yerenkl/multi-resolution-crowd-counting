@@ -1,0 +1,244 @@
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise/results/latest.pth
+
+==================================================
+  Zoom Pairs Results
+==================================================
+  Mean HR count:        543.6
+  Mean LR count:        436.6
+  Mean |HR - LR|:       163.0
+  Median |HR - LR|:     40.2
+  Mean HR/LR ratio:     1.377
+  Median HR/LR ratio:   1.032
+
+  Worst 5 pairs by |HR - LR|:
+    Pair  60: HR=8543, LR=5229, diff=3314, ratio=1.63
+    Pair  53: HR=3065, LR=909, diff=2156, ratio=3.37
+    Pair  51: HR=1001, LR=130, diff=871, ratio=7.70
+    Pair  39: HR=574, LR=936, diff=361, ratio=0.61
+    Pair   6: HR=546, LR=269, diff=276, ratio=2.03
+
+  Best 5 pairs by |HR - LR|:
+    Pair  10: HR=21, LR=21, diff=0, ratio=1.00
+    Pair  15: HR=24, LR=23, diff=0, ratio=1.01
+    Pair  40: HR=39, LR=42, diff=3, ratio=0.94
+    Pair  59: HR=186, LR=183, diff=3, ratio=1.01
+    Pair  36: HR=14, LR=11, diff=3, ratio=1.27
+
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise/results/latest2/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/results/latest.pth
+
+==================================================
+  Zoom Pairs Results
+==================================================
+  Mean HR count:        530.0
+  Mean LR count:        431.4
+  Mean |HR - LR|:       157.8
+  Median |HR - LR|:     38.5
+  Mean HR/LR ratio:     1.336
+  Median HR/LR ratio:   1.035
+
+  Worst 5 pairs by |HR - LR|:
+    Pair  60: HR=8502, LR=5350, diff=3151, ratio=1.59
+    Pair  53: HR=2817, LR=864, diff=1953, ratio=3.26
+    Pair  51: HR=939, LR=114, diff=824, ratio=8.21
+    Pair  39: HR=525, LR=899, diff=375, ratio=0.58
+    Pair   6: HR=541, LR=263, diff=277, ratio=2.05
+
+  Best 5 pairs by |HR - LR|:
+    Pair  40: HR=41, LR=42, diff=1, ratio=0.99
+    Pair  15: HR=23, LR=24, diff=1, ratio=0.97
+    Pair  36: HR=12, LR=11, diff=1, ratio=1.07
+    Pair  10: HR=17, LR=21, diff=4, ratio=0.80
+    Pair   0: HR=87, LR=92, diff=5, ratio=0.94
+
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/results/latest2/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/results/latest.pth
+
+==================================================
+  Zoom Pairs Results
+==================================================
+  Mean HR count:        513.9
+  Mean LR count:        415.9
+  Mean |HR - LR|:       153.6
+  Median |HR - LR|:     39.0
+  Mean HR/LR ratio:     1.348
+  Median HR/LR ratio:   1.033
+
+  Worst 5 pairs by |HR - LR|:
+    Pair  60: HR=8535, LR=5088, diff=3447, ratio=1.68
+    Pair  53: HR=2449, LR=798, diff=1651, ratio=3.07
+    Pair  51: HR=853, LR=90, diff=763, ratio=9.52
+    Pair  39: HR=501, LR=806, diff=305, ratio=0.62
+    Pair   6: HR=538, LR=263, diff=275, ratio=2.04
+
+  Best 5 pairs by |HR - LR|:
+    Pair  40: HR=41, LR=42, diff=1, ratio=0.98
+    Pair  36: HR=10, LR=11, diff=1, ratio=0.89
+    Pair   0: HR=88, LR=92, diff=4, ratio=0.96
+    Pair  15: HR=20, LR=24, diff=4, ratio=0.83
+    Pair  43: HR=63, LR=58, diff=5, ratio=1.08
+
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/results/latest2/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/results/latest.pth
+
+==================================================
+  Zoom Pairs Results
+==================================================
+  Mean HR count:        503.0
+  Mean LR count:        405.4
+  Mean |HR - LR|:       148.4
+  Median |HR - LR|:     39.7
+  Mean HR/LR ratio:     1.413
+  Median HR/LR ratio:   1.048
+
+  Worst 5 pairs by |HR - LR|:
+    Pair  60: HR=8126, LR=5022, diff=3105, ratio=1.62
+    Pair  53: HR=2546, LR=707, diff=1840, ratio=3.60
+    Pair  51: HR=865, LR=104, diff=762, ratio=8.33
+    Pair  39: HR=527, LR=815, diff=288, ratio=0.65
+    Pair   6: HR=516, LR=255, diff=261, ratio=2.02
+
+  Best 5 pairs by |HR - LR|:
+    Pair  10: HR=21, LR=21, diff=1, ratio=0.97
+    Pair  40: HR=40, LR=41, diff=1, ratio=0.98
+    Pair  36: HR=12, LR=10, diff=2, ratio=1.16
+    Pair  20: HR=41, LR=44, diff=2, ratio=0.95
+    Pair  15: HR=26, LR=23, diff=3, ratio=1.12
+
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/results/latest2/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/results/latest.pth
+
+==================================================
+  Zoom Pairs Results
+==================================================
+  Mean HR count:        555.3
+  Mean LR count:        430.7
+  Mean |HR - LR|:       175.6
+  Median |HR - LR|:     45.7
+  Mean HR/LR ratio:     1.425
+  Median HR/LR ratio:   1.078
+
+  Worst 5 pairs by |HR - LR|:
+    Pair  60: HR=8688, LR=5014, diff=3675, ratio=1.73
+    Pair  53: HR=3155, LR=669, diff=2486, ratio=4.72
+    Pair  51: HR=1024, LR=135, diff=889, ratio=7.58
+    Pair  39: HR=565, LR=899, diff=334, ratio=0.63
+    Pair   6: HR=557, LR=275, diff=282, ratio=2.03
+
+  Best 5 pairs by |HR - LR|:
+    Pair  15: HR=24, LR=24, diff=0, ratio=1.00
+    Pair  40: HR=44, LR=43, diff=1, ratio=1.02
+    Pair  10: HR=23, LR=21, diff=1, ratio=1.06
+    Pair  36: HR=14, LR=12, diff=2, ratio=1.17
+    Pair   0: HR=90, LR=94, diff=4, ratio=0.96
+
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/results/latest2/
+All methods completed.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28305517: <finetune_res_aug> in cluster <dcc> Done
+
+Job <finetune_res_aug> was submitted from host <n-62-12-19> by user <s260377> in cluster <dcc> at Mon Apr 27 16:07:05 2026
+Job was executed on host(s) <4*n-62-18-12>, in queue <gpua100>, as user <s260377> in cluster <dcc> at Mon Apr 27 17:43:29 2026
+</zhome/21/f/229477> was used as the home directory.
+</zhome/21/f/229477/my_dir/multi-resolution-crowd-counting> was used as the working directory.
+Started at Mon Apr 27 17:43:29 2026
+Terminated at Mon Apr 27 17:50:24 2026
+Results reported at Mon Apr 27 17:50:24 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpua100
+#BSUB -W 24:00
+#BSUB -J finetune_res_aug
+#BSUB -o jobs/logs/finetune_res_aug_%J.out
+#BSUB -e jobs/logs/finetune_res_aug_%J.err
+#BSUB -n 4
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+set -euo pipefail
+
+
+uv sync
+
+
+
+DEVICE="cuda:0"
+
+METHOD_PATHS=(
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/"
+)
+
+for METHOD_PATH in "${METHOD_PATHS[@]}"; do
+  echo "Running for $METHOD_PATH"
+  uv run python entrypoints/eval_zoom_pairs.py \
+    --device "$DEVICE" \
+    --path "$METHOD_PATH"
+done
+
+echo "All methods completed."
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   426.00 sec.
+    Max Memory :                                 1591 MB
+    Average Memory :                             1021.75 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               129481.00 MB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                13
+    Run time :                                   415 sec.
+    Turnaround time :                            6199 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <jobs/logs/finetune_res_aug_28305517.err> for stderr output of this job.
+

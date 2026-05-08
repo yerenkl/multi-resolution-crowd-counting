@@ -1,6 +1,6 @@
 import torch
 
-from src.models.clip_ebc import make_density_map
+from src.models_local.clip_ebc import make_density_map
 
 
 def nwpu_train_collate_fn(batch):

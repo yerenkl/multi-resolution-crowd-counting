@@ -13,7 +13,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.models.clip_ebc import load_model  # also puts CLIP_EBC_DIR in sys.path
+from src.models_local.clip_ebc import load_model  # also puts CLIP_EBC_DIR in sys.path
 from src.evaluation.runners import eval_nwpu
 
 
@@ -29,7 +29,7 @@ def main():
     print(f"Using device: {device}")
 
     model = load_model(device, out_dir / "results" / "best_mae.pth")
-    errors = eval_nwpu(model, device)
+    errors = eval_nwpu(model, device, out_dir)
 
     print(f"\n  Results (native):")
     print(f"    MAE:       {errors['mae']:.2f}")

@@ -1,0 +1,165 @@
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/best_mae.pth
+Training on 3109 images, 389 batches/epoch
+Epoch   1/50 | loss=64.0976 | Orig MAE=59.76, RMSE=166.26 | Down MAE=52.79, RMSE=119.48
+  → Saved best ORIGINAL model (MAE=59.76)
+  → Saved best DOWNSCALED model (MAE=52.79)
+Epoch   2/50 | loss=66.0031 | Orig MAE=64.13, RMSE=179.74 | Down MAE=53.54, RMSE=120.14
+Epoch   3/50 | loss=63.4531 | Orig MAE=67.53, RMSE=181.26 | Down MAE=56.61, RMSE=123.04
+Epoch   4/50 | loss=63.4008 | Orig MAE=65.36, RMSE=187.41 | Down MAE=48.55, RMSE=100.35
+  → Saved best DOWNSCALED model (MAE=48.55)
+Epoch   5/50 | loss=63.8671 | Orig MAE=60.67, RMSE=175.00 | Down MAE=54.84, RMSE=120.84
+Epoch   6/50 | loss=59.7871 | Orig MAE=64.67, RMSE=180.73 | Down MAE=58.31, RMSE=132.97
+Epoch   7/50 | loss=62.0937 | Orig MAE=54.92, RMSE=153.92 | Down MAE=63.40, RMSE=157.45
+  → Saved best ORIGINAL model (MAE=54.92)
+Epoch   8/50 | loss=60.8264 | Orig MAE=60.81, RMSE=166.52 | Down MAE=57.40, RMSE=127.22
+Epoch   9/50 | loss=59.7839 | Orig MAE=58.32, RMSE=161.78 | Down MAE=54.90, RMSE=121.94
+Epoch  10/50 | loss=62.4247 | Orig MAE=61.19, RMSE=165.39 | Down MAE=63.02, RMSE=156.15
+Epoch  11/50 | loss=61.2757 | Orig MAE=68.11, RMSE=192.02 | Down MAE=51.61, RMSE=103.95
+Epoch  12/50 | loss=61.8593 | Orig MAE=63.14, RMSE=173.18 | Down MAE=59.60, RMSE=144.85
+Epoch  13/50 | loss=61.9355 | Orig MAE=66.25, RMSE=182.49 | Down MAE=60.53, RMSE=147.68
+Epoch  14/50 | loss=61.6140 | Orig MAE=68.03, RMSE=182.22 | Down MAE=60.40, RMSE=146.85
+Epoch  15/50 | loss=60.9149 | Orig MAE=60.95, RMSE=164.21 | Down MAE=62.68, RMSE=165.61
+Epoch  16/50 | loss=62.0986 | Orig MAE=66.43, RMSE=181.23 | Down MAE=63.09, RMSE=167.62
+Epoch  17/50 | loss=61.9135 | Orig MAE=63.15, RMSE=174.57 | Down MAE=61.06, RMSE=156.29
+Epoch  18/50 | loss=61.3231 | Orig MAE=71.46, RMSE=199.51 | Down MAE=56.84, RMSE=139.31
+Epoch  19/50 | loss=61.4604 | Orig MAE=59.78, RMSE=156.10 | Down MAE=71.60, RMSE=208.01
+Epoch  20/50 | loss=59.7216 | Orig MAE=56.22, RMSE=150.82 | Down MAE=66.35, RMSE=179.22
+Epoch  21/50 | loss=62.4656 | Orig MAE=58.82, RMSE=159.30 | Down MAE=65.96, RMSE=181.35
+Epoch  22/50 | loss=60.4044 | Orig MAE=68.35, RMSE=186.18 | Down MAE=61.66, RMSE=157.96
+Epoch  23/50 | loss=65.3521 | Orig MAE=68.51, RMSE=183.01 | Down MAE=65.26, RMSE=170.35
+Epoch  24/50 | loss=60.9837 | Orig MAE=56.77, RMSE=151.58 | Down MAE=74.69, RMSE=221.19
+Epoch  25/50 | loss=60.0475 | Orig MAE=66.54, RMSE=175.45 | Down MAE=64.90, RMSE=170.47
+Epoch  26/50 | loss=59.7773 | Orig MAE=66.53, RMSE=172.19 | Down MAE=66.69, RMSE=185.56
+Epoch  27/50 | loss=60.2248 | Orig MAE=71.48, RMSE=190.04 | Down MAE=63.98, RMSE=173.30
+Epoch  28/50 | loss=59.6004 | Orig MAE=62.75, RMSE=166.85 | Down MAE=65.75, RMSE=185.28
+Epoch  29/50 | loss=62.0951 | Orig MAE=65.15, RMSE=178.41 | Down MAE=61.36, RMSE=161.65
+Epoch  30/50 | loss=60.6610 | Orig MAE=67.20, RMSE=180.40 | Down MAE=60.21, RMSE=155.33
+Epoch  31/50 | loss=61.3772 | Orig MAE=66.76, RMSE=186.42 | Down MAE=56.69, RMSE=145.80
+Epoch  32/50 | loss=59.1562 | Orig MAE=63.96, RMSE=171.11 | Down MAE=67.82, RMSE=193.30
+Epoch  33/50 | loss=60.1523 | Orig MAE=62.12, RMSE=164.78 | Down MAE=65.71, RMSE=184.85
+Epoch  34/50 | loss=59.4652 | Orig MAE=67.71, RMSE=193.16 | Down MAE=56.72, RMSE=147.05
+Epoch  35/50 | loss=59.8443 | Orig MAE=73.46, RMSE=197.42 | Down MAE=60.37, RMSE=156.66
+Epoch  36/50 | loss=60.0849 | Orig MAE=70.60, RMSE=206.48 | Down MAE=52.79, RMSE=119.68
+Epoch  37/50 | loss=60.4509 | Orig MAE=64.33, RMSE=167.86 | Down MAE=68.65, RMSE=198.11
+Epoch  38/50 | loss=61.2686 | Orig MAE=62.17, RMSE=169.96 | Down MAE=65.25, RMSE=179.24
+Epoch  39/50 | loss=61.6849 | Orig MAE=64.84, RMSE=186.10 | Down MAE=56.39, RMSE=141.53
+Epoch  40/50 | loss=62.1025 | Orig MAE=62.65, RMSE=180.74 | Down MAE=60.75, RMSE=163.92
+Epoch  41/50 | loss=62.5360 | Orig MAE=63.09, RMSE=177.23 | Down MAE=59.80, RMSE=157.68
+Epoch  42/50 | loss=61.3966 | Orig MAE=62.30, RMSE=169.45 | Down MAE=64.90, RMSE=179.54
+Epoch  43/50 | loss=60.7741 | Orig MAE=88.12, RMSE=236.03 | Down MAE=59.30, RMSE=141.36
+Epoch  44/50 | loss=60.6709 | Orig MAE=67.39, RMSE=189.16 | Down MAE=64.57, RMSE=177.54
+Epoch  45/50 | loss=59.5232 | Orig MAE=64.61, RMSE=176.66 | Down MAE=63.74, RMSE=173.77
+Epoch  46/50 | loss=61.7739 | Orig MAE=60.89, RMSE=162.87 | Down MAE=66.73, RMSE=189.26
+Epoch  47/50 | loss=61.8273 | Orig MAE=62.90, RMSE=174.87 | Down MAE=62.20, RMSE=165.49
+Epoch  48/50 | loss=62.3320 | Orig MAE=67.02, RMSE=185.03 | Down MAE=64.69, RMSE=170.40
+Epoch  49/50 | loss=59.8429 | Orig MAE=64.87, RMSE=172.80 | Down MAE=63.92, RMSE=173.05
+Epoch  50/50 | loss=59.6420 | Orig MAE=67.55, RMSE=186.97 | Down MAE=66.54, RMSE=186.67
+
+Training done.
+Best ORIGINAL MAE: 54.92
+Best DOWNSCALED MAE: 48.55
+Weights saved to /dtu/blackhole/0a/224426/NWPU_downscaled/random/results/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28341517: <random> in cluster <dcc> Exited
+
+Job <random> was submitted from host <hpclogin1> by user <s260377> in cluster <dcc> at Sun May  3 15:19:43 2026
+Job was executed on host(s) <4*n-62-12-20>, in queue <gpua100>, as user <s260377> in cluster <dcc> at Sun May  3 16:06:33 2026
+</zhome/21/f/229477> was used as the home directory.
+</zhome/21/f/229477/my_dir/multi-resolution-crowd-counting> was used as the working directory.
+Started at Sun May  3 16:06:33 2026
+Terminated at Sun May  3 18:31:47 2026
+Results reported at Sun May  3 18:31:47 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpua100
+#BSUB -W 4:00
+#BSUB -J random
+#BSUB -o jobs/logs/random_%J.out
+#BSUB -e jobs/logs/random_%J.err
+#BSUB -n 4
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+#For bash submission:
+#gpua100 - A100 nodes (4x 40GB + 6x 80GB models) - Best for your work
+#gpuv100 - V100 nodes (various configs: 16GB, 32GB, some with NVlink)
+#gpul40s - L40s nodes (6 nodes, 48GB each) - Newer option
+#gpua40 - A40 node (1 node, 48GB with NVlink)
+#gpua10 - A10 node (1 node, 24GB)
+#gpuamd - AMD Radeon nodes (if you need AMD)
+
+set -euo pipefail
+
+#LOG_DIR="logs"
+#mkdir -p "$LOG_DIR"
+#
+#OUT_LOG="$LOG_DIR/output.log"
+#ERR_LOG="$LOG_DIR/error.log"
+#
+#exec > >(tee -a "$OUT_LOG") \
+#     2> >(tee -a "$ERR_LOG" >&2)
+
+uv sync
+
+
+
+DEVICE="cuda:0"
+
+METHOD="/dtu/blackhole/0a/224426/NWPU_downscaled/random/"
+
+#uv run python entrypoints/downscale_nwpu.py \
+#    --method "mix"
+
+uv run python entrypoints/train_finetune_res_aug.py \
+    --device "$DEVICE" \
+    --epochs 50 \
+    --batch_size 8 \
+    --lr 1e-5 \
+    --num_workers 4 \
+    --path "$METHOD"
+
+uv run python entrypoints/eval_zoom_pairs.py \
+
+(... more ...)
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   13052.00 sec.
+    Max Memory :                                 4129 MB
+    Average Memory :                             2078.30 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               126943.00 MB
+    Max Swap :                                   -
+    Max Processes :                              9
+    Max Threads :                                31
+    Run time :                                   8714 sec.
+    Turnaround time :                            11524 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <jobs/logs/random_28341517.err> for stderr output of this job.
+

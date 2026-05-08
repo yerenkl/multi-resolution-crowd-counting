@@ -1,0 +1,238 @@
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise/results/best_mae.pth
+
+  Results (native):
+    MAE:       59.59
+    RMSE:      206.16
+    Avg diff:  36.56
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise/results/best_mae/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/results/best_mae.pth
+
+  Results (native):
+    MAE:       73.99
+    RMSE:      414.32
+    Avg diff:  54.87
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/results/best_mae/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/results/best_mae.pth
+
+  Results (native):
+    MAE:       64.55
+    RMSE:      292.53
+    Avg diff:  45.55
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/results/best_mae/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/results/best_mae.pth
+
+  Results (native):
+    MAE:       63.00
+    RMSE:      251.74
+    Avg diff:  40.06
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/results/best_mae/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/results/best_mae.pth
+
+  Results (native):
+    MAE:       59.74
+    RMSE:      224.57
+    Avg diff:  39.56
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/results/best_mae/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/base/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/base/results/best_mae.pth
+
+  Results (native):
+    MAE:       43.02
+    RMSE:      145.30
+    Avg diff:  4.53
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/base/results/best_mae/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise/results/best_mae.pth
+
+==================================================
+  Zoom Pairs Results
+==================================================
+  Mean HR count:        520.1
+  Mean LR count:        405.3
+  Mean |HR - LR|:       160.8
+  Median |HR - LR|:     40.7
+  Mean HR/LR ratio:     1.412
+  Median HR/LR ratio:   1.053
+
+  Worst 5 pairs by |HR - LR|:
+    Pair  60: HR=8178, LR=4838, diff=3340, ratio=1.69
+    Pair  53: HR=2868, LR=648, diff=2220, ratio=4.42
+    Pair  51: HR=971, LR=124, diff=847, ratio=7.84
+    Pair  39: HR=573, LR=884, diff=311, ratio=0.65
+    Pair   6: HR=510, LR=251, diff=259, ratio=2.03
+
+  Best 5 pairs by |HR - LR|:
+    Pair  15: HR=24, LR=23, diff=1, ratio=1.04
+    Pair  10: HR=21, LR=20, diff=1, ratio=1.05
+    Pair  59: HR=177, LR=174, diff=3, ratio=1.02
+    Pair  36: HR=14, LR=11, diff=3, ratio=1.27
+    Pair  40: HR=37, LR=40, diff=3, ratio=0.93
+
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise/results/best_mae/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/results/best_mae.pth
+
+==================================================
+  Zoom Pairs Results
+==================================================
+  Mean HR count:        510.5
+  Mean LR count:        420.2
+  Mean |HR - LR|:       142.1
+  Median |HR - LR|:     46.1
+  Mean HR/LR ratio:     1.285
+  Median HR/LR ratio:   1.011
+
+  Worst 5 pairs by |HR - LR|:
+    Pair  60: HR=8456, LR=5577, diff=2878, ratio=1.52
+    Pair  53: HR=2536, LR=745, diff=1791, ratio=3.40
+    Pair  51: HR=893, LR=108, diff=785, ratio=8.29
+    Pair   6: HR=550, LR=260, diff=290, ratio=2.11
+    Pair  39: HR=534, LR=813, diff=278, ratio=0.66
+
+  Best 5 pairs by |HR - LR|:
+    Pair  21: HR=284, LR=283, diff=1, ratio=1.00
+    Pair  15: HR=23, LR=23, diff=1, ratio=0.96
+    Pair  40: HR=40, LR=42, diff=2, ratio=0.95
+    Pair  36: HR=7, LR=9, diff=2, ratio=0.74
+    Pair  25: HR=72, LR=70, diff=3, ratio=1.04
+
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/results/best_mae/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/results/best_mae.pth
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28327089: <eval> in cluster <dcc> Exited
+
+Job <eval> was submitted from host <hpclogin1> by user <s260377> in cluster <dcc> at Wed Apr 29 17:10:53 2026
+Job was executed on host(s) <4*n-62-13-19>, in queue <gpul40s>, as user <s260377> in cluster <dcc> at Wed Apr 29 20:48:40 2026
+</zhome/21/f/229477> was used as the home directory.
+</zhome/21/f/229477/my_dir/multi-resolution-crowd-counting> was used as the working directory.
+Started at Wed Apr 29 20:48:40 2026
+Terminated at Wed Apr 29 21:19:21 2026
+Results reported at Wed Apr 29 21:19:21 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpul40s
+#BSUB -W 0:30
+#BSUB -J eval
+#BSUB -o jobs/logs/finetune_res_aug_%J.out
+#BSUB -e jobs/logs/finetune_res_aug_%J.err
+#BSUB -n 4
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+set -euo pipefail
+
+
+uv sync
+
+
+
+DEVICE="cuda:0"
+
+METHOD_PATHS=(
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/base/"
+)
+
+for METHOD_PATH in "${METHOD_PATHS[@]}"; do
+  echo "Running for $METHOD_PATH"
+  uv run python entrypoints/eval_nwpu_native.py \
+    --device "$DEVICE" \
+    --path "$METHOD_PATH"
+done
+
+for METHOD_PATH in "${METHOD_PATHS[@]}"; do
+  echo "Running for $METHOD_PATH"
+  uv run python entrypoints/eval_zoom_pairs.py \
+    --device "$DEVICE" \
+    --path "$METHOD_PATH"
+done
+
+echo "All methods completed."
+------------------------------------------------------------
+
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with exit code 140.
+
+Resource usage summary:
+
+    CPU time :                                   1941.00 sec.
+    Max Memory :                                 2268 MB
+    Average Memory :                             1470.59 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               128804.00 MB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                13
+    Run time :                                   1841 sec.
+    Turnaround time :                            14908 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <jobs/logs/finetune_res_aug_28327089.err> for stderr output of this job.
+

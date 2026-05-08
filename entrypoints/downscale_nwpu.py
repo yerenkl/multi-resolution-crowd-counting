@@ -79,6 +79,7 @@ def transform(img, pre_downsampling_blur: bool = True, downsample_factor: int = 
 
     return img
 
+
 """
 Downscale NWPU-Crowd train and val images at 2x and 4x.
 
@@ -121,7 +122,6 @@ parser.add_argument(
     "--noise",
     type=bool,
     default=False,
-    
 
 )
 
@@ -156,7 +156,7 @@ def main():
             "mix"
         )
 
-        out_dir = out_root / "random" / "images"
+        out_dir = out_root / "random"
         out_dir.mkdir(parents=True, exist_ok=True)
 
         image_ids = []
@@ -171,7 +171,8 @@ def main():
 
         for image_id in tqdm(image_ids, desc=f"{scale}x"):
             src_path = nwpu_root / "images" / f"{image_id}.jpg"
-            dst_path = out_dir / f"{image_id}.jpg"
+            dst_path = out_dir / "images" / f"{image_id}.jpg"
+            dst_path_json = out_dir / "jsons" / f"{image_id}.json"
             src_json = nwpu_root / "jsons" / f"{image_id}.json"
 
             if dst_path.exists():
@@ -198,11 +199,9 @@ def main():
                 pre_downsampling_blur=True,
                 downsample_factor=final_scale,
                 method_weights=method,
-                add_noise= args.noise,
+                add_noise=args.noise,
             )
             img_down.save(dst_path)
-
-            dst_json = out_root / f"{method_tag}" / f"{scale}x" / noise_tag / "jsons" / f"{image_id}.json"
 
             if src_json.exists():
                 with open(src_json) as f:
@@ -215,12 +214,15 @@ def main():
                         for x, y in data["points"]
                     ]
 
-                dst_json.parent.mkdir(parents=True, exist_ok=True)
+                dst_path_json.parent.mkdir(parents=True, exist_ok=True)
 
-                with open(dst_json, "w") as f:
+                with open(dst_path_json, "w") as f:
                     json.dump(data, f, indent=2)
+            else:
+                print("ops")
 
         print("\nDone.")
+
 
 if __name__ == "__main__":
     main()

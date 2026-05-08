@@ -19,7 +19,7 @@ import torch
 from torch.utils.data import DataLoader
 from torch.cuda.amp import GradScaler
 
-from src.models.clip_ebc import load_model  # also puts CLIP_EBC_DIR in sys.path
+from src.models_local.clip_ebc import load_model  # also puts CLIP_EBC_DIR in sys.path
 from src.settings import settings
 from src.datasets import NWPU
 from src.datasets.transforms import Compose, RandomCrop, ResolutionAugment, RandomHorizontalFlip, ToTensor, Normalize
@@ -87,16 +87,21 @@ def main():
     )
     print(f"Training on {len(dataset)} images, {len(loader)} batches/epoch")
 
-    out_dir = Path(f"{out_dir}/results")
+    out_dir = Path(f"{out_dir}/results_new_pipeline")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     best_mae_original = float("inf")
     best_mae_downscaled = float("inf")
 
+    patience = 5
+    epochs_no_improve = 0
+
     for epoch in range(1, args.epochs + 1):
+        improved = False
+
         train_loss = train_epoch(model, loader, loss_fn, optimizer, scaler, device)
 
-        errors = eval_epoch(model, device, downscaled_dir=out_dir)
+        errors = eval_epoch(model, device, downscaled_dir=out_dir.parent)
 
         orig = errors["original"]
         down = errors["downscaled"]
@@ -110,17 +115,27 @@ def main():
             f"Down MAE={mae_down:.2f}, RMSE={rmse_down:.2f}"
         )
 
-        # --- Save best ORIGINAL ---
         if mae_orig < best_mae_original:
             best_mae_original = mae_orig
             torch.save(model.state_dict(), out_dir / "best_mae_original.pth")
             print(f"  → Saved best ORIGINAL model (MAE={mae_orig:.2f})")
+            improved = True
 
-        # --- Save best DOWNSCALED ---
         if mae_down < best_mae_downscaled:
             best_mae_downscaled = mae_down
             torch.save(model.state_dict(), out_dir / "best_mae_downscaled.pth")
             print(f"  → Saved best DOWNSCALED model (MAE={mae_down:.2f})")
+            improved = True
+
+        if improved:
+            epochs_no_improve = 0
+        else:
+            epochs_no_improve += 1
+            print(f"  → No improvement for {epochs_no_improve}/{patience} epochs")
+
+            if epochs_no_improve >= patience:
+                print(f"\nEarly stopping triggered after {epoch} epochs.")
+                break
 
         # --- Always save latest ---
         torch.save({

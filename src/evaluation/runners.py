@@ -8,7 +8,7 @@ from tqdm import tqdm
 from torchvision import transforms as T
 
 from src.settings import settings
-from src.models.clip_ebc import NORMALIZE
+from src.models_local.clip_ebc import NORMALIZE
 from src.evaluation.inference import predict_count
 from utils.eval_utils import calculate_errors  # CLIP-EBC utility
 

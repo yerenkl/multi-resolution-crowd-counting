@@ -1,0 +1,192 @@
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/best_mae.pth
+Training on 3109 images, 389 batches/epoch
+Epoch   1/50 | loss=135.9733 | MAE=77.59 | RMSE=204.22
+  → Saved best model (MAE=77.59)
+Epoch   2/50 | loss=127.0237 | MAE=77.16 | RMSE=200.85
+  → Saved best model (MAE=77.16)
+Epoch   3/50 | loss=128.0708 | MAE=92.75 | RMSE=236.37
+Epoch   4/50 | loss=124.1491 | MAE=73.12 | RMSE=197.77
+  → Saved best model (MAE=73.12)
+Epoch   5/50 | loss=122.9152 | MAE=91.65 | RMSE=234.60
+Epoch   6/50 | loss=127.0726 | MAE=91.83 | RMSE=244.78
+Epoch   7/50 | loss=125.7192 | MAE=70.95 | RMSE=192.82
+  → Saved best model (MAE=70.95)
+Epoch   8/50 | loss=125.5077 | MAE=79.17 | RMSE=210.73
+Epoch   9/50 | loss=123.4092 | MAE=74.34 | RMSE=206.57
+Epoch  10/50 | loss=120.8648 | MAE=67.66 | RMSE=182.48
+  → Saved best model (MAE=67.66)
+Epoch  11/50 | loss=122.8115 | MAE=75.92 | RMSE=210.59
+Epoch  12/50 | loss=122.0954 | MAE=70.04 | RMSE=184.61
+Epoch  13/50 | loss=122.3901 | MAE=93.69 | RMSE=239.43
+Epoch  14/50 | loss=121.9015 | MAE=84.40 | RMSE=224.12
+Epoch  15/50 | loss=121.9363 | MAE=82.51 | RMSE=226.68
+Epoch  16/50 | loss=122.4791 | MAE=93.04 | RMSE=248.11
+Epoch  17/50 | loss=121.4051 | MAE=74.85 | RMSE=199.05
+Epoch  18/50 | loss=122.4203 | MAE=73.39 | RMSE=199.59
+Epoch  19/50 | loss=121.9439 | MAE=89.49 | RMSE=235.62
+Epoch  20/50 | loss=118.4305 | MAE=87.28 | RMSE=239.34
+Epoch  21/50 | loss=118.6683 | MAE=76.73 | RMSE=220.04
+Epoch  22/50 | loss=120.4757 | MAE=77.16 | RMSE=216.98
+Epoch  23/50 | loss=117.5232 | MAE=72.79 | RMSE=212.04
+Epoch  24/50 | loss=120.6955 | MAE=86.09 | RMSE=238.01
+Epoch  25/50 | loss=120.6288 | MAE=73.27 | RMSE=205.59
+Epoch  26/50 | loss=121.3907 | MAE=83.51 | RMSE=225.08
+Epoch  27/50 | loss=121.7572 | MAE=77.93 | RMSE=217.33
+Epoch  28/50 | loss=118.7797 | MAE=88.67 | RMSE=242.05
+Epoch  29/50 | loss=120.1944 | MAE=72.74 | RMSE=209.73
+Epoch  30/50 | loss=119.7441 | MAE=82.37 | RMSE=238.07
+Epoch  31/50 | loss=116.7975 | MAE=88.26 | RMSE=246.06
+Epoch  32/50 | loss=119.7130 | MAE=73.52 | RMSE=208.23
+Epoch  33/50 | loss=118.5808 | MAE=83.80 | RMSE=226.32
+Epoch  34/50 | loss=117.6736 | MAE=72.83 | RMSE=192.24
+Epoch  35/50 | loss=116.9085 | MAE=74.05 | RMSE=196.54
+Epoch  36/50 | loss=117.8377 | MAE=77.18 | RMSE=217.78
+Epoch  37/50 | loss=120.3553 | MAE=85.49 | RMSE=237.07
+Epoch  38/50 | loss=118.6425 | MAE=85.09 | RMSE=231.57
+Epoch  39/50 | loss=117.3588 | MAE=88.31 | RMSE=242.01
+Epoch  40/50 | loss=117.6804 | MAE=80.78 | RMSE=225.41
+Epoch  41/50 | loss=119.1301 | MAE=77.01 | RMSE=219.92
+Epoch  42/50 | loss=117.3708 | MAE=88.91 | RMSE=242.20
+Epoch  43/50 | loss=117.6245 | MAE=77.86 | RMSE=216.26
+Epoch  44/50 | loss=115.9839 | MAE=66.13 | RMSE=180.14
+  → Saved best model (MAE=66.13)
+Epoch  45/50 | loss=121.0671 | MAE=92.09 | RMSE=241.44
+Epoch  46/50 | loss=118.4495 | MAE=92.85 | RMSE=244.03
+Epoch  47/50 | loss=119.3258 | MAE=91.04 | RMSE=232.79
+Epoch  48/50 | loss=117.2196 | MAE=95.09 | RMSE=250.11
+Epoch  49/50 | loss=116.0040 | MAE=89.03 | RMSE=235.53
+Epoch  50/50 | loss=116.1288 | MAE=89.59 | RMSE=237.69
+
+Training done. Best MAE: 66.13
+Weights saved to /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise/results/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise/results/latest.pth
+
+==================================================
+  Zoom Pairs Results
+==================================================
+  Mean HR count:        543.6
+  Mean LR count:        436.6
+  Mean |HR - LR|:       163.0
+  Median |HR - LR|:     40.2
+  Mean HR/LR ratio:     1.377
+  Median HR/LR ratio:   1.032
+
+  Worst 5 pairs by |HR - LR|:
+    Pair  60: HR=8543, LR=5229, diff=3314, ratio=1.63
+    Pair  53: HR=3065, LR=909, diff=2156, ratio=3.37
+    Pair  51: HR=1001, LR=130, diff=871, ratio=7.70
+    Pair  39: HR=574, LR=936, diff=361, ratio=0.61
+    Pair   6: HR=546, LR=269, diff=276, ratio=2.03
+
+  Best 5 pairs by |HR - LR|:
+    Pair  10: HR=21, LR=21, diff=0, ratio=1.00
+    Pair  15: HR=24, LR=23, diff=0, ratio=1.01
+    Pair  40: HR=39, LR=42, diff=3, ratio=0.94
+    Pair  59: HR=186, LR=183, diff=3, ratio=1.01
+    Pair  36: HR=14, LR=11, diff=3, ratio=1.27
+
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise/results/latest2/
+Finished method: mix | noise: false
+All methods completed.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28305085: <finetune_res_aug> in cluster <dcc> Done
+
+Job <finetune_res_aug> was submitted from host <hpclogin1> by user <s260377> in cluster <dcc> at Mon Apr 27 14:43:21 2026
+Job was executed on host(s) <4*n-62-12-24>, in queue <gpua100>, as user <s260377> in cluster <dcc> at Mon Apr 27 14:44:49 2026
+</zhome/21/f/229477> was used as the home directory.
+</zhome/21/f/229477/my_dir/multi-resolution-crowd-counting> was used as the working directory.
+Started at Mon Apr 27 14:44:49 2026
+Terminated at Mon Apr 27 16:58:39 2026
+Results reported at Mon Apr 27 16:58:39 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpua100
+#BSUB -W 24:00
+#BSUB -J finetune_res_aug
+#BSUB -o jobs/logs/finetune_res_aug_%J.out
+#BSUB -e jobs/logs/finetune_res_aug_%J.err
+#BSUB -n 4
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+set -euo pipefail
+
+
+uv sync
+
+
+
+METHODS=("mix")
+DEVICE="cuda:0"
+
+NOISE_OPTIONS=("false")
+
+for method in "${METHODS[@]}"; do
+    for noise in "${NOISE_OPTIONS[@]}"; do
+
+
+        METHOD_PATH="/dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise"
+
+        uv run python entrypoints/train_finetune_res_aug.py \
+            --device "$DEVICE" \
+            --epochs 50 \
+            --batch_size 8 \
+            --lr 1e-5 \
+            --num_workers 4 \
+            --path "$METHOD_PATH"
+
+        uv run python entrypoints/eval_zoom_pairs.py \
+            --device "$DEVICE" \
+            --path "$METHOD_PATH"
+
+#        uv run python entrypoints/eval_nwpu_native.py \
+#            --device "$DEVICE" \
+#            --path "$METHOD_PATH"
+
+        echo "Finished method: $method | noise: $noise"
+    done
+done
+
+echo "All methods completed."
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   9357.00 sec.
+    Max Memory :                                 2905 MB
+    Average Memory :                             2105.39 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               128167.00 MB
+    Max Swap :                                   -
+    Max Processes :                              9
+    Max Threads :                                31
+    Run time :                                   8030 sec.
+    Turnaround time :                            8118 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <jobs/logs/finetune_res_aug_28305085.err> for stderr output of this job.
+

@@ -1,0 +1,377 @@
+Running method: /dtu/blackhole/0a/224426/NWPU_downscaled/random/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/best_mae.pth
+Training on 3109 images, 389 batches/epoch
+Epoch   1/30 | loss=65.1900 | Orig MAE=70.57, RMSE=181.43 | Down MAE=65.78, RMSE=164.14
+  → Saved best ORIGINAL model (MAE=70.57)
+  → Saved best DOWNSCALED model (MAE=65.78)
+Epoch   2/30 | loss=63.8100 | Orig MAE=74.31, RMSE=199.01 | Down MAE=59.35, RMSE=140.46
+  → Saved best DOWNSCALED model (MAE=59.35)
+Epoch   3/30 | loss=65.1915 | Orig MAE=76.78, RMSE=206.41 | Down MAE=59.58, RMSE=138.85
+Epoch   4/30 | loss=65.8211 | Orig MAE=67.06, RMSE=176.39 | Down MAE=57.66, RMSE=133.05
+  → Saved best ORIGINAL model (MAE=67.06)
+  → Saved best DOWNSCALED model (MAE=57.66)
+Epoch   5/30 | loss=64.2657 | Orig MAE=68.94, RMSE=187.27 | Down MAE=56.36, RMSE=127.81
+  → Saved best DOWNSCALED model (MAE=56.36)
+Epoch   6/30 | loss=65.6993 | Orig MAE=73.92, RMSE=203.91 | Down MAE=56.41, RMSE=126.46
+Epoch   7/30 | loss=61.9884 | Orig MAE=70.26, RMSE=191.05 | Down MAE=55.26, RMSE=122.77
+  → Saved best DOWNSCALED model (MAE=55.26)
+Epoch   8/30 | loss=64.8711 | Orig MAE=65.79, RMSE=181.41 | Down MAE=54.61, RMSE=120.65
+  → Saved best ORIGINAL model (MAE=65.79)
+  → Saved best DOWNSCALED model (MAE=54.61)
+Epoch   9/30 | loss=62.7321 | Orig MAE=65.22, RMSE=183.32 | Down MAE=52.97, RMSE=115.40
+  → Saved best ORIGINAL model (MAE=65.22)
+  → Saved best DOWNSCALED model (MAE=52.97)
+Epoch  10/30 | loss=62.9781 | Orig MAE=70.81, RMSE=189.10 | Down MAE=54.29, RMSE=117.54
+Epoch  11/30 | loss=64.1989 | Orig MAE=58.04, RMSE=161.40 | Down MAE=52.89, RMSE=119.47
+  → Saved best ORIGINAL model (MAE=58.04)
+  → Saved best DOWNSCALED model (MAE=52.89)
+Epoch  12/30 | loss=63.7020 | Orig MAE=58.63, RMSE=161.36 | Down MAE=53.82, RMSE=121.93
+Epoch  13/30 | loss=63.4416 | Orig MAE=69.29, RMSE=187.10 | Down MAE=53.31, RMSE=115.83
+Epoch  14/30 | loss=66.1182 | Orig MAE=66.45, RMSE=182.01 | Down MAE=52.32, RMSE=112.62
+  → Saved best DOWNSCALED model (MAE=52.32)
+Epoch  15/30 | loss=63.4809 | Orig MAE=64.54, RMSE=174.59 | Down MAE=56.61, RMSE=124.81
+Epoch  16/30 | loss=63.2147 | Orig MAE=62.55, RMSE=176.41 | Down MAE=52.97, RMSE=117.91
+Epoch  17/30 | loss=63.0254 | Orig MAE=62.96, RMSE=173.58 | Down MAE=52.86, RMSE=115.26
+Epoch  18/30 | loss=60.6845 | Orig MAE=65.16, RMSE=179.35 | Down MAE=52.57, RMSE=112.92
+Epoch  19/30 | loss=65.0343 | Orig MAE=71.31, RMSE=188.85 | Down MAE=54.49, RMSE=115.70
+Epoch  20/30 | loss=65.2546 | Orig MAE=61.38, RMSE=170.09 | Down MAE=52.99, RMSE=114.16
+Epoch  21/30 | loss=63.6593 | Orig MAE=65.50, RMSE=180.43 | Down MAE=54.84, RMSE=118.54
+Epoch  22/30 | loss=61.1300 | Orig MAE=59.50, RMSE=163.21 | Down MAE=55.73, RMSE=123.95
+Epoch  23/30 | loss=62.3352 | Orig MAE=64.40, RMSE=180.62 | Down MAE=54.33, RMSE=117.68
+Epoch  24/30 | loss=64.5237 | Orig MAE=63.02, RMSE=172.14 | Down MAE=53.12, RMSE=114.39
+Epoch  25/30 | loss=62.0926 | Orig MAE=65.81, RMSE=183.79 | Down MAE=51.46, RMSE=108.16
+  → Saved best DOWNSCALED model (MAE=51.46)
+Epoch  26/30 | loss=63.4319 | Orig MAE=72.34, RMSE=192.61 | Down MAE=53.80, RMSE=110.78
+Epoch  27/30 | loss=61.9826 | Orig MAE=64.32, RMSE=178.51 | Down MAE=54.24, RMSE=115.91
+Epoch  28/30 | loss=63.5279 | Orig MAE=70.85, RMSE=195.63 | Down MAE=51.68, RMSE=107.19
+Epoch  29/30 | loss=61.0201 | Orig MAE=64.86, RMSE=173.95 | Down MAE=55.23, RMSE=119.38
+Epoch  30/30 | loss=62.4521 | Orig MAE=60.97, RMSE=170.87 | Down MAE=52.92, RMSE=113.71
+
+Training done.
+Best ORIGINAL MAE: 58.04
+Best DOWNSCALED MAE: 51.46
+Weights saved to /dtu/blackhole/0a/224426/NWPU_downscaled/random/results_new_pipeline/
+Running method: /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/best_mae.pth
+Training on 3109 images, 389 batches/epoch
+Epoch   1/30 | loss=194.3392 | Orig MAE=48.60, RMSE=110.12 | Down MAE=163.13, RMSE=353.31
+  → Saved best ORIGINAL model (MAE=48.60)
+  → Saved best DOWNSCALED model (MAE=163.13)
+Epoch   2/30 | loss=183.0268 | Orig MAE=64.35, RMSE=158.66 | Down MAE=194.16, RMSE=416.45
+Epoch   3/30 | loss=178.6398 | Orig MAE=78.89, RMSE=195.26 | Down MAE=211.52, RMSE=449.44
+Epoch   4/30 | loss=174.1197 | Orig MAE=86.50, RMSE=210.81 | Down MAE=222.39, RMSE=476.18
+Epoch   5/30 | loss=177.4640 | Orig MAE=91.00, RMSE=222.75 | Down MAE=228.98, RMSE=491.82
+Epoch   6/30 | loss=176.0188 | Orig MAE=97.49, RMSE=237.20 | Down MAE=236.43, RMSE=505.53
+Epoch   7/30 | loss=169.4992 | Orig MAE=98.68, RMSE=238.39 | Down MAE=238.32, RMSE=512.06
+Epoch   8/30 | loss=166.1141 | Orig MAE=111.75, RMSE=261.22 | Down MAE=248.31, RMSE=534.50
+Epoch   9/30 | loss=164.8815 | Orig MAE=103.65, RMSE=246.27 | Down MAE=243.16, RMSE=525.36
+Epoch  10/30 | loss=160.5065 | Orig MAE=104.70, RMSE=250.16 | Down MAE=242.71, RMSE=521.81
+Epoch  11/30 | loss=159.6717 | Orig MAE=110.37, RMSE=253.76 | Down MAE=243.19, RMSE=522.68
+Epoch  12/30 | loss=161.6453 | Orig MAE=111.47, RMSE=259.50 | Down MAE=249.53, RMSE=541.01
+Epoch  13/30 | loss=155.7410 | Orig MAE=93.15, RMSE=228.71 | Down MAE=235.47, RMSE=513.34
+Epoch  14/30 | loss=154.0657 | Orig MAE=117.03, RMSE=262.42 | Down MAE=240.57, RMSE=509.76
+Epoch  15/30 | loss=154.0812 | Orig MAE=120.83, RMSE=272.00 | Down MAE=243.44, RMSE=517.34
+Epoch  16/30 | loss=151.1026 | Orig MAE=133.86, RMSE=299.94 | Down MAE=255.95, RMSE=547.12
+Epoch  17/30 | loss=151.1112 | Orig MAE=131.05, RMSE=296.08 | Down MAE=247.23, RMSE=521.19
+Epoch  18/30 | loss=148.0936 | Orig MAE=118.26, RMSE=272.31 | Down MAE=242.26, RMSE=524.69
+Epoch  19/30 | loss=151.7857 | Orig MAE=121.85, RMSE=281.54 | Down MAE=247.56, RMSE=536.71
+Epoch  20/30 | loss=152.0871 | Orig MAE=120.64, RMSE=273.14 | Down MAE=237.43, RMSE=508.84
+Epoch  21/30 | loss=144.7642 | Orig MAE=130.06, RMSE=292.60 | Down MAE=245.91, RMSE=530.74
+Epoch  22/30 | loss=149.9765 | Orig MAE=134.52, RMSE=299.80 | Down MAE=245.51, RMSE=526.30
+Epoch  23/30 | loss=150.6799 | Orig MAE=142.76, RMSE=315.83 | Down MAE=250.47, RMSE=535.82
+Epoch  24/30 | loss=145.3172 | Orig MAE=141.58, RMSE=315.01 | Down MAE=251.69, RMSE=544.95
+Epoch  25/30 | loss=147.8801 | Orig MAE=145.54, RMSE=319.35 | Down MAE=247.35, RMSE=527.51
+Epoch  26/30 | loss=145.6059 | Orig MAE=138.18, RMSE=306.76 | Down MAE=248.81, RMSE=539.09
+Epoch  27/30 | loss=141.3494 | Orig MAE=149.17, RMSE=327.74 | Down MAE=256.84, RMSE=555.96
+Epoch  28/30 | loss=142.0733 | Orig MAE=159.30, RMSE=349.37 | Down MAE=261.04, RMSE=561.01
+Epoch  29/30 | loss=147.7253 | Orig MAE=153.66, RMSE=336.89 | Down MAE=256.13, RMSE=554.40
+Epoch  30/30 | loss=144.4750 | Orig MAE=159.11, RMSE=346.39 | Down MAE=253.94, RMSE=542.11
+
+Training done.
+Best ORIGINAL MAE: 48.60
+Best DOWNSCALED MAE: 163.13
+Weights saved to /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise/results_new_pipeline/
+Running method: /dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/best_mae.pth
+Training on 3109 images, 389 batches/epoch
+Epoch   1/30 | loss=146.6726 | Orig MAE=81.87, RMSE=206.63 | Down MAE=74.13, RMSE=171.97
+  → Saved best ORIGINAL model (MAE=81.87)
+  → Saved best DOWNSCALED model (MAE=74.13)
+Epoch   2/30 | loss=137.5410 | Orig MAE=94.65, RMSE=241.00 | Down MAE=64.79, RMSE=149.90
+  → Saved best DOWNSCALED model (MAE=64.79)
+Epoch   3/30 | loss=134.4967 | Orig MAE=83.75, RMSE=213.17 | Down MAE=66.96, RMSE=161.75
+Epoch   4/30 | loss=130.7326 | Orig MAE=81.43, RMSE=217.82 | Down MAE=68.77, RMSE=182.45
+  → Saved best ORIGINAL model (MAE=81.43)
+Epoch   5/30 | loss=132.6545 | Orig MAE=75.06, RMSE=206.76 | Down MAE=68.75, RMSE=185.81
+  → Saved best ORIGINAL model (MAE=75.06)
+Epoch   6/30 | loss=129.2324 | Orig MAE=79.73, RMSE=213.90 | Down MAE=74.66, RMSE=219.02
+Epoch   7/30 | loss=130.8614 | Orig MAE=79.68, RMSE=209.49 | Down MAE=76.20, RMSE=228.42
+Epoch   8/30 | loss=131.0905 | Orig MAE=78.59, RMSE=211.26 | Down MAE=77.29, RMSE=232.48
+Epoch   9/30 | loss=130.9649 | Orig MAE=79.24, RMSE=211.04 | Down MAE=72.67, RMSE=207.21
+Epoch  10/30 | loss=128.8336 | Orig MAE=85.67, RMSE=223.93 | Down MAE=76.30, RMSE=229.91
+Epoch  11/30 | loss=131.4091 | Orig MAE=73.01, RMSE=192.30 | Down MAE=76.37, RMSE=226.00
+  → Saved best ORIGINAL model (MAE=73.01)
+Epoch  12/30 | loss=131.9821 | Orig MAE=87.27, RMSE=223.81 | Down MAE=76.99, RMSE=235.06
+Epoch  13/30 | loss=128.9978 | Orig MAE=88.70, RMSE=229.22 | Down MAE=78.06, RMSE=241.95
+Epoch  14/30 | loss=128.7267 | Orig MAE=79.05, RMSE=210.98 | Down MAE=77.43, RMSE=234.66
+Epoch  15/30 | loss=128.7439 | Orig MAE=70.24, RMSE=193.41 | Down MAE=77.33, RMSE=230.78
+  → Saved best ORIGINAL model (MAE=70.24)
+Epoch  16/30 | loss=128.6690 | Orig MAE=72.20, RMSE=196.96 | Down MAE=82.86, RMSE=268.53
+Epoch  17/30 | loss=127.9781 | Orig MAE=82.22, RMSE=220.42 | Down MAE=79.30, RMSE=251.41
+Epoch  18/30 | loss=129.5159 | Orig MAE=92.46, RMSE=234.30 | Down MAE=78.94, RMSE=248.46
+Epoch  19/30 | loss=129.8332 | Orig MAE=79.67, RMSE=214.17 | Down MAE=77.39, RMSE=238.91
+Epoch  20/30 | loss=126.1684 | Orig MAE=76.19, RMSE=208.00 | Down MAE=79.30, RMSE=250.06
+Epoch  21/30 | loss=125.8830 | Orig MAE=82.59, RMSE=215.08 | Down MAE=78.05, RMSE=241.36
+Epoch  22/30 | loss=126.1735 | Orig MAE=73.85, RMSE=199.15 | Down MAE=79.33, RMSE=249.08
+Epoch  23/30 | loss=125.1250 | Orig MAE=75.18, RMSE=201.35 | Down MAE=74.34, RMSE=218.39
+Epoch  24/30 | loss=128.8781 | Orig MAE=78.83, RMSE=211.08 | Down MAE=78.95, RMSE=244.84
+Epoch  25/30 | loss=124.3296 | Orig MAE=80.58, RMSE=216.25 | Down MAE=76.20, RMSE=228.55
+Epoch  26/30 | loss=128.4817 | Orig MAE=75.69, RMSE=209.36 | Down MAE=80.44, RMSE=263.86
+Epoch  27/30 | loss=128.5470 | Orig MAE=83.63, RMSE=221.90 | Down MAE=75.59, RMSE=230.14
+Epoch  28/30 | loss=125.5538 | Orig MAE=78.72, RMSE=214.42 | Down MAE=75.72, RMSE=232.70
+Epoch  29/30 | loss=124.1847 | Orig MAE=85.59, RMSE=229.56 | Down MAE=76.37, RMSE=242.76
+Epoch  30/30 | loss=125.5520 | Orig MAE=85.28, RMSE=224.46 | Down MAE=75.46, RMSE=231.35
+
+Training done.
+Best ORIGINAL MAE: 70.24
+Best DOWNSCALED MAE: 64.79
+Weights saved to /dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/results_new_pipeline/
+Running method: /dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/best_mae.pth
+Training on 3109 images, 389 batches/epoch
+Epoch   1/30 | loss=146.0559 | Orig MAE=78.89, RMSE=194.50 | Down MAE=69.43, RMSE=161.33
+  → Saved best ORIGINAL model (MAE=78.89)
+  → Saved best DOWNSCALED model (MAE=69.43)
+Epoch   2/30 | loss=136.4115 | Orig MAE=87.97, RMSE=225.81 | Down MAE=64.94, RMSE=175.70
+  → Saved best DOWNSCALED model (MAE=64.94)
+Epoch   3/30 | loss=136.0537 | Orig MAE=96.97, RMSE=250.71 | Down MAE=64.07, RMSE=182.90
+  → Saved best DOWNSCALED model (MAE=64.07)
+Epoch   4/30 | loss=128.5293 | Orig MAE=82.48, RMSE=219.78 | Down MAE=68.60, RMSE=210.44
+  → No improvement for 1/5 epochs
+Epoch   5/30 | loss=131.4947 | Orig MAE=83.99, RMSE=218.97 | Down MAE=68.73, RMSE=207.50
+  → No improvement for 2/5 epochs
+Epoch   6/30 | loss=132.5701 | Orig MAE=77.25, RMSE=202.98 | Down MAE=69.71, RMSE=207.99
+  → Saved best ORIGINAL model (MAE=77.25)
+Epoch   7/30 | loss=131.7513 | Orig MAE=88.39, RMSE=220.92 | Down MAE=70.46, RMSE=217.26
+  → No improvement for 1/5 epochs
+Epoch   8/30 | loss=130.3719 | Orig MAE=72.21, RMSE=188.45 | Down MAE=74.51, RMSE=237.11
+  → Saved best ORIGINAL model (MAE=72.21)
+Epoch   9/30 | loss=131.5085 | Orig MAE=85.33, RMSE=215.59 | Down MAE=72.49, RMSE=228.60
+  → No improvement for 1/5 epochs
+Epoch  10/30 | loss=130.0786 | Orig MAE=88.24, RMSE=226.45 | Down MAE=73.94, RMSE=242.34
+  → No improvement for 2/5 epochs
+Epoch  11/30 | loss=130.6709 | Orig MAE=90.43, RMSE=231.57 | Down MAE=74.70, RMSE=254.18
+  → No improvement for 3/5 epochs
+Epoch  12/30 | loss=127.3036 | Orig MAE=78.76, RMSE=209.30 | Down MAE=74.06, RMSE=246.81
+  → No improvement for 4/5 epochs
+Epoch  13/30 | loss=128.6658 | Orig MAE=79.25, RMSE=203.13 | Down MAE=75.95, RMSE=252.24
+  → No improvement for 5/5 epochs
+
+Early stopping triggered after 13 epochs.
+
+Training done.
+Best ORIGINAL MAE: 72.21
+Best DOWNSCALED MAE: 64.07
+Weights saved to /dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/results_new_pipeline/
+Running method: /dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/best_mae.pth
+Training on 3109 images, 389 batches/epoch
+Epoch   1/30 | loss=141.5085 | Orig MAE=79.95, RMSE=202.72 | Down MAE=68.13, RMSE=161.45
+  → Saved best ORIGINAL model (MAE=79.95)
+  → Saved best DOWNSCALED model (MAE=68.13)
+Epoch   2/30 | loss=138.1291 | Orig MAE=102.00, RMSE=262.83 | Down MAE=60.17, RMSE=147.03
+  → Saved best DOWNSCALED model (MAE=60.17)
+Epoch   3/30 | loss=131.6663 | Orig MAE=98.47, RMSE=251.66 | Down MAE=67.18, RMSE=196.31
+  → No improvement for 1/5 epochs
+Epoch   4/30 | loss=131.8747 | Orig MAE=92.06, RMSE=238.63 | Down MAE=72.70, RMSE=231.67
+  → No improvement for 2/5 epochs
+Epoch   5/30 | loss=134.2370 | Orig MAE=80.40, RMSE=208.30 | Down MAE=69.33, RMSE=206.94
+  → No improvement for 3/5 epochs
+Epoch   6/30 | loss=129.9328 | Orig MAE=79.68, RMSE=208.60 | Down MAE=71.60, RMSE=223.37
+  → Saved best ORIGINAL model (MAE=79.68)
+Epoch   7/30 | loss=126.4331 | Orig MAE=82.65, RMSE=212.03 | Down MAE=72.68, RMSE=229.45
+  → No improvement for 1/5 epochs
+Epoch   8/30 | loss=130.9554 | Orig MAE=77.16, RMSE=198.23 | Down MAE=71.44, RMSE=217.91
+  → Saved best ORIGINAL model (MAE=77.16)
+Epoch   9/30 | loss=130.5761 | Orig MAE=89.50, RMSE=228.68 | Down MAE=78.29, RMSE=260.18
+  → No improvement for 1/5 epochs
+Epoch  10/30 | loss=127.3883 | Orig MAE=82.35, RMSE=210.18 | Down MAE=75.61, RMSE=244.59
+  → No improvement for 2/5 epochs
+Epoch  11/30 | loss=128.6032 | Orig MAE=83.44, RMSE=211.97 | Down MAE=73.87, RMSE=235.43
+  → No improvement for 3/5 epochs
+Epoch  12/30 | loss=125.9555 | Orig MAE=87.30, RMSE=224.78 | Down MAE=76.92, RMSE=251.41
+  → No improvement for 4/5 epochs
+Epoch  13/30 | loss=128.6254 | Orig MAE=87.53, RMSE=220.65 | Down MAE=70.96, RMSE=223.11
+  → No improvement for 5/5 epochs
+
+Early stopping triggered after 13 epochs.
+
+Training done.
+Best ORIGINAL MAE: 77.16
+Best DOWNSCALED MAE: 60.17
+Weights saved to /dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/results_new_pipeline/
+Running method: /dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/best_mae.pth
+Training on 3109 images, 389 batches/epoch
+Epoch   1/30 | loss=139.7032 | Orig MAE=90.57, RMSE=229.58 | Down MAE=56.89, RMSE=131.30
+  → Saved best ORIGINAL model (MAE=90.57)
+  → Saved best DOWNSCALED model (MAE=56.89)
+Epoch   2/30 | loss=132.9341 | Orig MAE=95.72, RMSE=249.96 | Down MAE=55.62, RMSE=127.35
+  → Saved best DOWNSCALED model (MAE=55.62)
+Epoch   3/30 | loss=129.7436 | Orig MAE=86.06, RMSE=229.55 | Down MAE=61.63, RMSE=159.67
+  → Saved best ORIGINAL model (MAE=86.06)
+Epoch   4/30 | loss=131.2992 | Orig MAE=87.36, RMSE=220.37 | Down MAE=65.16, RMSE=175.99
+  → No improvement for 1/5 epochs
+Epoch   5/30 | loss=135.2148 | Orig MAE=86.10, RMSE=218.64 | Down MAE=63.42, RMSE=165.70
+  → No improvement for 2/5 epochs
+Epoch   6/30 | loss=132.8510 | Orig MAE=84.10, RMSE=210.00 | Down MAE=69.74, RMSE=197.21
+  → Saved best ORIGINAL model (MAE=84.10)
+Epoch   7/30 | loss=131.0846 | Orig MAE=88.33, RMSE=222.41 | Down MAE=73.28, RMSE=217.22
+  → No improvement for 1/5 epochs
+Epoch   8/30 | loss=130.5647 | Orig MAE=92.53, RMSE=232.30 | Down MAE=72.46, RMSE=213.43
+  → No improvement for 2/5 epochs
+Epoch   9/30 | loss=126.1224 | Orig MAE=95.43, RMSE=228.42 | Down MAE=70.88, RMSE=202.26
+  → No improvement for 3/5 epochs
+Epoch  10/30 | loss=131.9789 | Orig MAE=89.47, RMSE=222.59 | Down MAE=70.04, RMSE=202.17
+  → No improvement for 4/5 epochs
+Epoch  11/30 | loss=127.1701 | Orig MAE=87.66, RMSE=214.30 | Down MAE=68.63, RMSE=188.19
+  → No improvement for 5/5 epochs
+
+Early stopping triggered after 11 epochs.
+
+Training done.
+Best ORIGINAL MAE: 84.10
+Best DOWNSCALED MAE: 55.62
+Weights saved to /dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/results_new_pipeline/
+Running method: /dtu/blackhole/0a/224426/NWPU_downscaled/base/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/best_mae.pth
+Training on 3109 images, 389 batches/epoch
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28348414: <random> in cluster <dcc> Exited
+
+Job <random> was submitted from host <hpclogin1> by user <s260377> in cluster <dcc> at Mon May  4 17:40:50 2026
+Job was executed on host(s) <4*n-62-12-22>, in queue <gpua100>, as user <s260377> in cluster <dcc> at Mon May  4 19:50:17 2026
+</zhome/21/f/229477> was used as the home directory.
+</zhome/21/f/229477/my_dir/multi-resolution-crowd-counting> was used as the working directory.
+Started at Mon May  4 19:50:17 2026
+Terminated at Tue May  5 01:34:06 2026
+Results reported at Tue May  5 01:34:06 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpua100
+#BSUB -W 12:00
+#BSUB -J random
+#BSUB -o jobs/logs/random_%J.out
+#BSUB -e jobs/logs/random_%J.err
+#BSUB -n 4
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+#For bash submission:
+#gpua100 - A100 nodes (4x 40GB + 6x 80GB models) - Best for your work
+#gpuv100 - V100 nodes (various configs: 16GB, 32GB, some with NVlink)
+#gpul40s - L40s nodes (6 nodes, 48GB each) - Newer option
+#gpua40 - A40 node (1 node, 48GB with NVlink)
+#gpua10 - A10 node (1 node, 24GB)
+#gpuamd - AMD Radeon nodes (if you need AMD)
+
+set -euo pipefail
+
+#LOG_DIR="logs"
+#mkdir -p "$LOG_DIR"
+#
+#OUT_LOG="$LOG_DIR/output.log"
+#ERR_LOG="$LOG_DIR/error.log"
+#
+#exec > >(tee -a "$OUT_LOG") \
+#     2> >(tee -a "$ERR_LOG" >&2)
+
+uv sync
+
+
+
+DEVICE="cuda:0"
+
+METHODS=(
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/random/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/base/"
+)
+
+for METHOD in "${METHODS[@]}"; do
+  echo "Running method: $METHOD"
+
+  uv run python entrypoints/train_finetune_res_aug.py \
+
+(... more ...)
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   26068.00 sec.
+    Max Memory :                                 3280 MB
+    Average Memory :                             2195.88 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               127792.00 MB
+    Max Swap :                                   -
+    Max Processes :                              9
+    Max Threads :                                31
+    Run time :                                   20629 sec.
+    Turnaround time :                            28396 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <jobs/logs/random_28348414.err> for stderr output of this job.
+

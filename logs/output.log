@@ -1,0 +1,31 @@
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/best_mae.pth
+Training on 3109 images, 389 batches/epoch
+
+==================================================
+  Downscaling 3609 images at 4x
+  Output: /dtu/blackhole/0a/224426/NWPU_downscaled/random/images
+==================================================
+
+==================================================
+  Downscaling 3609 images at 4x
+  Output: /dtu/blackhole/0a/224426/NWPU_downscaled/random
+==================================================
+
+==================================================
+  Downscaling 3609 images at 4x
+  Output: /dtu/blackhole/0a/224426/NWPU_downscaled/random
+==================================================
+
+Done.
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/best_mae.pth
+Training on 3109 images, 389 batches/epoch

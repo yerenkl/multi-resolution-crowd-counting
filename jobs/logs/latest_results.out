@@ -1,0 +1,139 @@
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise/results/latest.pth
+
+  Results (native):
+    MAE:  77.29
+    RMSE: 288.07
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise/results/latest2/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/results/latest.pth
+
+  Results (native):
+    MAE:  72.20
+    RMSE: 297.42
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/results/latest2/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/results/latest.pth
+
+  Results (native):
+    MAE:  66.01
+    RMSE: 252.77
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/results/latest2/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/results/latest.pth
+
+  Results (native):
+    MAE:  63.01
+    RMSE: 242.51
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/results/latest2/
+Running for /dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/
+Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+Loaded weights from /dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/results/latest.pth
+
+  Results (native):
+    MAE:  74.83
+    RMSE: 253.35
+Results saved to /dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/results/latest2/
+All methods completed.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28324981: <eval> in cluster <dcc> Done
+
+Job <eval> was submitted from host <hpclogin1> by user <s260377> in cluster <dcc> at Wed Apr 29 12:06:45 2026
+Job was executed on host(s) <4*n-62-13-19>, in queue <gpul40s>, as user <s260377> in cluster <dcc> at Wed Apr 29 12:56:11 2026
+</zhome/21/f/229477> was used as the home directory.
+</zhome/21/f/229477/my_dir/multi-resolution-crowd-counting> was used as the working directory.
+Started at Wed Apr 29 12:56:11 2026
+Terminated at Wed Apr 29 13:21:37 2026
+Results reported at Wed Apr 29 13:21:37 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpul40s
+#BSUB -W 2:00
+#BSUB -J eval
+#BSUB -o jobs/logs/finetune_res_aug_%J.out
+#BSUB -e jobs/logs/finetune_res_aug_%J.err
+#BSUB -n 4
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+set -euo pipefail
+
+
+uv sync
+
+
+
+DEVICE="cuda:0"
+
+METHOD_PATHS=(
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/"
+  "/dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/"
+)
+
+for METHOD_PATH in "${METHOD_PATHS[@]}"; do
+  echo "Running for $METHOD_PATH"
+  uv run python entrypoints/eval_nwpu_native.py \
+    --device "$DEVICE" \
+    --path "$METHOD_PATH"
+done
+
+echo "All methods completed."
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   1454.00 sec.
+    Max Memory :                                 1704 MB
+    Average Memory :                             1347.25 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               129368.00 MB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                13
+    Run time :                                   1526 sec.
+    Turnaround time :                            4492 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <jobs/logs/finetune_res_aug_28324981.err> for stderr output of this job.
+
