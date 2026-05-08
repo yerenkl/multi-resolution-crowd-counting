@@ -29,6 +29,7 @@ uv run python entrypoints/train_dann_v2.py \
     --hidden_dim 256 \
     --dropout 0.5 \
     --num_workers 4 \
-    --eval_limit 500
+    --eval_limit 500 \
+    --checkpoints_dir /work3/"$USER"/multi-resolution-crowd-counting/checkpoints/dann
 
 echo "Done."
