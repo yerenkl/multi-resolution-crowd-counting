@@ -35,24 +35,19 @@ uv sync
 DEVICE="cuda:0"
 
 METHODS=(
-  "/dtu/blackhole/0a/224426/NWPU_downscaled/random/"
-  "/dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise"
-  "/dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/"
-  "/dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/"
-  "/dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/"
-  "/dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/"
-  "/dtu/blackhole/0a/224426/NWPU_downscaled/base/"
+    "/dtu/blackhole/0a/224426/NWPU_downscaled/bilinear/4x/results/best_mae.pth"
+    "/dtu/blackhole/0a/224426/NWPU_downscaled/bicubic/4x/results/best_mae.pth"
+    "/dtu/blackhole/0a/224426/NWPU_downscaled/lanczos/4x/results/best_mae.pth"
+    "/dtu/blackhole/0a/224426/NWPU_downscaled/nearest/4x/results/best_mae.pth"
+    "/dtu/blackhole/0a/224426/NWPU_downscaled/mix/4x/no_noise/results/best_mae.pth"
+    "/dtu/blackhole/0a/224426/NWPU_downscaled/random/results_new_pipeline/best_mae_original.pth"
 )
 
 for METHOD in "${METHODS[@]}"; do
   echo "Running method: $METHOD"
 
-  uv run python entrypoints/train_finetune_res_aug.py \
+  uv run python entrypoints/eval_nwpu_native.py \
       --device "$DEVICE" \
-      --epochs 30 \
-      --batch_size 8 \
-      --lr 1e-6 \
-      --num_workers 4 \
       --path "$METHOD"
 
 done

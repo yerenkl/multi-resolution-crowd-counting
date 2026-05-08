@@ -48,16 +48,15 @@ def eval_nwpu(model, device, nwpu_downscaled_directory, limit: int = None) -> di
     with open(nwpu_root / "val.txt") as f:
         image_ids = [line.strip().split()[0] for line in f if line.strip()]
 
-    if limit is not None:
-        image_ids = image_ids[:limit]
+    # if limit is not None:
+    #     image_ids = image_ids[:limit]
 
     # Evaluate both datasets
     results_original = _eval_single_nwpu_root(model, device, nwpu_root, image_ids)
-    results_downscaled = _eval_single_nwpu_root(model, device, nwpu_downscaled_directory, image_ids)
+    # results_downscaled = _eval_single_nwpu_root(model, device, nwpu_downscaled_directory, image_ids)
 
     return {
         "original": results_original,
-        "downscaled": results_downscaled
     }
 
 

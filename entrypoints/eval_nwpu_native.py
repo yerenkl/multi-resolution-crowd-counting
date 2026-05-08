@@ -22,24 +22,24 @@ def main():
     parser.add_argument("--device", type=str, default="cuda:0")
     parser.add_argument("--path", type=str, required=True)
     args = parser.parse_args()
-    out_dir = Path(args.path)
 
     import torch
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
+    out_dir = Path(args.path).parent
 
-    model = load_model(device, out_dir / "results" / "best_mae.pth")
-    errors = eval_nwpu(model, device, out_dir)
+    model = load_model(device, args.path)
+    errors = eval_nwpu(model, device, out_dir)["original"]
 
     print(f"\n  Results (native):")
     print(f"    MAE:       {errors['mae']:.2f}")
     print(f"    RMSE:      {errors['rmse']:.2f}")
     print(f"    Avg diff:  {errors['avg_diff']:.2f}")
 
-    results_dir = out_dir / "results" / "best_mae"
+    results_dir = out_dir
     results_dir.mkdir(parents=True, exist_ok=True)
 
-    with open(results_dir / "nwpu_val_native_2.json", "w") as f:
+    with open(results_dir / "nwpu_val_native_all.json", "w") as f:
         json.dump(
             {
                 "mae": float(errors["mae"]),

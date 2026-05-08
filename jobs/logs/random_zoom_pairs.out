@@ -1,0 +1,20 @@
+  Mean HR count:        519.7
+  Mean LR count:        388.2
+  Mean |HR - LR|:       159.3
+  Median |HR - LR|:     29.1
+  Mean HR/LR ratio:     1.450
+  Median HR/LR ratio:   1.087
+
+  Worst 5 pairs by |HR - LR|:
+    Pair  60: HR=8766, LR=4781, diff=3985, ratio=1.83
+    Pair  53: HR=2215, LR=411, diff=1804, ratio=5.39
+    Pair  51: HR=883, LR=98, diff=786, ratio=9.05
+    Pair   6: HR=496, LR=224, diff=272, ratio=2.21
+    Pair  26: HR=390, LR=187, diff=203, ratio=2.09
+
+  Best 5 pairs by |HR - LR|:
+    Pair  36: HR=11, LR=10, diff=1, ratio=1.15
+    Pair  40: HR=40, LR=42, diff=2, ratio=0.96
+    Pair  10: HR=20, LR=16, diff=3, ratio=1.20
+    Pair  15: HR=27, LR=24, diff=4, ratio=1.15
+    Pair  24: HR=382, LR=386, diff=4, ratio=0.99

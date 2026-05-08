@@ -18,15 +18,9 @@ uv sync
 mkdir -p results/finetune_resolution_aug
 mkdir -p jobs/logs
 
-echo "============================================================"
-echo "Resolution-augmented fine-tuning of CLIP-EBC (ViT-B/16)"
-echo "============================================================"
 
-uv run python entrypoints/train_finetune_res_aug.py \
+uv run python entrypoints/eval_zoom_pairs.py \
     --device "${DEVICE}" \
-    --epochs 50 \
-    --batch_size 8 \
-    --lr 1e-5 \
-    --num_workers 4
+    --path "/dtu/blackhole/0a/224426/NWPU_downscaled/random"
 
 echo "Fine-tuning completed."

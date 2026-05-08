@@ -87,7 +87,7 @@ def main():
     )
     print(f"Training on {len(dataset)} images, {len(loader)} batches/epoch")
 
-    out_dir = Path(f"{out_dir}/results_new_pipeline")
+    out_dir = Path(f"{out_dir}/results_all_nwpu")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     best_mae_original = float("inf")

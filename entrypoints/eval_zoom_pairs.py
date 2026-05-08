@@ -34,7 +34,7 @@ def main():
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
-    model = load_model(device, out_dir / "results_new_pipeline/best_mae.pth")
+    model = load_model(device, out_dir / "results_new_pipeline/best_mae_original.pth")
     results = eval_zoom_pairs(model, device)
 
     abs_diffs = [r["abs_diff"] for r in results]
