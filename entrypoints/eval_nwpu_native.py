@@ -22,7 +22,7 @@ from src.evaluation.runners import eval_nwpu, eval_nwpu_tta
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--device", type=str, default="cuda:0")
-    parser.add_argument("use_tta", action="store_true", help="Whether to apply test-time augmentation (TTA) via multi-scale prediction and averaging")
+    parser.add_argument("--use_tta", action="store_true", default=True, help="Whether to apply test-time augmentation (TTA) via multi-scale prediction and averaging")
     args = parser.parse_args()
 
     import torch

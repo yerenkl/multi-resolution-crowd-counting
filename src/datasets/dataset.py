@@ -33,12 +33,12 @@ class NWPU(torch.utils.data.Dataset):
     test:        returns (img_tensor, None) — labels are withheld (leaderboard only).
     """
 
-    def __init__(self, split: str = "train", transform=None):
+    def __init__(self, split: str = "train", transform=None, root=None):
         assert split in ("train", "val", "test"), f"Unknown split: {split!r}"
-        self.root = settings.nwpu_dir
+        self.root = root if root is not None else settings.nwpu_dir
         self.transform = transform
         self.labeled = split != "test"
-        with open(self.root / f"{split}.txt") as f:
+        with open("/dtu/blackhole/02/137570/MultiRes/NWPU_crowd/" + split + ".txt") as f:
             self.image_ids = [line.strip().split()[0] for line in f if line.strip()]
 
     def __len__(self):
