@@ -1,0 +1,87 @@
+============================================================
+DANN v2 2x full evaluation with TTA
+Weights: /work3/s225224/multi-resolution-crowd-counting/checkpoints/dann/2026-04-30_15-37-06/best_mae.pth
+============================================================
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+[[97mINFO[0m] [[96msrc.models.clip_ebc[0m] Loaded pretrained weights from /dtu/blackhole/0a/224426/best_mae.pth
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+[[97mINFO[0m] [[96msrc.models.clip_ebc[0m] Loaded pretrained weights from /dtu/blackhole/0a/224426/best_mae.pth
+Done.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28358290: <eval_dann_v2_2x> in cluster <dcc> Done
+
+Job <eval_dann_v2_2x> was submitted from host <hpclogin1> by user <s225224> in cluster <dcc> at Tue May  5 12:31:17 2026
+Job was executed on host(s) <4*n-62-12-22>, in queue <gpua100>, as user <s225224> in cluster <dcc> at Wed May  6 00:47:45 2026
+</zhome/77/2/187952> was used as the home directory.
+</zhome/77/2/187952/projects/multi-resolution-crowd-counting> was used as the working directory.
+Started at Wed May  6 00:47:45 2026
+Terminated at Wed May  6 01:54:24 2026
+Results reported at Wed May  6 01:54:24 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpua100
+#BSUB -W 4:00
+#BSUB -J eval_dann_v2_2x
+#BSUB -o jobs/logs/eval_dann_v2_2x_%J.out
+#BSUB -e jobs/logs/eval_dann_v2_2x_%J.err
+#BSUB -n 4
+#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+set -euo pipefail
+uv sync
+mkdir -p jobs/logs
+
+WEIGHTS="/work3/s225224/multi-resolution-crowd-counting/checkpoints/dann/2026-04-30_15-37-06/best_mae.pth"
+OUTPUT_DIR="results/dann_v2/2x"
+
+echo "============================================================"
+echo "DANN v2 2x full evaluation with TTA"
+echo "Weights: ${WEIGHTS}"
+echo "============================================================"
+
+uv run python entrypoints/eval_dann_tta.py \
+    --dann_weights "${WEIGHTS}" \
+    --device cuda:0 \
+    --output_dir "${OUTPUT_DIR}"
+
+echo "Done."
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   4279.00 sec.
+    Max Memory :                                 2818 MB
+    Average Memory :                             1615.36 MB
+    Total Requested Memory :                     65536.00 MB
+    Delta Memory :                               62718.00 MB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                13
+    Run time :                                   3999 sec.
+    Turnaround time :                            48187 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <jobs/logs/eval_dann_v2_2x_28358290.err> for stderr output of this job.
+

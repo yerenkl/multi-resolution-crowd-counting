@@ -84,12 +84,26 @@ def run_all_evals(model, device, label):
         r = by_density[bucket]
         log.info(f"         {bucket:<8} MAE={r['mae']:.2f}  RMSE={r['rmse']:.2f}  n={r['n']}")
 
-    log.info("  [4/5] Downscaled 2x and 4x...")
+    log.info("  [4/5] Downscaled — bilinear 2x/4x + per-method 4x...")
     results["downscaled"] = {}
     for scale in [2, 4]:
         ds = eval_nwpu_downscaled(model, device, scale)
         results["downscaled"][f"{scale}x"] = {"mae": float(ds["mae"]), "rmse": float(ds["rmse"])}
-        log.info(f"         {scale}x  MAE={ds['mae']:.2f}  RMSE={ds['rmse']:.2f}")
+        log.info(f"         bilinear {scale}x  MAE={ds['mae']:.2f}  RMSE={ds['rmse']:.2f}")
+
+    per_method = {
+        "mix_4x":      settings.NWPU_DOWNSCALED_DIR / "mix" / "4x" / "no_noise" / "images",
+        "bicubic_4x":  settings.NWPU_DOWNSCALED_DIR / "bicubic" / "4x" / "images",
+        "lanczos_4x":  settings.NWPU_DOWNSCALED_DIR / "lanczos" / "4x" / "images",
+        "nearest_4x":  settings.NWPU_DOWNSCALED_DIR / "nearest" / "4x" / "images",
+    }
+    for key, img_dir in per_method.items():
+        if img_dir.exists():
+            ds = eval_nwpu_downscaled(model, device, scale=4, images_dir=img_dir)
+            results["downscaled"][key] = {"mae": float(ds["mae"]), "rmse": float(ds["rmse"])}
+            log.info(f"         {key:<14}  MAE={ds['mae']:.2f}  RMSE={ds['rmse']:.2f}")
+        else:
+            log.warning(f"         {key} not found at {img_dir}, skipping")
 
     log.info("  [5/5] Zoom pairs...")
     pairs = eval_zoom_pairs(model, device)
@@ -107,11 +121,18 @@ def print_comparison(baseline, dann):
     log.info(f"  {'Condition':<20} {'Baseline':>10} {'DANN':>10} {'Delta':>10}")
     log.info(f"  {'-'*50}")
 
+    all_ds_keys = sorted(
+        set(baseline["downscaled"].keys()) | set(dann["downscaled"].keys())
+    )
+    ds_rows = [
+        (k, baseline["downscaled"].get(k, {}).get("mae", float("nan")),
+             dann["downscaled"].get(k, {}).get("mae", float("nan")))
+        for k in all_ds_keys
+    ]
     rows = [
         ("Native", baseline["native"]["mae"], dann["native"]["mae"]),
         ("Native (TTA)", baseline["native_tta"]["mae"], dann["native_tta"]["mae"]),
-        ("2x down", baseline["downscaled"]["2x"]["mae"], dann["downscaled"]["2x"]["mae"]),
-        ("4x down", baseline["downscaled"]["4x"]["mae"], dann["downscaled"]["4x"]["mae"]),
+        *ds_rows,
         ("Zoom |HR-LR|", baseline["zoom_pairs"]["mean_abs_diff"], dann["zoom_pairs"]["mean_abs_diff"]),
     ]
     for label, b, d in rows:

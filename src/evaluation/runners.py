@@ -69,20 +69,23 @@ def eval_nwpu_tta(model, device, limit: int = None) -> dict:
 
     return calculate_errors(np.array(pred_counts), np.array(gt_counts))
 
-def eval_nwpu_downscaled(model, device, scale: int) -> dict:
-    """Evaluate on pre-saved downscaled NWPU val images. Returns dict with mae and rmse."""
+def eval_nwpu_downscaled(model, device, scale: int, images_dir: Path = None) -> dict:
+    """Evaluate on pre-saved downscaled NWPU val images. Returns dict with mae and rmse.
+
+    images_dir: explicit path to images folder. Defaults to NWPU_DOWNSCALED_DIR/{scale}x/images.
+    """
     model.eval()
     nwpu_root = settings.nwpu_dir
-    images_dir = settings.NWPU_DOWNSCALED_DIR / f"{scale}x" / "images"
-    assert images_dir.exists(), (
-        f"Downscaled images not found at {images_dir}. Run entrypoints/downscale_nwpu.py first."
-    )
+    if images_dir is None:
+        images_dir = settings.NWPU_DOWNSCALED_DIR / f"{scale}x" / "images"
+    images_dir = Path(images_dir)
+    assert images_dir.exists(), f"Downscaled images not found at {images_dir}."
 
     with open(nwpu_root / "val.txt") as f:
         image_ids = [line.strip().split()[0] for line in f if line.strip()]
 
     pred_counts, gt_counts = [], []
-    for image_id in tqdm(image_ids, desc=f"NWPU val {scale}x"):
+    for image_id in tqdm(image_ids, desc=f"NWPU val ({images_dir.parent.name}/{images_dir.name})"):
         img = Image.open(images_dir / f"{image_id}.jpg").convert("RGB")
         img_tensor = NORMALIZE(T.ToTensor()(img))
         with open(nwpu_root / "jsons" / f"{image_id}.json") as f:

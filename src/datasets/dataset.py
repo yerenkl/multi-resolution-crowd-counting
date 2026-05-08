@@ -1,5 +1,6 @@
 import json
 import random
+from pathlib import Path
 
 import torch
 from PIL import Image
@@ -74,13 +75,28 @@ class NWPUPairedHRLR(torch.utils.data.Dataset):
 
     Loads native HR and pre-saved downscaled LR images for the same image ID.
     Returns both so the training loop can apply matched crops.
+
+    lr_image_dir: explicit directory of pre-saved LR images (e.g. mix/4x/no_noise/images).
+                  When set, lr_scales is ignored and lr_scale must be provided.
+    lr_scale:     downscale factor of images in lr_image_dir (needed for crop alignment).
     """
 
-    def __init__(self, split: str = "train", lr_scales: tuple = (2, 4), transform=None):
+    def __init__(
+        self,
+        split: str = "train",
+        lr_scales: tuple = (2, 4),
+        transform=None,
+        lr_image_dir=None,
+        lr_scale: int = None,
+    ):
         assert split in ("train", "val"), f"Unknown split: {split!r}"
+        if lr_image_dir is not None:
+            assert lr_scale is not None, "lr_scale must be set when lr_image_dir is provided"
         self.root = settings.nwpu_dir
         self.lr_root = settings.NWPU_DOWNSCALED_DIR
         self.lr_scales = lr_scales
+        self.lr_image_dir = Path(lr_image_dir) if lr_image_dir else None
+        self.lr_scale = lr_scale
         self.transform = transform
         with open(self.root / f"{split}.txt") as f:
             self.image_ids = [line.strip().split()[0] for line in f if line.strip()]
@@ -92,10 +108,14 @@ class NWPUPairedHRLR(torch.utils.data.Dataset):
         image_id = self.image_ids[idx]
         hr_img = Image.open(self.root / "images" / f"{image_id}.jpg").convert("RGB")
 
-        scale = random.choice(self.lr_scales)
-        lr_img = Image.open(
-            self.lr_root / f"{scale}x" / "images" / f"{image_id}.jpg"
-        ).convert("RGB")
+        if self.lr_image_dir is not None:
+            scale = self.lr_scale
+            lr_img = Image.open(self.lr_image_dir / f"{image_id}.jpg").convert("RGB")
+        else:
+            scale = random.choice(self.lr_scales)
+            lr_img = Image.open(
+                self.lr_root / f"{scale}x" / "images" / f"{image_id}.jpg"
+            ).convert("RGB")
 
         with open(self.root / "jsons" / f"{image_id}.json") as f:
             annotation = json.load(f)

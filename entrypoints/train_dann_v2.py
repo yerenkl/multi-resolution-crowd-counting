@@ -53,12 +53,22 @@ def main():
     parser.add_argument("--dann_weight", type=float, default=1.0)
     parser.add_argument(
         "--lr_scales", type=int, nargs="+", default=[2, 4],
-        help="Which downscale factors to use as LR domain (2, 4, or both)",
+        help="Which downscale factors to use as LR domain (2, 4, or both). Ignored when --lr_image_dir is set.",
+    )
+    parser.add_argument(
+        "--lr_image_dir", type=str, default=None,
+        help="Explicit directory of pre-saved LR images (e.g. mix/4x/no_noise/images). Overrides --lr_scales.",
+    )
+    parser.add_argument(
+        "--lr_scale", type=int, default=4,
+        help="Downscale factor of images in --lr_image_dir (needed for crop alignment).",
     )
     parser.add_argument("--hidden_dim", type=int, default=256)
     parser.add_argument("--dropout", type=float, default=0.5)
     parser.add_argument("--num_workers", type=int, default=4)
     parser.add_argument("--eval_limit", type=int, default=500)
+    parser.add_argument("--checkpoints_dir", type=str, default=None,
+                        help="Root dir for checkpoints. Defaults to settings.DANN_CHECKPOINTS_DIR.")
     args = parser.parse_args()
 
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
@@ -90,6 +100,8 @@ def main():
         split="train",
         lr_scales=tuple(args.lr_scales),
         transform=transform,
+        lr_image_dir=args.lr_image_dir,
+        lr_scale=args.lr_scale,
     )
     loader = DataLoader(
         dataset,
@@ -100,17 +112,22 @@ def main():
         collate_fn=nwpu_paired_hr_lr_collate_fn,
     )
 
-    scale_tag = "_".join(f"{s}x" for s in sorted(args.lr_scales))
+    if args.lr_image_dir:
+        scale_tag = f"mix_{args.lr_scale}x"
+        logger.info(f"LR domain: {args.lr_image_dir} (scale={args.lr_scale}x, tag: {scale_tag})")
+    else:
+        scale_tag = "_".join(f"{s}x" for s in sorted(args.lr_scales))
+        logger.info(f"LR scales: {args.lr_scales} (tag: {scale_tag})")
     logger.info(f"Training on {len(dataset)} paired images, {len(loader)} batches/epoch")
-    logger.info(f"LR scales: {args.lr_scales} (tag: {scale_tag})")
     logger.info(f"DANN config: dann_weight={args.dann_weight}")
     logger.info(f"Discriminator: hidden_dim={args.hidden_dim}, dropout={args.dropout}, lr={args.lr_disc}")
 
+    checkpoints_root = Path(args.checkpoints_dir) if args.checkpoints_dir else settings.DANN_CHECKPOINTS_DIR
     metrics = MetricsLogger(
         experiment=f"dann_v2_{scale_tag}",
         args=args,
         fieldnames=["epoch", "loss", "task_loss", "domain_loss", "alpha", "mae", "rmse"],
-        base_dir=settings.DANN_CHECKPOINTS_DIR,
+        base_dir=checkpoints_root / f"dann_v2_{scale_tag}",
     )
     logger.info(f"Run directory: {metrics.run_dir}")
 

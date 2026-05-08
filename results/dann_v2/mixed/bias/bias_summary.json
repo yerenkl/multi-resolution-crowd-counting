@@ -1,0 +1,46 @@
+{
+  "sparse": {
+    "n": 113,
+    "baseline": {
+      "mean_signed_error": 4.69,
+      "mae": 9.09
+    },
+    "dann": {
+      "mean_signed_error": 6.96,
+      "mae": 11.18
+    }
+  },
+  "medium": {
+    "n": 297,
+    "baseline": {
+      "mean_signed_error": 6.57,
+      "mae": 26.57
+    },
+    "dann": {
+      "mean_signed_error": 5.23,
+      "mae": 27.14
+    }
+  },
+  "dense": {
+    "n": 90,
+    "baseline": {
+      "mean_signed_error": 57.85,
+      "mae": 151.54
+    },
+    "dann": {
+      "mean_signed_error": 49.38,
+      "mae": 171.8
+    }
+  },
+  "overall": {
+    "n": 500,
+    "baseline": {
+      "mean_signed_error": 15.37,
+      "mae": 45.11
+    },
+    "dann": {
+      "mean_signed_error": 13.57,
+      "mae": 49.57
+    }
+  }
+}

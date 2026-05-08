@@ -1,0 +1,90 @@
+============================================================
+DANN v2 — LR domain: 2x only
+============================================================
+[[97mINFO[0m] [[96m__main__[0m] Using device: cuda:0
+Missing keys: []
+Unexpected keys: ['proj']
+All keys matched successfully.
+Initialized model with text prompts: ['There is no person.', 'There is one person.', 'There are two people.', 'There are three people.', 'There are more than four people.']
+[[97mINFO[0m] [[96msrc.models.clip_ebc[0m] Loaded pretrained weights from /dtu/blackhole/0a/224426/best_mae.pth
+[[97mINFO[0m] [[96m__main__[0m] Training on 3109 paired images, 389 batches/epoch
+[[97mINFO[0m] [[96m__main__[0m] LR scales: [2] (tag: 2x)
+[[97mINFO[0m] [[96m__main__[0m] DANN config: dann_weight=1.0
+[[97mINFO[0m] [[96m__main__[0m] Discriminator: hidden_dim=256, dropout=0.5, lr=0.0001
+[[97mINFO[0m] [[96m__main__[0m] Run directory: /work3/s225224/multi-resolution-crowd-counting/checkpoints/dann/2026-04-30_15-37-06
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28330343: <dann_v2_2x> in cluster <dcc> Exited
+
+Job <dann_v2_2x> was submitted from host <n-62-20-9> by user <s225224> in cluster <dcc> at Thu Apr 30 15:35:21 2026
+Job was executed on host(s) <4*n-62-20-2>, in queue <gpuv100>, as user <s225224> in cluster <dcc> at Thu Apr 30 15:35:36 2026
+</zhome/77/2/187952> was used as the home directory.
+</zhome/77/2/187952/projects/multi-resolution-crowd-counting> was used as the working directory.
+Started at Thu Apr 30 15:35:36 2026
+Terminated at Thu Apr 30 15:44:21 2026
+Results reported at Thu Apr 30 15:44:21 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpua100
+#BSUB -W 24:00
+#BSUB -J dann_v2_2x
+#BSUB -o jobs/logs/dann_v2_2x_%J.out
+#BSUB -e jobs/logs/dann_v2_2x_%J.err
+#BSUB -n 4
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+set -euo pipefail
+uv sync
+mkdir -p jobs/logs
+
+echo "============================================================"
+echo "DANN v2 — LR domain: 2x only"
+echo "============================================================"
+
+uv run python entrypoints/train_dann_v2.py \
+    --device cuda:0 \
+    --epochs 50 \
+    --batch_size 8 \
+    --lr 1e-5 \
+    --lr_disc 1e-4 \
+    --dann_weight 1.0 \
+    --lr_scales 2 \
+    --hidden_dim 256 \
+    --dropout 0.5 \
+    --num_workers 4 \
+    --eval_limit 500
+
+echo "Done."
+
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   788.00 sec.
+    Max Memory :                                 3521 MB
+    Average Memory :                             1546.33 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               127551.00 MB
+    Max Swap :                                   -
+    Max Processes :                              9
+    Max Threads :                                30
+    Run time :                                   525 sec.
+    Turnaround time :                            540 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <jobs/logs/dann_v2_2x_28330343.err> for stderr output of this job.
+
